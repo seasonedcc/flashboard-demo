@@ -4,11 +4,19 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	href,
 	isRouteErrorResponse,
 } from "react-router";
 
 import type { Route } from "./+types/root";
-import "./app.css";
+import "./styles/app.css";
+import { Header } from "./ui/header";
+import { Footer } from "./ui/footer";
+
+export const meta: Route.MetaFunction = () => [
+	{ title: "Flashboard Demo Store" },
+	{ name: "description", content: "Explore this demo" },
+];
 
 export const links: Route.LinksFunction = () => [
 	{ rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -23,16 +31,51 @@ export const links: Route.LinksFunction = () => [
 	},
 ];
 
+export async function loader() {
+	const navigation = [
+		{ name: "Products", href: href("/products") },
+		{ name: "Blog", href: href("/blog") },
+	];
+	const cartProducts = [
+		{
+			id: 1,
+			name: "Throwback Hip Bag",
+			color: "Salmon",
+			price: "$90.00",
+			quantity: 1,
+			imageSrc:
+				"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg",
+			imageAlt:
+				"Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.",
+		},
+		{
+			id: 2,
+			name: "Medium Stuff Satchel",
+			color: "Blue",
+			price: "$32.00",
+			quantity: 1,
+			imageSrc:
+				"https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-02.jpg",
+			imageAlt:
+				"Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.",
+		},
+	];
+	return { navigation, cartProducts };
+}
+
 export function Layout({ children }: { children: React.ReactNode }) {
 	return (
 		<html lang="en">
 			<head>
 				<meta charSet="utf-8" />
-				<meta name="viewport" content="width=device-width, initial-scale=1" />
+				<meta
+					name="viewport"
+					content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"
+				/>
 				<Meta />
 				<Links />
 			</head>
-			<body className="bg-white dark:bg-gray-950">
+			<body className="bg-white min-h-screen overflow-x-hidden flex flex-col">
 				{children}
 				<ScrollRestoration />
 				<Scripts />
@@ -41,8 +84,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
 	);
 }
 
-export default function App() {
-	return <Outlet />;
+export default function App({ loaderData }: Route.ComponentProps) {
+	const { cartProducts, navigation } = loaderData;
+	return (
+		<>
+			<Header cartProducts={cartProducts} navigation={navigation} />
+			<main className="flex-1">
+				<Outlet />
+			</main>
+			<Footer />
+		</>
+	);
 }
 
 export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
@@ -62,7 +114,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	}
 
 	return (
-		<main className="pt-16 p-4 container mx-auto">
+		<div className="pt-16 p-4 container mx-auto">
 			<h1>{message}</h1>
 			<p>{details}</p>
 			{stack && (
@@ -70,6 +122,6 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 					<code>{stack}</code>
 				</pre>
 			)}
-		</main>
+		</div>
 	);
 }
