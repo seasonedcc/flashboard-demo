@@ -1,6 +1,6 @@
 import * as readline from 'node:readline/promises'
 import { db } from '~/db/db.server'
-import { seed } from './seed'
+import { seed } from '../seed'
 const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout,

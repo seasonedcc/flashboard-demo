@@ -8,13 +8,11 @@ async function fetchSiteContent(keys: string[]) {
 		.execute()
 
 	// format siteContent so it returns an object with key-value pairs
-	return siteContent.reduce(
-		(acc, item) => {
-			acc[item.key] = item.value
-			return acc
-		},
-		{} as Record<string, string>
-	)
+	let result: Record<string, string> = {}
+	for (const item of siteContent) {
+		result[item.key] = item.value
+	}
+	return result
 }
 
 export { fetchSiteContent }

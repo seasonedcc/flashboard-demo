@@ -2,9 +2,7 @@ import { href } from 'react-router'
 import { db } from '~/db/db.server'
 import { flashboardStorageDataSchema } from '~/s3-client.server'
 
-async function addImageUrlToProduct<T extends Record<string, unknown>>(
-	product: T
-) {
+function addImageUrlToProduct<T extends Record<string, unknown>>(product: T) {
 	const { images, ...rest } = product
 	const parsedImages = flashboardStorageDataSchema.safeParse(images).data
 
@@ -20,22 +18,6 @@ async function addImageUrlToProduct<T extends Record<string, unknown>>(
 	}
 }
 
-async function addImageUrlToProducts(
-	products: {
-		id: string
-		name: string
-		images: unknown
-		description: string | null
-		priceCents: number
-	}[]
-) {
-	return Promise.all(
-		products.map(async (product) => {
-			return addImageUrlToProduct(product)
-		})
-	)
-}
-
 async function fetchTrendingProducts() {
 	const products = await db()
 		.selectFrom('products')
@@ -44,7 +26,7 @@ async function fetchTrendingProducts() {
 		.orderBy('name', 'asc')
 		.execute()
 
-	return addImageUrlToProducts(products)
+	return products.map(addImageUrlToProduct)
 }
 
 async function fetchProducts() {
@@ -54,7 +36,7 @@ async function fetchProducts() {
 		.orderBy('name', 'asc')
 		.execute()
 
-	return addImageUrlToProducts(products)
+	return products.map(addImageUrlToProduct)
 }
 
 async function fetchProduct(id: string) {
@@ -72,9 +54,7 @@ async function fetchProduct(id: string) {
 		.where('id', '=', id)
 		.executeTakeFirst()
 
-	if (!product) {
-		return null
-	}
+	if (!product) return null
 
 	return addImageUrlToProduct(product)
 }
