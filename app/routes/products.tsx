@@ -1,19 +1,9 @@
 import { Link, href } from 'react-router'
+import { fetchProducts } from '~/business/ecommerce'
 import type { Route } from './+types/products'
 
 export async function loader() {
-	const products = [
-		{
-			id: 1,
-			name: 'Leather Long Wallet',
-			color: 'Natural',
-			price: '$75',
-			imageSrc:
-				'https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-04-trending-product-02.jpg',
-			imageAlt: 'Hand stitched, orange leather long wallet.',
-		},
-	]
-	return { products }
+	return { products: await fetchProducts() }
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
@@ -31,25 +21,25 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 				</div>
 				<div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">
 					{products.map((product) => (
-						<div key={product.id} className="group relative">
-							<div className="h-56 w-full overflow-hidden rounded-md bg-gray-200 group-hover:opacity-75 lg:h-72 xl:h-80">
-								<img
-									alt={product.imageAlt}
-									src={product.imageSrc}
-									className="size-full object-cover"
-								/>
-							</div>
-							<h3 className="mt-4 text-gray-700 text-sm">
-								<Link to={href('/products/:id', { id: String(product.id) })}>
-									<span className="absolute inset-0" />
-									{product.name}
-								</Link>
-							</h3>
-							<p className="mt-1 text-gray-500 text-sm">{product.color}</p>
-							<p className="mt-1 font-medium text-gray-900 text-sm">
-								{product.price}
+						<Link
+							key={product.id}
+							to={href('/products/:id', { id: String(product.id) })}
+							className="group text-sm"
+						>
+							<img
+								alt={product.name}
+								title={product.description ?? product.name}
+								src={product.imageSrc || undefined}
+								className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
+							/>
+							<h3 className="mt-4 font-medium text-gray-900">{product.name}</h3>
+							<p className="mt-2 font-medium text-gray-900">
+								{new Intl.NumberFormat('en-US', {
+									style: 'currency',
+									currency: 'USD',
+								}).format(product.priceCents / 100)}
 							</p>
-						</div>
+						</Link>
 					))}
 				</div>
 			</div>

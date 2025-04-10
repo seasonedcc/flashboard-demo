@@ -1,30 +1,16 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { ShieldCheckIcon } from '@heroicons/react/24/outline'
 import { Link, href } from 'react-router'
+import { fetchProduct } from '~/business/ecommerce'
 import type { Route } from './+types/product'
 
-export async function loader() {
-	const product = {
-		name: 'Everyday Ruck Snack',
-		href: '#',
-		price: '$220',
-		description:
-			"Don't compromise on snack-carrying capacity with this lightweight and spacious bag. The drawstring top keeps all your favorite chips, crisps, fries, biscuits, crackers, and cookies secure.",
-		imageSrc:
-			'https://tailwindcss.com/plus-assets/img/ecommerce-images/product-page-04-featured-product-shot.jpg',
-		imageAlt:
-			'Model wearing light green backpack with black canvas straps and front zipper pouch.',
-		sizes: [
-			{
-				name: '18L',
-				description: 'Perfect for a reasonable amount of snacks.',
-			},
-			{
-				name: '20L',
-				description: 'Enough room for a serious amount of snacks.',
-			},
-		],
+export async function loader({ params }: Route.LoaderArgs) {
+	const product = await fetchProduct(params.id)
+
+	if (!product) {
+		throw new Response('Not Found', { status: 404 })
 	}
+
 	return { product }
 }
 
@@ -101,7 +87,12 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							Product information
 						</h2>
 
-						<p className="text-gray-900 text-lg sm:text-xl">{product.price}</p>
+						<p className="text-gray-900 text-lg sm:text-xl">
+							{new Intl.NumberFormat('en-US', {
+								style: 'currency',
+								currency: 'USD',
+							}).format(product.priceCents / 100)}
+						</p>
 
 						<div className="mt-4 space-y-6">
 							<p className="text-base text-gray-500">{product.description}</p>
@@ -122,9 +113,10 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 				{/* Product image */}
 				<div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
 					<img
-						alt={product.imageAlt}
-						src={product.imageSrc}
-						className="aspect-square w-full rounded-lg object-cover"
+						alt={product.name}
+						title={product.description ?? product.name}
+						src={product.imageSrc || undefined}
+						className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
 					/>
 				</div>
 

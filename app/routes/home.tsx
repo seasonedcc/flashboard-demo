@@ -1,57 +1,53 @@
 import { Link, href } from 'react-router'
+import { fetchPosts } from '~/business/blog'
+import { fetchSiteContent } from '~/business/dynamicContent'
+import { fetchTrendingProducts } from '~/business/ecommerce'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
 
 export async function loader() {
+	const siteContent = await fetchSiteContent([
+		'homeHero',
+		'homeHeroDescription',
+		'offer1name',
+		'offer1description',
+		'offer2name',
+		'offer2description',
+		'offer3name',
+		'offer3description',
+	])
+
+	const hero = {
+		title: siteContent.homeHero,
+		description: siteContent.homeHeroDescription,
+	}
+
 	const offers = [
-		{ name: 'Download the app', description: 'Get an exclusive $5 off code' },
 		{
-			name: "Return when you're ready",
-			description: '60 days of free returns',
+			name: siteContent.offer1name,
+			description: siteContent.offer1description,
 		},
 		{
-			name: 'Sign up for our newsletter',
-			description: '15% off your first order',
+			name: siteContent.offer2name,
+			description: siteContent.offer2description,
+		},
+		{
+			name: siteContent.offer3name,
+			description: siteContent.offer3description,
 		},
 	]
 
-	const trendingProducts = [
-		{
-			id: 1,
-			name: 'Machined Pen',
-			color: 'Black',
-			price: '$35',
-			imageSrc:
-				'https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-product-01.jpg',
-			imageAlt:
-				'Black machined steel pen with hexagonal grip and small white logo at top.',
-		},
-	]
-	const posts = [
-		{
-			id: 1,
-			title: 'Boost your conversion rate',
-			slug: 'boost-your-conversion-rate',
-			description:
-				'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-			date: 'Mar 16, 2020',
-			datetime: '2020-03-16',
-			categories: 'Marketing',
-			author: {
-				name: 'Michael Foster',
-				role: 'Co-Founder / CTO',
-				href: '#',
-				imageUrl:
-					'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-			},
-		},
-		// More posts...
-	]
-	return { offers, trendingProducts, posts }
+	return {
+		hero,
+		offers,
+		trendingProducts: await fetchTrendingProducts(),
+		posts: await fetchPosts(),
+	}
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
-	const { offers, trendingProducts, posts } = loaderData
+	const { hero, offers, trendingProducts, posts } = loaderData
+
 	return (
 		<>
 			<div className="flex flex-col border-gray-200 border-b lg:border-0">
@@ -82,11 +78,10 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							<div className="mx-auto max-w-2xl py-24 lg:max-w-none lg:py-64">
 								<div className="lg:pr-16">
 									<h1 className="font-bold text-4xl text-gray-900 tracking-tight sm:text-5xl xl:text-6xl">
-										Focus on what matters
+										{hero.title}
 									</h1>
 									<p className="mt-4 text-gray-600 text-xl">
-										All the charts, datepickers, and notifications in the world
-										can't beat checking off some items on a paper card.
+										{hero.description}
 									</p>
 									<div className="mt-6">
 										<Link
@@ -136,16 +131,19 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 									className="group text-sm"
 								>
 									<img
-										alt={product.imageAlt}
-										src={product.imageSrc}
+										alt={product.name}
+										title={product.description ?? product.name}
+										src={product.imageSrc || undefined}
 										className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
 									/>
 									<h3 className="mt-4 font-medium text-gray-900">
 										{product.name}
 									</h3>
-									<p className="text-gray-500 italic">{product.color}</p>
 									<p className="mt-2 font-medium text-gray-900">
-										{product.price}
+										{new Intl.NumberFormat('en-US', {
+											style: 'currency',
+											currency: 'USD',
+										}).format(product.priceCents / 100)}
 									</p>
 								</Link>
 							))}
