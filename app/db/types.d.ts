@@ -3,91 +3,91 @@
  * Please do not edit it manually.
  */
 
-import type { ColumnType } from 'kysely'
+import type { ColumnType } from "kysely";
 
-export type BlogPostState = 'draft' | 'published'
+export type BlogPostState = "draft" | "published";
 
 export type Generated<T> = T extends ColumnType<infer S, infer I, infer U>
-	? ColumnType<S, I | undefined, U>
-	: ColumnType<T, T | undefined, T>
+  ? ColumnType<S, I | undefined, U>
+  : ColumnType<T, T | undefined, T>;
 
-export type Json = JsonValue
+export type Json = JsonValue;
 
-export type JsonArray = JsonValue[]
+export type JsonArray = JsonValue[];
 
 export type JsonObject = {
-	[x: string]: JsonValue | undefined
-}
+  [x: string]: JsonValue | undefined;
+};
 
-export type JsonPrimitive = boolean | number | string | null
+export type JsonPrimitive = boolean | number | string | null;
 
-export type JsonValue = JsonArray | JsonObject | JsonPrimitive
+export type JsonValue = JsonArray | JsonObject | JsonPrimitive;
 
-export type Timestamp = ColumnType<Date, Date | string, Date | string>
+export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface BlogPosts {
-	content: string | null
-	createdAt: Generated<Timestamp>
-	id: Generated<string>
-	slug: string
-	state: Generated<BlogPostState>
-	title: string | null
+  content: string | null;
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  slug: string;
+  state: Generated<BlogPostState>;
+  title: string | null;
 }
 
 export interface Carts {
-	createdAt: Generated<Timestamp>
-	id: Generated<string>
-	userId: string | null
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  userId: string | null;
 }
 
 export interface LineItems {
-	cartId: string | null
-	createdAt: Generated<Timestamp>
-	id: Generated<string>
-	productId: string | null
-	quantity: number
+  cartId: string | null;
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  productId: string | null;
+  quantity: number;
 }
 
 export interface Orders {
-	createdAt: Generated<Timestamp>
-	id: Generated<string>
-	stripeResponse: Json
-	totalCents: number
-	userId: string | null
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  stripeResponse: Json;
+  totalCents: number;
+  userId: string | null;
 }
 
 export interface Products {
-	createdAt: Generated<Timestamp>
-	description: string | null
-	id: Generated<string>
-	images: Generated<Json | null>
-	jsonLd: Generated<Json | null>
-	longDescription: string | null
-	name: string
-	priceCents: number
-	stock: Generated<number>
+  createdAt: Generated<Timestamp>;
+  description: string | null;
+  id: Generated<string>;
+  images: Generated<Json | null>;
+  jsonLd: Generated<Json | null>;
+  longDescription: string | null;
+  name: string;
+  priceCents: number;
+  stock: Generated<number>;
 }
 
 export interface SiteContent {
-	createdAt: Generated<Timestamp>
-	id: Generated<string>
-	key: string
-	value: string
+  createdAt: Generated<Timestamp>;
+  id: Generated<string>;
+  key: string;
+  value: string;
 }
 
 export interface Users {
-	createdAt: Generated<Timestamp>
-	email: string
-	id: Generated<string>
-	passwordHash: string
+  createdAt: Generated<Timestamp>;
+  email: string;
+  id: Generated<string>;
+  passwordHash: string;
 }
 
 export interface DB {
-	blogPosts: BlogPosts
-	carts: Carts
-	lineItems: LineItems
-	orders: Orders
-	products: Products
-	siteContent: SiteContent
-	users: Users
+  blogPosts: BlogPosts;
+  carts: Carts;
+  lineItems: LineItems;
+  orders: Orders;
+  products: Products;
+  siteContent: SiteContent;
+  users: Users;
 }
