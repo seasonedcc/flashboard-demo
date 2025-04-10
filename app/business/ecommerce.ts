@@ -53,6 +53,26 @@ function s3Client() {
 	)
 }
 
+async function addImageUrlToProduct(product: {
+	id: string
+	name: string
+	images: unknown
+	description: string | null
+	priceCents: number
+}) {
+	const { images, ...rest } = product
+	const parsedImages = z.array(z.unknown()).safeParse(images).data
+
+	const imageSrc = parsedImages?.[0]
+		? await fetchFlashboardStorageUrl(s3Client(), parsedImages[0])
+		: null
+
+	return {
+		...rest,
+		imageSrc,
+	}
+}
+
 async function addImageUrlToProducts(
 	products: {
 		id: string
@@ -64,17 +84,7 @@ async function addImageUrlToProducts(
 ) {
 	return Promise.all(
 		products.map(async (product) => {
-			const { images, ...rest } = product
-			const parsedImages = z.array(z.unknown()).safeParse(images).data
-
-			const imageSrc = parsedImages?.[0]
-				? await fetchFlashboardStorageUrl(s3Client(), parsedImages[0])
-				: null
-
-			return {
-				...rest,
-				imageSrc,
-			}
+			return addImageUrlToProduct(product)
 		})
 	)
 }
@@ -100,4 +110,18 @@ async function fetchProducts() {
 	return addImageUrlToProducts(products)
 }
 
-export { fetchTrendingProducts, fetchProducts }
+async function fetchProduct(id: string) {
+	const product = await db()
+		.selectFrom('products')
+		.select(['id', 'name', 'images', 'description', 'priceCents'])
+		.where('id', '=', id)
+		.executeTakeFirst()
+
+	if (!product) {
+		return null
+	}
+
+	return addImageUrlToProduct(product)
+}
+
+export { fetchTrendingProducts, fetchProducts, fetchProduct }
