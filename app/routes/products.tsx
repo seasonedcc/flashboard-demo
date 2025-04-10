@@ -1,8 +1,8 @@
 import { Link, href } from 'react-router'
-import { fetchProducts } from '~/business/ecommerce'
-import type { Route } from './+types/products'
 import { fetchSiteContent } from '~/business/dynamicContent'
+import { fetchProducts } from '~/business/ecommerce'
 import { formatMoney } from '~/helpers'
+import type { Route } from './+types/products'
 
 export async function loader() {
 	return {

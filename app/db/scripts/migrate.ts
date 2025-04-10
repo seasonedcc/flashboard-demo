@@ -1,8 +1,8 @@
 import 'dotenv/config'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { db } from '../db.server'
 import type { Kysely } from 'kysely'
+import { db } from '../db.server'
 import { createMigrator, logMigrationResults } from './migrator'
 
 async function migrateDbToLatest(

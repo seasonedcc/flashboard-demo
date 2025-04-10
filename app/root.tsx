@@ -4,15 +4,14 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
-	href,
 	isRouteErrorResponse,
 } from 'react-router'
 
 import type { Route } from './+types/root'
 import './styles/app.css'
+import { fetchSiteContent } from './business/dynamicContent'
 import { Footer } from './ui/footer'
 import { Header } from './ui/header'
-import { fetchSiteContent } from './business/dynamicContent'
 
 export const meta: Route.MetaFunction = () => [
 	{ title: 'Flashboard Demo Store' },

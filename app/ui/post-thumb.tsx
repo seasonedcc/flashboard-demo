@@ -1,6 +1,6 @@
 import { Link, href } from 'react-router'
-import type { Route } from '../routes/+types/blog'
 import { formatDate } from '~/helpers'
+import type { Route } from '../routes/+types/blog'
 
 function PostThumb({
 	post,
@@ -20,7 +20,6 @@ function PostThumb({
 					</Link>
 				</h3>
 				<div className="prose">
-					{/* biome-ignore lint/security/noDangerouslySetInnerHtml: <explanation> */}
 					<section dangerouslySetInnerHTML={{ __html: post.content }} />
 				</div>
 			</div>

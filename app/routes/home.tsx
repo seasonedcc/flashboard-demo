@@ -2,10 +2,10 @@ import { Link, href } from 'react-router'
 import { fetchPosts } from '~/business/blog'
 import { fetchSiteContent } from '~/business/dynamicContent'
 import { fetchTrendingProducts } from '~/business/ecommerce'
+import { formatMoney } from '~/helpers'
+import { flashboardStorageDataSchema } from '~/s3-client.server'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
-import { flashboardStorageDataSchema } from '~/s3-client.server'
-import { formatMoney } from '~/helpers'
 
 export async function loader() {
 	const siteContent = await fetchSiteContent([

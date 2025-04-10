@@ -1,7 +1,7 @@
 import { Link, href } from 'react-router'
-import type { Route } from './+types/blog-post'
 import { fetchPost } from '~/business/blog'
 import { formatDate } from '~/helpers'
+import type { Route } from './+types/blog-post'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const post = await fetchPost(params.slug)

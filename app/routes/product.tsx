@@ -2,8 +2,8 @@ import { CheckIcon } from '@heroicons/react/20/solid'
 import { ShieldCheckIcon } from '@heroicons/react/24/outline'
 import { Link, href } from 'react-router'
 import { fetchProduct } from '~/business/ecommerce'
-import type { Route } from './+types/product'
 import { formatMoney } from '~/helpers'
+import type { Route } from './+types/product'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const product = await fetchProduct(params.id)
@@ -131,7 +131,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 					<div>
 						{product.longDescription && (
 							<div
-								className="border-gray-200 border-b pb-10 prose prose-xs"
+								className="prose prose-xs border-gray-200 border-b pb-10"
 								dangerouslySetInnerHTML={{ __html: product.longDescription }}
 							/>
 						)}

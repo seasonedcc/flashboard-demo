@@ -1,5 +1,5 @@
-import type { Route } from './+types/image'
 import { fetchFlashboardImageUrl } from '~/s3-client.server'
+import type { Route } from './+types/image'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const imageUrl = await fetchFlashboardImageUrl(params)

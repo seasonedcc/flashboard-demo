@@ -1,8 +1,8 @@
 import 'dotenv/config'
+import fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { kebabCase } from 'string-ts'
-import fs from 'node:fs'
 
 const MIGRATION_TEMPLATE = `import type { Kysely } from 'kysely'
 import { sql } from 'kysely'

@@ -1,6 +1,6 @@
 import { fetchPosts } from '~/business/blog'
-import { PostThumb } from '~/ui/post-thumb'
 import { fetchSiteContent } from '~/business/dynamicContent'
+import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/blog'
 
 export async function loader() {

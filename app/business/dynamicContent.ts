@@ -8,7 +8,7 @@ async function fetchSiteContent(keys: string[]) {
 		.execute()
 
 	// format siteContent so it returns an object with key-value pairs
-	let result: Record<string, string> = {}
+	const result: Record<string, string> = {}
 	for (const item of siteContent) {
 		result[item.key] = item.value
 	}

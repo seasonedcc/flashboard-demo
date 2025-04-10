@@ -1,12 +1,12 @@
 import { promises } from 'node:fs'
 import * as path from 'node:path'
 import {
-	Migrator,
 	type FileMigrationProviderProps,
 	type Kysely,
 	type Migration,
 	type MigrationProvider,
 	type MigrationResultSet,
+	Migrator,
 } from 'kysely'
 
 class FileMigrationProvider implements MigrationProvider {
