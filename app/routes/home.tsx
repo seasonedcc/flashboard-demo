@@ -1,4 +1,6 @@
 import { Link, href } from 'react-router'
+import { posts } from '~/business/blog'
+import { trendingProducts } from '~/business/ecommerce'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
 
@@ -15,39 +17,7 @@ export async function loader() {
 		},
 	]
 
-	const trendingProducts = [
-		{
-			id: 1,
-			name: 'Machined Pen',
-			color: 'Black',
-			price: '$35',
-			imageSrc:
-				'https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-product-01.jpg',
-			imageAlt:
-				'Black machined steel pen with hexagonal grip and small white logo at top.',
-		},
-	]
-	const posts = [
-		{
-			id: 1,
-			title: 'Boost your conversion rate',
-			slug: 'boost-your-conversion-rate',
-			description:
-				'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
-			date: 'Mar 16, 2020',
-			datetime: '2020-03-16',
-			categories: 'Marketing',
-			author: {
-				name: 'Michael Foster',
-				role: 'Co-Founder / CTO',
-				href: '#',
-				imageUrl:
-					'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-			},
-		},
-		// More posts...
-	]
-	return { offers, trendingProducts, posts }
+	return { offers, trendingProducts: await trendingProducts(), posts: posts() }
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
@@ -136,16 +106,17 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 									className="group text-sm"
 								>
 									<img
-										alt={product.imageAlt}
+										alt={product.name}
+										title={product.description ?? product.name}
 										src={product.imageSrc}
 										className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
 									/>
 									<h3 className="mt-4 font-medium text-gray-900">
 										{product.name}
 									</h3>
-									<p className="text-gray-500 italic">{product.color}</p>
+									{/* <p className="text-gray-500 italic">{product.color}</p> */}
 									<p className="mt-2 font-medium text-gray-900">
-										{product.price}
+										{product.priceCents}
 									</p>
 								</Link>
 							))}
