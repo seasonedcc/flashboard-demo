@@ -28,7 +28,8 @@
 		"react-dom": "^19.1.0",
 		"react-router": "^7.5.0",
 		"string-ts": "^2.2.1",
-		"tsx": "^4.19.3"
+		"tsx": "^4.19.3",
+		"zod": "^3.24.2"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "^1.9.4",
