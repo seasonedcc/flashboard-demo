@@ -115,7 +115,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 					<img
 						alt={product.name}
 						title={product.description ?? product.name}
-						src={product.imageSrc || undefined}
+						src={product.imagesSrc[0]}
 						className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
 					/>
 				</div>
@@ -175,22 +175,28 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 					</div>
 
 					<div>
-						<img
-							alt="Black kettle with long pour spot and angled body on marble counter next to coffee mug and pour-over system."
-							src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-09-main-detail.jpg"
-							className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
-						/>
+						{product.imagesSrc[1] && (
+							<img
+								alt={product.name}
+								src={product.imagesSrc[1]}
+								className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
+							/>
+						)}
 						<div className="mt-4 grid grid-cols-2 gap-4 sm:mt-6 sm:gap-6 lg:mt-8 lg:gap-8">
-							<img
-								alt="Detail of temperature setting button on kettle bass with digital degree readout."
-								src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-09-detail-01.jpg"
-								className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
-							/>
-							<img
-								alt="Kettle spout pouring boiling water into coffee grounds in pour-over mug."
-								src="https://tailwindcss.com/plus-assets/img/ecommerce-images/product-feature-09-detail-02.jpg"
-								className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
-							/>
+							{product.imagesSrc[2] && (
+								<img
+									alt={product.name}
+									src={product.imagesSrc[2]}
+									className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
+								/>
+							)}
+							{product.imagesSrc[3] && (
+								<img
+									alt={product.name}
+									src={product.imagesSrc[3]}
+									className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
+								/>
+							)}
 						</div>
 					</div>
 				</div>

@@ -4,11 +4,13 @@ import { fetchSiteContent } from '~/business/dynamicContent'
 import { fetchTrendingProducts } from '~/business/ecommerce'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
+import { flashboardStorageDataSchema } from '~/s3-client.server'
 
 export async function loader() {
 	const siteContent = await fetchSiteContent([
 		'homeHero',
 		'homeHeroDescription',
+		'homeHeroImage',
 		'offer1name',
 		'offer1description',
 		'offer2name',
@@ -17,9 +19,16 @@ export async function loader() {
 		'offer3description',
 	])
 
+	const heroImage = flashboardStorageDataSchema.parse(
+		JSON.parse(siteContent.homeHeroImage)
+	)[0]
 	const hero = {
 		title: siteContent.homeHero,
 		description: siteContent.homeHeroDescription,
+		image: href('/image/:bucketName/:key', {
+			bucketName: heroImage.bucketName,
+			key: heroImage.key,
+		}),
 	}
 
 	const offers = [
@@ -96,11 +105,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						</div>
 					</div>
 					<div className="h-48 w-full sm:h-64 lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2">
-						<img
-							alt=""
-							src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-hero-half-width.jpg"
-							className="size-full object-cover"
-						/>
+						<img alt="" src={hero.image} className="size-full object-cover" />
 					</div>
 				</div>
 			</div>
@@ -133,7 +138,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 									<img
 										alt={product.name}
 										title={product.description ?? product.name}
-										src={product.imageSrc || undefined}
+										src={product.imagesSrc[0]}
 										className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
 									/>
 									<h3 className="mt-4 font-medium text-gray-900">

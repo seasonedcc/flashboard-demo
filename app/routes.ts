@@ -6,4 +6,5 @@ export default [
 	route('blog', 'routes/blog.tsx'),
 	route('products/:id', 'routes/product.tsx'),
 	route('blog/:slug', 'routes/blog-post.tsx'),
+	route('image/:bucketName/:key', 'routes/image.ts'),
 ] satisfies RouteConfig

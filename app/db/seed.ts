@@ -218,6 +218,20 @@ async function seed(db: () => Kysely<DB>) {
 				key: 'homeHeroDescription',
 				value: 'Find the best products for the best price.',
 			},
+			{
+				key: 'homeHeroImage',
+				value: JSON.stringify([
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: '660f85d8-01a5-4b4c-8692-d06f66299938',
+						filename: 'home-page-02-hero-half-width.jpg',
+						contentType: 'image/jpeg',
+						size: 209352,
+					},
+				]),
+			},
 		])
 		.execute()
 }

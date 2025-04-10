@@ -1,77 +1,22 @@
-import { GetObjectCommand, S3Client } from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
-import { z } from 'zod'
+import { href } from 'react-router'
 import { db } from '~/db/db.server'
-import { getOrSetGlobal } from '~/db/globals'
-import { env } from '~/env.server'
+import { flashboardStorageDataSchema } from '~/s3-client.server'
 
-async function fetchFlashboardStorageUrl(client: S3Client, data: unknown) {
-	const value = typeof data === 'string' ? JSON.parse(data) : data
-
-	const { bucketName, key, contentType, filename } =
-		fetchFlashboardStorageUrlSchema.parse(value)
-
-	const command = new GetObjectCommand({
-		Bucket: bucketName,
-		Key: key,
-	})
-
-	// For images, set ResponseContentDisposition to inline for browser rendering
-	// For other files, set to attachment for immediate download
-	const encodedFilename = encodeURIComponent(filename)
-
-	const disposition = contentType.startsWith('image/')
-		? 'inline'
-		: `attachment; filename="${encodedFilename}"`
-
-	command.input.ResponseContentType = contentType
-	command.input.ResponseContentDisposition = disposition
-
-	// Generate a signed URL that's valid for 15 minutes
-	return getSignedUrl(client, command, { expiresIn: 60 * 15 })
-}
-
-const fetchFlashboardStorageUrlSchema = z.object({
-	bucketName: z.string(),
-	key: z.string(),
-	filename: z.string(),
-	contentType: z.string(),
-})
-
-function s3Client() {
-	return getOrSetGlobal(
-		's3Client',
-		() =>
-			new S3Client({
-				endpoint: env().s3Endpoint,
-				region: env().s3Region,
-				credentials: {
-					accessKeyId: env().s3AccessKeyId,
-					secretAccessKey: env().s3SecretAccessKey,
-				},
-				// needed for Supabase storage
-				forcePathStyle: true,
-			})
-	)
-}
-
-async function addImageUrlToProduct(product: {
-	id: string
-	name: string
-	images: unknown
-	description: string | null
-	priceCents: number
-}) {
+async function addImageUrlToProduct<T extends Record<string, unknown>>(
+	product: T
+) {
 	const { images, ...rest } = product
-	const parsedImages = z.array(z.unknown()).safeParse(images).data
-
-	const imageSrc = parsedImages?.[0]
-		? await fetchFlashboardStorageUrl(s3Client(), parsedImages[0])
-		: null
+	const parsedImages = flashboardStorageDataSchema.safeParse(images).data
 
 	return {
 		...rest,
-		imageSrc,
+		imagesSrc:
+			parsedImages?.map((image) =>
+				href('/image/:bucketName/:key', {
+					bucketName: image.bucketName,
+					key: image.key,
+				})
+			) ?? [],
 	}
 }
 
