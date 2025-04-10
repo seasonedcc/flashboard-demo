@@ -4,6 +4,15 @@ import type { Kysely } from 'kysely'
 import type { BlogPostState, DB } from './types'
 
 async function seed(db: () => Kysely<DB>) {
+	// make it drop tables if they exist before creating them
+	await db().deleteFrom('lineItems').execute()
+	await db().deleteFrom('carts').execute()
+	await db().deleteFrom('orders').execute()
+	await db().deleteFrom('blogPosts').execute()
+	await db().deleteFrom('products').execute()
+	await db().deleteFrom('users').execute()
+	await db().deleteFrom('siteContent').execute()
+
 	// Create users
 	const users = await Promise.all(
 		[
@@ -37,10 +46,6 @@ async function seed(db: () => Kysely<DB>) {
 				longDescription:
 					'Experience crystal clear sound with our premium wireless headphones. Featuring active noise cancellation, 30-hour battery life, and comfortable over-ear design. Perfect for music lovers and professionals alike.',
 				priceCents: 29900,
-				images: JSON.stringify([
-					'https://example.com/images/headphones-1.jpg',
-					'https://example.com/images/headphones-2.jpg',
-				]),
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
 					name: 'Premium Wireless Headphones',
@@ -55,10 +60,6 @@ async function seed(db: () => Kysely<DB>) {
 				longDescription:
 					'Stay on top of your fitness goals with our advanced smart watch. Features include heart rate monitoring, sleep tracking, GPS, and water resistance up to 50m.',
 				priceCents: 19900,
-				images: JSON.stringify([
-					'https://example.com/images/watch-1.jpg',
-					'https://example.com/images/watch-2.jpg',
-				]),
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
 					name: 'Smart Fitness Watch',
@@ -72,10 +73,6 @@ async function seed(db: () => Kysely<DB>) {
 				longDescription:
 					'Never run out of battery with our high-capacity power bank. Features fast charging, multiple ports, and compact design perfect for travel.',
 				priceCents: 4900,
-				images: JSON.stringify([
-					'https://example.com/images/powerbank-1.jpg',
-					'https://example.com/images/powerbank-2.jpg',
-				]),
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
 					name: 'Portable Power Bank',
