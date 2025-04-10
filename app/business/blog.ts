@@ -14,4 +14,18 @@ async function fetchPosts() {
 	}))
 }
 
-export { fetchPosts }
+async function fetchPost(slug: string) {
+	const post = await db()
+		.selectFrom('blogPosts')
+		.select(['id', 'title', 'slug', 'content', 'createdAt'])
+		.where('slug', '=', slug)
+		.where('state', '=', 'published')
+		.executeTakeFirstOrThrow()
+
+	return {
+		...post,
+		content: post.content as string,
+	}
+}
+
+export { fetchPost, fetchPosts }
