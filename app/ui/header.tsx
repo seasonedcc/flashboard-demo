@@ -4,23 +4,23 @@ import {
 	DialogPanel,
 	DialogTitle,
 	PopoverGroup,
-} from "@headlessui/react";
-import { BoltIcon } from "@heroicons/react/24/solid";
+} from '@headlessui/react'
 import {
 	Bars3Icon,
 	ShoppingCartIcon,
 	XMarkIcon,
-} from "@heroicons/react/24/outline";
-import { useState } from "react";
-import { Link, href } from "react-router";
-import type { Route } from "../+types/root";
+} from '@heroicons/react/24/outline'
+import { BoltIcon } from '@heroicons/react/24/solid'
+import { useState } from 'react'
+import { Link, href } from 'react-router'
+import type { Route } from '../+types/root'
 
 function Header({
 	cartProducts,
 	navigation,
-}: Route.ComponentProps["loaderData"]) {
-	const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-	const [open, setOpen] = useState(false);
+}: Route.ComponentProps['loaderData']) {
+	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+	const [open, setOpen] = useState(false)
 	return (
 		<>
 			<Dialog
@@ -36,9 +36,9 @@ function Header({
 				<div className="fixed inset-0 z-40 flex">
 					<DialogPanel
 						transition
-						className="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out data-[closed]:-translate-x-full"
+						className="data-[closed]:-translate-x-full relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 ease-in-out"
 					>
-						<div className="flex px-4 pb-2 pt-5">
+						<div className="flex px-4 pt-5 pb-2">
 							<button
 								type="button"
 								onClick={() => setMobileMenuOpen(false)}
@@ -49,7 +49,7 @@ function Header({
 							</button>
 						</div>
 
-						<div className="space-y-6 border-t border-gray-200 px-4 py-6">
+						<div className="space-y-6 border-gray-200 border-t px-4 py-6">
 							{navigation.map((page) => (
 								<div key={page.name} className="flow-root">
 									<Link
@@ -69,8 +69,8 @@ function Header({
 				<nav aria-label="Top">
 					{/* Top navigation */}
 					<div className="bg-gray-900">
-						<div className="mx-auto text-center flex h-10 max-w-7xl items-center justify-center px-4 sm:px-6 lg:px-8">
-							<p className="flex-1 text-center text-sm font-medium text-white lg:flex-none">
+						<div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4 text-center sm:px-6 lg:px-8">
+							<p className="flex-1 text-center font-medium text-sm text-white lg:flex-none">
 								Get free delivery on orders over $100
 							</p>
 						</div>
@@ -78,12 +78,12 @@ function Header({
 
 					{/* Secondary navigation */}
 					<div className="bg-white">
-						<div className="border-b border-gray-200">
+						<div className="border-gray-200 border-b">
 							<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 								<div className="flex h-16 items-center justify-between">
 									{/* Logo (lg+) */}
 									<div className="hidden lg:flex lg:items-center">
-										<Link to={href("/")}>
+										<Link to={href('/')}>
 											<span className="sr-only">Flashboard Demo Store</span>
 											<BoltIcon
 												className="size-8 text-yellow-400"
@@ -100,7 +100,7 @@ function Header({
 													<Link
 														key={page.name}
 														to={page.href}
-														className="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+														className="flex items-center font-medium text-gray-700 text-sm hover:text-gray-800"
 													>
 														{page.name}
 													</Link>
@@ -122,7 +122,7 @@ function Header({
 									</div>
 
 									{/* Logo (lg-) */}
-									<Link to={href("/")} className="lg:hidden">
+									<Link to={href('/')} className="lg:hidden">
 										<span className="sr-only">Flashboard Demo Store</span>
 										<img
 											alt=""
@@ -142,13 +142,13 @@ function Header({
 												<button
 													type="button"
 													onClick={() => setOpen(true)}
-													className="group -m-2 flex items-center p-2 cursor-pointer"
+													className="group -m-2 flex cursor-pointer items-center p-2"
 												>
 													<ShoppingCartIcon
 														aria-hidden="true"
 														className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
 													/>
-													<span className="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+													<span className="ml-2 font-medium text-gray-700 text-sm group-hover:text-gray-800">
 														0
 													</span>
 													<span className="sr-only">
@@ -180,16 +180,16 @@ function Header({
 								<div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
 									<div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
 										<div className="flex items-start justify-between">
-											<DialogTitle className="text-lg font-medium text-gray-900">
+											<DialogTitle className="font-medium text-gray-900 text-lg">
 												Shopping cart
 											</DialogTitle>
 											<div className="ml-3 flex h-7 items-center">
 												<button
 													type="button"
 													onClick={() => setOpen(false)}
-													className="relative -m-2 p-2 text-gray-400 hover:text-gray-500"
+													className="-m-2 relative p-2 text-gray-400 hover:text-gray-500"
 												>
-													<span className="absolute -inset-0.5" />
+													<span className="-inset-0.5 absolute" />
 													<span className="sr-only">Close panel</span>
 													<XMarkIcon aria-hidden="true" className="size-6" />
 												</button>
@@ -211,10 +211,10 @@ function Header({
 
 															<div className="ml-4 flex flex-1 flex-col">
 																<div>
-																	<div className="flex justify-between text-base font-medium text-gray-900">
+																	<div className="flex justify-between font-medium text-base text-gray-900">
 																		<h3>
 																			<Link
-																				to={href("/products/:id", {
+																				to={href('/products/:id', {
 																					id: String(product.id),
 																				})}
 																			>
@@ -223,7 +223,7 @@ function Header({
 																		</h3>
 																		<p className="ml-4">{product.price}</p>
 																	</div>
-																	<p className="mt-1 text-sm text-gray-500">
+																	<p className="mt-1 text-gray-500 text-sm">
 																		{product.color}
 																	</p>
 																</div>
@@ -249,15 +249,15 @@ function Header({
 										</div>
 									</div>
 
-									<div className="border-t border-gray-200 px-4 py-6 sm:px-6">
-										<div className="flex justify-between text-base font-medium text-gray-900">
+									<div className="border-gray-200 border-t px-4 py-6 sm:px-6">
+										<div className="flex justify-between font-medium text-base text-gray-900">
 											<p>Subtotal</p>
 											<p>$262.00</p>
 										</div>
 										<div className="mt-6">
 											<button
 												type="button"
-												className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white shadow-sm hover:bg-indigo-700"
+												className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700"
 											>
 												Place order
 											</button>
@@ -270,7 +270,7 @@ function Header({
 				</div>
 			</Dialog>
 		</>
-	);
+	)
 }
 
-export { Header };
+export { Header }

@@ -1,67 +1,67 @@
-import { href, Link } from "react-router";
-import type { Route } from "./+types/home";
-import { PostThumb } from "~/ui/post-thumb";
+import { Link, href } from 'react-router'
+import { PostThumb } from '~/ui/post-thumb'
+import type { Route } from './+types/home'
 
 export async function loader() {
 	const offers = [
-		{ name: "Download the app", description: "Get an exclusive $5 off code" },
+		{ name: 'Download the app', description: 'Get an exclusive $5 off code' },
 		{
 			name: "Return when you're ready",
-			description: "60 days of free returns",
+			description: '60 days of free returns',
 		},
 		{
-			name: "Sign up for our newsletter",
-			description: "15% off your first order",
+			name: 'Sign up for our newsletter',
+			description: '15% off your first order',
 		},
-	];
+	]
 
 	const trendingProducts = [
 		{
 			id: 1,
-			name: "Machined Pen",
-			color: "Black",
-			price: "$35",
+			name: 'Machined Pen',
+			color: 'Black',
+			price: '$35',
 			imageSrc:
-				"https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-product-01.jpg",
+				'https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-product-01.jpg',
 			imageAlt:
-				"Black machined steel pen with hexagonal grip and small white logo at top.",
+				'Black machined steel pen with hexagonal grip and small white logo at top.',
 		},
-	];
+	]
 	const posts = [
 		{
 			id: 1,
-			title: "Boost your conversion rate",
-			slug: "boost-your-conversion-rate",
+			title: 'Boost your conversion rate',
+			slug: 'boost-your-conversion-rate',
 			description:
-				"Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.",
-			date: "Mar 16, 2020",
-			datetime: "2020-03-16",
-			categories: "Marketing",
+				'Illo sint voluptas. Error voluptates culpa eligendi. Hic vel totam vitae illo. Non aliquid explicabo necessitatibus unde. Sed exercitationem placeat consectetur nulla deserunt vel. Iusto corrupti dicta.',
+			date: 'Mar 16, 2020',
+			datetime: '2020-03-16',
+			categories: 'Marketing',
 			author: {
-				name: "Michael Foster",
-				role: "Co-Founder / CTO",
-				href: "#",
+				name: 'Michael Foster',
+				role: 'Co-Founder / CTO',
+				href: '#',
 				imageUrl:
-					"https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+					'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 			},
 		},
 		// More posts...
-	];
-	return { offers, trendingProducts, posts };
+	]
+	return { offers, trendingProducts, posts }
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
-	const { offers, trendingProducts, posts } = loaderData;
+	const { offers, trendingProducts, posts } = loaderData
 	return (
 		<>
-			<div className="flex flex-col border-b border-gray-200 lg:border-0">
+			<div className="flex flex-col border-gray-200 border-b lg:border-0">
 				<nav aria-label="Offers" className="order-last lg:order-first">
 					<div className="mx-auto max-w-7xl lg:px-8">
 						<ul className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
 							{offers.map((offer) => (
 								<li key={offer.name} className="flex flex-col">
 									<div className="relative flex flex-1 flex-col justify-center bg-white px-4 py-6 text-center focus:z-10">
-										<p className="text-sm text-gray-500">{offer.name}</p>
+										<p className="text-gray-500 text-sm">{offer.name}</p>
 										<p className="font-semibold text-gray-900">
 											{offer.description}
 										</p>
@@ -81,16 +81,16 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						<div className="mx-auto max-w-7xl px-4 sm:px-6 lg:grid lg:grid-cols-2 lg:px-8">
 							<div className="mx-auto max-w-2xl py-24 lg:max-w-none lg:py-64">
 								<div className="lg:pr-16">
-									<h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl xl:text-6xl">
+									<h1 className="font-bold text-4xl text-gray-900 tracking-tight sm:text-5xl xl:text-6xl">
 										Focus on what matters
 									</h1>
-									<p className="mt-4 text-xl text-gray-600">
+									<p className="mt-4 text-gray-600 text-xl">
 										All the charts, datepickers, and notifications in the world
 										can't beat checking off some items on a paper card.
 									</p>
 									<div className="mt-6">
 										<Link
-											to={href("/products")}
+											to={href('/products')}
 											className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-white hover:bg-indigo-700"
 										>
 											Shop
@@ -100,7 +100,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							</div>
 						</div>
 					</div>
-					<div className="h-48 w-full sm:h-64 lg:absolute lg:right-0 lg:top-0 lg:h-full lg:w-1/2">
+					<div className="h-48 w-full sm:h-64 lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2">
 						<img
 							alt=""
 							src="https://tailwindcss.com/plus-assets/img/ecommerce-images/home-page-02-hero-half-width.jpg"
@@ -115,13 +115,13 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 					<div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">
 						<h2
 							id="trending-heading"
-							className="text-2xl font-bold tracking-tight text-gray-900"
+							className="font-bold text-2xl text-gray-900 tracking-tight"
 						>
 							Trending products
 						</h2>
 						<Link
-							to={href("/products")}
-							className="hidden text-sm font-semibold text-indigo-600 hover:text-indigo-500 sm:block"
+							to={href('/products')}
+							className="hidden font-semibold text-indigo-600 text-sm hover:text-indigo-500 sm:block"
 						>
 							See everything
 							<span aria-hidden="true"> &rarr;</span>
@@ -132,7 +132,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							{trendingProducts.map((product) => (
 								<Link
 									key={product.id}
-									to={href("/products/:id", { id: String(product.id) })}
+									to={href('/products/:id', { id: String(product.id) })}
 									className="group text-sm"
 								>
 									<img
@@ -143,7 +143,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 									<h3 className="mt-4 font-medium text-gray-900">
 										{product.name}
 									</h3>
-									<p className="italic text-gray-500">{product.color}</p>
+									<p className="text-gray-500 italic">{product.color}</p>
 									<p className="mt-2 font-medium text-gray-900">
 										{product.price}
 									</p>
@@ -154,8 +154,8 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 
 					<div className="mt-12 px-4 sm:hidden">
 						<Link
-							to={href("/products")}
-							className="text-sm font-semibold text-indigo-600 hover:text-indigo-500"
+							to={href('/products')}
+							className="font-semibold text-indigo-600 text-sm hover:text-indigo-500"
 						>
 							See everything
 							<span aria-hidden="true"> &rarr;</span>
@@ -166,23 +166,23 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 			<div className="bg-white pb-24 sm:pb-32">
 				<div className="mx-auto max-w-7xl px-6 lg:px-8">
 					<div className="mx-auto max-w-2xl lg:mx-0">
-						<p className="text-lg/8 text-gray-600">
-							From the{" "}
+						<p className="text-gray-600 text-lg/8">
+							From the{' '}
 							<Link
-								to={href("/blog")}
-								className="hover:underline text-indigo-600"
+								to={href('/blog')}
+								className="text-indigo-600 hover:underline"
 							>
 								blog
 							</Link>
 						</p>
 					</div>
-					<div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t border-gray-200 mt-2 pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+					<div className="mx-auto mt-2 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-gray-200 border-t pt-10 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 						{posts.map((post) => (
 							<PostThumb post={post} key={post.id} />
 						))}
 					</div>
 				</div>
-			</div>{" "}
+			</div>{' '}
 		</>
-	);
+	)
 }
