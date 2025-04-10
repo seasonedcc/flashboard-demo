@@ -54,6 +54,17 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 50,
 				trending: true,
+				images: JSON.stringify([
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: '33ca92ab-187b-457f-9127-ef344f4b5367',
+						filename: 'headphones.jpeg',
+						contentType: 'image/jpeg',
+						size: 6675,
+					},
+				]),
 			},
 			{
 				name: 'Smart Fitness Watch',
@@ -68,6 +79,17 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 75,
 				trending: true,
+				images: JSON.stringify([
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: '20d3b49c-8a7f-4f5b-99c0-c9bc2da887d0',
+						filename: 'smart watch.jpg',
+						contentType: 'image/jpeg',
+						size: 65001,
+					},
+				]),
 			},
 			{
 				name: 'Portable Power Bank',
@@ -81,6 +103,17 @@ async function seed(db: () => Kysely<DB>) {
 					description: '20000mAh high-capacity portable charger',
 				}),
 				stock: 100,
+				images: JSON.stringify([
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'f1c868c2-36ce-4336-81e8-a0cb4ce16092',
+						filename: 'Screenshot 2025-04-10 at 15.58.01.png',
+						contentType: 'image/png',
+						size: 1245480,
+					},
+				]),
 			},
 		].map((product) =>
 			db()

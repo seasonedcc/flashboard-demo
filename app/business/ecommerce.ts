@@ -49,6 +49,8 @@ function s3Client() {
 					accessKeyId: env().s3AccessKeyId,
 					secretAccessKey: env().s3SecretAccessKey,
 				},
+				// needed for Supabase storage
+				forcePathStyle: true,
 			})
 	)
 }
