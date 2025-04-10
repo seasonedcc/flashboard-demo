@@ -54,7 +54,10 @@ function s3Client() {
 }
 
 async function trendingProducts() {
-	const products = await db().selectFrom('products').selectAll().execute()
+	const products = await db()
+		.selectFrom('products')
+		.select(['id', 'name', 'images', 'description', 'priceCents'])
+		.execute()
 	return Promise.all(
 		products.map(async (product) => {
 			const { images, ...rest } = product

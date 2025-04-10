@@ -114,7 +114,6 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 									<h3 className="mt-4 font-medium text-gray-900">
 										{product.name}
 									</h3>
-									{/* <p className="text-gray-500 italic">{product.color}</p> */}
 									<p className="mt-2 font-medium text-gray-900">
 										{product.priceCents}
 									</p>
