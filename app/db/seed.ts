@@ -180,6 +180,11 @@ async function seed(db: () => Kysely<DB>) {
 				key: 'offer3description',
 				value: 'On orders over $50.',
 			},
+			{ key: 'homeHero', value: 'Welcome to our store!' },
+			{
+				key: 'homeHeroDescription',
+				value: 'Find the best products for the best price.',
+			},
 		])
 		.execute()
 }

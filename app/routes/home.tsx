@@ -7,6 +7,8 @@ import type { Route } from './+types/home'
 
 export async function loader() {
 	const siteContent = await fetchSiteContent([
+		'homeHero',
+		'homeHeroDescription',
 		'offer1name',
 		'offer1description',
 		'offer2name',
@@ -14,6 +16,11 @@ export async function loader() {
 		'offer3name',
 		'offer3description',
 	])
+
+	const hero = {
+		title: siteContent.homeHero,
+		description: siteContent.homeHeroDescription,
+	}
 
 	const offers = [
 		{
@@ -31,6 +38,7 @@ export async function loader() {
 	]
 
 	return {
+		hero,
 		offers,
 		trendingProducts: await fetchTrendingProducts(),
 		posts: await fetchPosts(),
@@ -38,7 +46,8 @@ export async function loader() {
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
-	const { offers, trendingProducts, posts } = loaderData
+	const { hero, offers, trendingProducts, posts } = loaderData
+
 	return (
 		<>
 			<div className="flex flex-col border-gray-200 border-b lg:border-0">
@@ -69,11 +78,10 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							<div className="mx-auto max-w-2xl py-24 lg:max-w-none lg:py-64">
 								<div className="lg:pr-16">
 									<h1 className="font-bold text-4xl text-gray-900 tracking-tight sm:text-5xl xl:text-6xl">
-										Focus on what matters
+										{hero.title}
 									</h1>
 									<p className="mt-4 text-gray-600 text-xl">
-										All the charts, datepickers, and notifications in the world
-										can't beat checking off some items on a paper card.
+										{hero.description}
 									</p>
 									<div className="mt-6">
 										<Link
