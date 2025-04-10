@@ -11,7 +11,6 @@ import * as path from 'node:path'
 import { CamelCasePlugin, Kysely, Migrator, PostgresDialect } from 'kysely'
 import pg from 'pg'
 import { env } from '~/env.server'
-import { getOrSetGlobal } from './globals'
 
 type DrainOuterGeneric<T> = [T] extends [unknown] ? T : never
 type ShallowRecord<K extends keyof any, T> = DrainOuterGeneric<{
@@ -20,41 +19,8 @@ type ShallowRecord<K extends keyof any, T> = DrainOuterGeneric<{
 
 const plugins = [new CamelCasePlugin()]
 
-function envError() {
-	return new Error(
-		'You should either have a DATABASE_URL env var or DATABASE_HOST + DATABASE_NAME + DATABASE_USER + DATABASE_PASSWORD'
-	)
-}
-
-function getConnectionOptions() {
-	if (env().databaseUrl) {
-		return { connectionString: env().databaseUrl }
-	}
-
-	const {
-		databaseHost,
-		databasePort,
-		databaseName,
-		databaseUser,
-		databasePassword,
-	} = env()
-
-	if (!databaseHost) throw envError()
-	if (!databaseName) throw envError()
-	if (!databaseUser) throw envError()
-	if (!databasePassword) throw envError()
-
-	return {
-		host: databaseHost,
-		port: databasePort,
-		database: databaseName,
-		user: databaseUser,
-		password: databasePassword,
-	}
-}
-
 function makeDbPool(
-	applicationName = 'Remaster App',
+	applicationName = 'Flashboard Demo Store',
 	{
 		timezone,
 		...options
@@ -63,7 +29,7 @@ function makeDbPool(
 	const certOptions = {}
 
 	const pool = new pg.Pool({
-		...getConnectionOptions(),
+		connectionString: env().databaseUrl,
 		application_name: applicationName,
 		ssl: {
 			...certOptions,
@@ -82,17 +48,25 @@ function makeDbPool(
 }
 
 function makeDb<DB>() {
-	return () =>
-		getOrSetGlobal(
-			'db',
-			() =>
-				new Kysely<DB>({
-					dialect: new PostgresDialect({
-						pool: makeDbPool('Remaster App', { timezone: 'UTC' }),
-					}),
-					plugins,
-				})
-		)
+	let db: Kysely<DB> | null = null
+	return () => {
+		if (db) return db
+		const pool = new pg.Pool({
+			connectionString: env().databaseUrl,
+			application_name: 'Flashboard Demo Store',
+		})
+		pool.on('connect', (client) => {
+			process.env.TZ = 'UTC'
+			client.query(`SET timezone TO 'UTC'`)
+		})
+
+		db = new Kysely<DB>({
+			dialect: new PostgresDialect({ pool }),
+			plugins,
+		})
+
+		return db
+	}
 }
 
 const MIGRATION_TEMPLATE = `import type { Kysely } from 'kysely'
