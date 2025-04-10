@@ -38,13 +38,13 @@ async function seed(db: () => Kysely<DB>) {
 	)
 
 	// Create products
+	const longDescription = `<h3>Machined Kettle</h3><h1>Elegant simplicity</h1><hr><h4>Sleek design</h4><p>The machined kettle has a smooth black finish and contemporary shape that stands apart from most plastic appliances.</p><h4>Comfort handle</h4><p>Shaped for steady pours and insulated to prevent burns.</p><h4>One-button control</h4><p>The one button control has a digital readout for setting temperature and turning the kettle on and off.</p><h4>Long spout</h4><p>Designed specifically for controlled pour-overs that don't slash or sputter.</p>`
 	const products = await Promise.all(
 		[
 			{
 				name: 'Premium Wireless Headphones',
 				description: 'High-quality wireless headphones with noise cancellation',
-				longDescription:
-					'Experience crystal clear sound with our premium wireless headphones. Featuring active noise cancellation, 30-hour battery life, and comfortable over-ear design. Perfect for music lovers and professionals alike.',
+				longDescription,
 				priceCents: 29900,
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
@@ -54,8 +54,8 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 50,
 				trending: true,
-				images: JSON.stringify([
-					{
+				images: JSON.stringify(
+					new Array(4).fill({
 						flashboardStorage: 'v1',
 						serviceName: 's3',
 						bucketName: 'files',
@@ -63,14 +63,13 @@ async function seed(db: () => Kysely<DB>) {
 						filename: 'headphones.jpeg',
 						contentType: 'image/jpeg',
 						size: 6675,
-					},
-				]),
+					})
+				),
 			},
 			{
 				name: 'Smart Fitness Watch',
 				description: 'Track your health and fitness goals with precision',
-				longDescription:
-					'Stay on top of your fitness goals with our advanced smart watch. Features include heart rate monitoring, sleep tracking, GPS, and water resistance up to 50m.',
+				longDescription,
 				priceCents: 19900,
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
@@ -79,8 +78,8 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 75,
 				trending: true,
-				images: JSON.stringify([
-					{
+				images: JSON.stringify(
+					new Array(4).fill({
 						flashboardStorage: 'v1',
 						serviceName: 's3',
 						bucketName: 'files',
@@ -88,14 +87,13 @@ async function seed(db: () => Kysely<DB>) {
 						filename: 'smart watch.jpg',
 						contentType: 'image/jpeg',
 						size: 65001,
-					},
-				]),
+					})
+				),
 			},
 			{
 				name: 'Portable Power Bank',
 				description: '20000mAh high-capacity portable charger',
-				longDescription:
-					'Never run out of battery with our high-capacity power bank. Features fast charging, multiple ports, and compact design perfect for travel.',
+				longDescription,
 				priceCents: 4900,
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
@@ -103,8 +101,8 @@ async function seed(db: () => Kysely<DB>) {
 					description: '20000mAh high-capacity portable charger',
 				}),
 				stock: 100,
-				images: JSON.stringify([
-					{
+				images: JSON.stringify(
+					new Array(4).fill({
 						flashboardStorage: 'v1',
 						serviceName: 's3',
 						bucketName: 'files',
@@ -112,8 +110,8 @@ async function seed(db: () => Kysely<DB>) {
 						filename: 'Screenshot 2025-04-10 at 15.58.01.png',
 						contentType: 'image/png',
 						size: 1245480,
-					},
-				]),
+					})
+				),
 			},
 		].map((product) =>
 			db()

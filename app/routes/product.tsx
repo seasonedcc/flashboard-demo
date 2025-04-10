@@ -17,28 +17,6 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export default function Component({ loaderData }: Route.ComponentProps) {
 	const { product } = loaderData
-
-	const features = [
-		{
-			name: 'Sleek design',
-			description:
-				'The machined kettle has a smooth black finish and contemporary shape that stands apart from most plastic appliances.',
-		},
-		{
-			name: 'Comfort handle',
-			description: 'Shaped for steady pours and insulated to prevent burns.',
-		},
-		{
-			name: 'One-button control',
-			description:
-				'The one button control has a digital readout for setting temperature and turning the kettle on and off.',
-		},
-		{
-			name: 'Long spout',
-			description:
-				"Designed specifically for controlled pour-overs that don't slash or sputter.",
-		},
-	]
 	return (
 		<div className="bg-white">
 			<div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
@@ -87,24 +65,23 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						<h2 id="information-heading" className="sr-only">
 							Product information
 						</h2>
-
 						<p className="text-gray-900 text-lg sm:text-xl">
 							{formatMoney(product.priceCents)}
 						</p>
-
 						<div className="mt-4 space-y-6">
 							<p className="text-base text-gray-500">{product.description}</p>
 						</div>
-
-						<div className="mt-6 flex items-center">
-							<CheckIcon
-								aria-hidden="true"
-								className="size-5 shrink-0 text-green-500"
-							/>
-							<p className="ml-2 text-gray-500 text-sm">
-								In stock and ready to ship
-							</p>
-						</div>
+						{product.stock > 0 && (
+							<div className="mt-6 flex items-center">
+								<CheckIcon
+									aria-hidden="true"
+									className="size-5 shrink-0 text-green-500"
+								/>
+								<p className="ml-2 text-gray-500 text-sm">
+									In stock and ready to ship
+								</p>
+							</div>
+						)}
 					</section>
 				</div>
 
@@ -128,9 +105,10 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							<div className="mt-10">
 								<button
 									type="submit"
-									className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-base text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+									disabled={!product.stock}
+									className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-base text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
 								>
-									Add to bag
+									{product.stock ? 'Add to bag' : 'Out of stock'}
 								</button>
 							</div>
 							<div className="mt-6 text-center">
@@ -151,25 +129,12 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 			<div className="mx-auto max-w-2xl px-4 py-24 sm:px-6 sm:py-32 lg:max-w-7xl lg:px-8">
 				<div className="grid grid-cols-1 items-center gap-x-8 gap-y-16 lg:grid-cols-2">
 					<div>
-						<div className="border-gray-200 border-b pb-10">
-							<h2 className="font-medium text-gray-500">Machined Kettle</h2>
-							<p className="mt-2 font-bold text-3xl text-gray-900 tracking-tight sm:text-4xl">
-								Elegant simplicity
-							</p>
-						</div>
-
-						<dl className="mt-10 space-y-10">
-							{features.map((feature) => (
-								<div key={feature.name}>
-									<dt className="font-medium text-gray-900 text-sm">
-										{feature.name}
-									</dt>
-									<dd className="mt-3 text-gray-500 text-sm">
-										{feature.description}
-									</dd>
-								</div>
-							))}
-						</dl>
+						{product.longDescription && (
+							<div
+								className="border-gray-200 border-b pb-10 prose prose-xs"
+								dangerouslySetInnerHTML={{ __html: product.longDescription }}
+							/>
+						)}
 					</div>
 
 					<div>

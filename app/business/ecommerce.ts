@@ -60,7 +60,15 @@ async function fetchProducts() {
 async function fetchProduct(id: string) {
 	const product = await db()
 		.selectFrom('products')
-		.select(['id', 'name', 'images', 'description', 'priceCents'])
+		.select([
+			'id',
+			'name',
+			'images',
+			'description',
+			'priceCents',
+			'stock',
+			'longDescription',
+		])
 		.where('id', '=', id)
 		.executeTakeFirst()
 
