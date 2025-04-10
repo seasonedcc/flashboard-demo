@@ -1,6 +1,6 @@
 import { Link, href } from 'react-router'
-import { posts } from '~/business/blog'
-import { trendingProducts } from '~/business/ecommerce'
+import { fetchPosts } from '~/business/blog'
+import { fetchTrendingProducts } from '~/business/ecommerce'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
 
@@ -17,7 +17,11 @@ export async function loader() {
 		},
 	]
 
-	return { offers, trendingProducts: await trendingProducts(), posts: posts() }
+	return {
+		offers,
+		trendingProducts: await fetchTrendingProducts(),
+		posts: await fetchPosts(),
+	}
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {

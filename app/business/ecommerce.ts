@@ -53,7 +53,7 @@ function s3Client() {
 	)
 }
 
-async function trendingProducts() {
+async function fetchTrendingProducts() {
 	const products = await db()
 		.selectFrom('products')
 		.select(['id', 'name', 'images', 'description', 'priceCents'])
@@ -75,4 +75,4 @@ async function trendingProducts() {
 	)
 }
 
-export { trendingProducts }
+export { fetchTrendingProducts }

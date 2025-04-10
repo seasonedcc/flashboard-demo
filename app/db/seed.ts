@@ -95,21 +95,21 @@ async function seed(db: () => Kysely<DB>) {
 			{
 				title: 'Top Tech Trends for 2025',
 				content:
-					"As we move further into 2025, we're seeing exciting developments in consumer electronics...",
+					"<p>As we move further into 2025, we're seeing exciting developments in consumer electronics...</p>",
 				slug: 'top-tech-trends-2025',
 				state: 'published' as BlogPostState,
 			},
 			{
 				title: 'How to Choose the Right Headphones',
 				content:
-					'With so many options available, choosing the perfect headphones can be overwhelming...',
+					'<p>With so many options available, choosing the perfect headphones can be overwhelming...</p>',
 				slug: 'choose-right-headphones',
 				state: 'published' as BlogPostState,
 			},
 			{
 				title: 'Upcoming Product Launch',
 				content:
-					"We're excited to announce our newest product line coming this summer...",
+					"<p>We're excited to announce our newest product line coming this summer...</p>",
 				slug: 'upcoming-product-launch',
 				state: 'draft' as BlogPostState,
 			},
