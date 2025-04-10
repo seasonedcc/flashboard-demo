@@ -53,6 +53,7 @@ async function seed(db: () => Kysely<DB>) {
 						'High-quality wireless headphones with noise cancellation',
 				}),
 				stock: 50,
+				trending: true,
 			},
 			{
 				name: 'Smart Fitness Watch',
@@ -66,6 +67,7 @@ async function seed(db: () => Kysely<DB>) {
 					description: 'Advanced fitness tracking watch',
 				}),
 				stock: 75,
+				trending: true,
 			},
 			{
 				name: 'Portable Power Bank',

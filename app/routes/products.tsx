@@ -1,9 +1,9 @@
 import { Link, href } from 'react-router'
-import { fetchTrendingProducts } from '~/business/ecommerce'
+import { fetchProducts } from '~/business/ecommerce'
 import type { Route } from './+types/products'
 
 export async function loader() {
-	return { products: await fetchTrendingProducts() }
+	return { products: await fetchProducts() }
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {

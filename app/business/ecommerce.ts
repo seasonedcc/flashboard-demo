@@ -53,11 +53,15 @@ function s3Client() {
 	)
 }
 
-async function fetchTrendingProducts() {
-	const products = await db()
-		.selectFrom('products')
-		.select(['id', 'name', 'images', 'description', 'priceCents'])
-		.execute()
+async function addImageUrlToProducts(
+	products: {
+		id: string
+		name: string
+		images: unknown
+		description: string | null
+		priceCents: number
+	}[]
+) {
 	return Promise.all(
 		products.map(async (product) => {
 			const { images, ...rest } = product
@@ -75,4 +79,25 @@ async function fetchTrendingProducts() {
 	)
 }
 
-export { fetchTrendingProducts }
+async function fetchTrendingProducts() {
+	const products = await db()
+		.selectFrom('products')
+		.select(['id', 'name', 'images', 'description', 'priceCents'])
+		.where('trending', '=', true)
+		.orderBy('name', 'asc')
+		.execute()
+
+	return addImageUrlToProducts(products)
+}
+
+async function fetchProducts() {
+	const products = await db()
+		.selectFrom('products')
+		.select(['id', 'name', 'images', 'description', 'priceCents'])
+		.orderBy('name', 'asc')
+		.execute()
+
+	return addImageUrlToProducts(products)
+}
+
+export { fetchTrendingProducts, fetchProducts }

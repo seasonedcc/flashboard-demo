@@ -66,6 +66,7 @@ export interface Products {
   name: string;
   priceCents: number;
   stock: Generated<number>;
+  trending: Generated<boolean | null>;
 }
 
 export interface SiteContent {
