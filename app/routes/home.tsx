@@ -1,19 +1,32 @@
 import { Link, href } from 'react-router'
 import { fetchPosts } from '~/business/blog'
+import { fetchSiteContent } from '~/business/dynamicContent'
 import { fetchTrendingProducts } from '~/business/ecommerce'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
 
 export async function loader() {
+	const siteContent = await fetchSiteContent([
+		'offer1name',
+		'offer1description',
+		'offer2name',
+		'offer2description',
+		'offer3name',
+		'offer3description',
+	])
+
 	const offers = [
-		{ name: 'Download the app', description: 'Get an exclusive $5 off code' },
 		{
-			name: "Return when you're ready",
-			description: '60 days of free returns',
+			name: siteContent.offer1name,
+			description: siteContent.offer1description,
 		},
 		{
-			name: 'Sign up for our newsletter',
-			description: '15% off your first order',
+			name: siteContent.offer2name,
+			description: siteContent.offer2description,
+		},
+		{
+			name: siteContent.offer3name,
+			description: siteContent.offer3description,
 		},
 	]
 

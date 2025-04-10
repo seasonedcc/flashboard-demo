@@ -168,14 +168,17 @@ async function seed(db: () => Kysely<DB>) {
 	await db()
 		.insertInto('siteContent')
 		.values([
-			{ key: 'hero_title', value: 'TechGear Store' },
+			{ key: 'offer1name', value: 'Latest Gadget' },
+			{ key: 'offer1description', value: 'Explore our newest tech.' },
+			{ key: 'offer2name', value: 'Summer Sale' },
 			{
-				key: 'hero_description',
-				value: 'Your One-Stop Shop for Premium Electronics',
+				key: 'offer2description',
+				value: 'Discounts on select items.',
 			},
+			{ key: 'offer3name', value: 'Free Shipping' },
 			{
-				key: 'footer_text',
-				value: '© 2025 TechGear Store. All rights reserved.',
+				key: 'offer3description',
+				value: 'On orders over $50.',
 			},
 		])
 		.execute()
