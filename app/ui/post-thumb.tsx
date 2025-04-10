@@ -1,16 +1,16 @@
-import { Link, href } from "react-router";
-import type { Route } from "../routes/+types/blog";
+import { Link, href } from 'react-router'
+import type { Route } from '../routes/+types/blog'
 
 function PostThumb({
 	post,
-}: { post: Route.ComponentProps["loaderData"]["posts"][number] }) {
+}: { post: Route.ComponentProps['loaderData']['posts'][number] }) {
 	return (
 		<article className="flex max-w-xl flex-col items-start justify-between">
 			<div className="flex items-center gap-x-4 text-xs">
 				<time dateTime={post.datetime} className="text-gray-500">
 					{post.date}
 				</time>
-				{post.categories.split(",").map((category) => (
+				{post.categories.split(',').map((category) => (
 					<span
 						key={category.trim()}
 						className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600"
@@ -20,13 +20,13 @@ function PostThumb({
 				))}
 			</div>
 			<div className="group relative">
-				<h3 className="mt-3 text-lg/6 font-semibold text-gray-900 group-hover:text-gray-600">
-					<Link to={href("/blog/:slug", { slug: post.slug })}>
+				<h3 className="mt-3 font-semibold text-gray-900 text-lg/6 group-hover:text-gray-600">
+					<Link to={href('/blog/:slug', { slug: post.slug })}>
 						<span className="absolute inset-0" />
 						{post.title}
 					</Link>
 				</h3>
-				<p className="mt-5 line-clamp-3 text-sm/6 text-gray-600">
+				<p className="mt-5 line-clamp-3 text-gray-600 text-sm/6">
 					{post.description}
 				</p>
 			</div>
@@ -45,7 +45,7 @@ function PostThumb({
 				</div>
 			</div>
 		</article>
-	);
+	)
 }
 
-export { PostThumb };
+export { PostThumb }
