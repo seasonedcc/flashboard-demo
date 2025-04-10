@@ -153,7 +153,7 @@ function Header({
 														className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
 													/>
 													<span className="ml-2 font-medium text-gray-700 text-sm group-hover:text-gray-800">
-														0
+														{cartProducts.length}
 													</span>
 													<span className="sr-only">
 														items in cart, view bag
