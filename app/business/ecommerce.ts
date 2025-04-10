@@ -61,10 +61,15 @@ async function trendingProducts() {
 	return Promise.all(
 		products.map(async (product) => {
 			const { images, ...rest } = product
-			const firstImage = z.array(z.unknown()).safeParse(images)
+			const parsedImages = z.array(z.unknown()).safeParse(images).data
+
+			const imageSrc = parsedImages?.[0]
+				? await fetchFlashboardStorageUrl(s3Client(), parsedImages[0])
+				: null
+
 			return {
 				...rest,
-				imageSrc: await fetchFlashboardStorageUrl(s3Client(), firstImage),
+				imageSrc,
 			}
 		})
 	)

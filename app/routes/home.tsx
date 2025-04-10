@@ -108,14 +108,17 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 									<img
 										alt={product.name}
 										title={product.description ?? product.name}
-										src={product.imageSrc}
+										src={product.imageSrc || undefined}
 										className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
 									/>
 									<h3 className="mt-4 font-medium text-gray-900">
 										{product.name}
 									</h3>
 									<p className="mt-2 font-medium text-gray-900">
-										{product.priceCents}
+										{new Intl.NumberFormat('en-US', {
+											style: 'currency',
+											currency: 'USD',
+										}).format(product.priceCents / 100)}
 									</p>
 								</Link>
 							))}
