@@ -10,8 +10,8 @@ import {
 
 import type { Route } from "./+types/root";
 import "./styles/app.css";
-import { Header } from "./ui/header";
 import { Footer } from "./ui/footer";
+import { Header } from "./ui/header";
 
 export const meta: Route.MetaFunction = () => [
 	{ title: "Flashboard Demo Store" },
@@ -29,6 +29,7 @@ export const links: Route.LinksFunction = () => [
 		rel: "stylesheet",
 		href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
 	},
+	{ rel: "icon", href: "/favicon.png", type: "image/png" },
 ];
 
 export async function loader() {
