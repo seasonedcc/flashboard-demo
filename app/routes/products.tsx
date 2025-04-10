@@ -1,23 +1,27 @@
 import { Link, href } from 'react-router'
 import { fetchProducts } from '~/business/ecommerce'
 import type { Route } from './+types/products'
+import { fetchSiteContent } from '~/business/dynamicContent'
 import { formatMoney } from '~/helpers'
 
 export async function loader() {
-	return { products: await fetchProducts() }
+	return {
+		products: await fetchProducts(),
+		siteContent: await fetchSiteContent(['productsTitle', 'productsSubtitle']),
+	}
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
-	const { products } = loaderData
+	const { products, siteContent } = loaderData
 	return (
 		<>
 			<div className="mx-auto max-w-3xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
 				<div className="py-24 text-center">
 					<h1 className="font-bold text-4xl text-gray-900 tracking-tight">
-						New Arrivals
+						{siteContent.productsTitle}
 					</h1>
 					<p className="mx-auto mt-4 max-w-3xl text-base text-gray-500">
-						Thoughtfully designed objects for the workspace, home, and travel.
+						{siteContent.productsSubtitle}
 					</p>
 				</div>
 				<div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-10 sm:gap-x-6 md:grid-cols-4 md:gap-y-0 lg:gap-x-8">

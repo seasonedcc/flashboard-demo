@@ -17,10 +17,14 @@ import type { Route } from '../+types/root'
 
 function Header({
 	cartProducts,
-	navigation,
+	siteBanner,
 }: Route.ComponentProps['loaderData']) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [open, setOpen] = useState(false)
+	const navigation = [
+		{ name: 'Products', href: href('/products') },
+		{ name: 'Blog', href: href('/blog') },
+	]
 	return (
 		<>
 			<Dialog
@@ -71,7 +75,7 @@ function Header({
 					<div className="bg-gray-900">
 						<div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4 text-center sm:px-6 lg:px-8">
 							<p className="flex-1 text-center font-medium text-sm text-white lg:flex-none">
-								Get free delivery on orders over $100
+								{siteBanner}
 							</p>
 						</div>
 					</div>

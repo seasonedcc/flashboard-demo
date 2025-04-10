@@ -12,6 +12,7 @@ import type { Route } from './+types/root'
 import './styles/app.css'
 import { Footer } from './ui/footer'
 import { Header } from './ui/header'
+import { fetchSiteContent } from './business/dynamicContent'
 
 export const meta: Route.MetaFunction = () => [
 	{ title: 'Flashboard Demo Store' },
@@ -33,10 +34,7 @@ export const links: Route.LinksFunction = () => [
 ]
 
 export async function loader() {
-	const navigation = [
-		{ name: 'Products', href: href('/products') },
-		{ name: 'Blog', href: href('/blog') },
-	]
+	const { siteBanner } = await fetchSiteContent(['siteBanner'])
 	const cartProducts = [
 		{
 			id: 1,
@@ -61,7 +59,7 @@ export async function loader() {
 				'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
 		},
 	]
-	return { navigation, cartProducts }
+	return { cartProducts, siteBanner }
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -86,10 +84,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-	const { cartProducts, navigation } = loaderData
+	const { cartProducts, siteBanner } = loaderData
 	return (
 		<>
-			<Header cartProducts={cartProducts} navigation={navigation} />
+			<Header siteBanner={siteBanner} cartProducts={cartProducts} />
 			<main className="flex-1">
 				<Outlet />
 			</main>

@@ -11,6 +11,7 @@ export async function loader() {
 	const siteContent = await fetchSiteContent([
 		'homeHero',
 		'homeHeroDescription',
+		'homeHeroCTA',
 		'homeHeroImage',
 		'offer1name',
 		'offer1description',
@@ -26,6 +27,7 @@ export async function loader() {
 	const hero = {
 		title: siteContent.homeHero,
 		description: siteContent.homeHeroDescription,
+		cta: siteContent.homeHeroCTA,
 		image: href('/image/:bucketName/:key', {
 			bucketName: heroImage.bucketName,
 			key: heroImage.key,
@@ -98,7 +100,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 											to={href('/products')}
 											className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-white hover:bg-indigo-700"
 										>
-											Shop
+											{hero.cta}
 										</Link>
 									</div>
 								</div>

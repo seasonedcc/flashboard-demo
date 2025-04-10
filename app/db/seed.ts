@@ -218,6 +218,7 @@ async function seed(db: () => Kysely<DB>) {
 				key: 'homeHeroDescription',
 				value: 'Find the best products for the best price.',
 			},
+			{ key: 'homeHeroCTA', value: 'Shop Now' },
 			{
 				key: 'homeHeroImage',
 				value: JSON.stringify([
@@ -231,6 +232,18 @@ async function seed(db: () => Kysely<DB>) {
 						size: 209352,
 					},
 				]),
+			},
+			{ key: 'siteBanner', value: 'Get free delivery on orders over $100' },
+			{ key: 'productsTitle', value: 'All Products' },
+			{
+				key: 'productsSubtitle',
+				value:
+					'Thoughtfully designed objects for the workspace, home, and travel.',
+			},
+			{ key: 'blogTitle', value: 'From the blog' },
+			{
+				key: 'blogSubtitle',
+				value: 'Learn how to grow your business with our expert advice.',
 			},
 		])
 		.execute()
