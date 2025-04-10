@@ -1,5 +1,6 @@
 import { Link, href } from 'react-router'
 import type { Route } from '../routes/+types/blog'
+import { formatDate } from '~/helpers'
 
 function PostThumb({
 	post,
@@ -8,7 +9,7 @@ function PostThumb({
 		<article className="flex max-w-xl flex-col items-start justify-between">
 			<div className="flex items-center gap-x-4 text-xs">
 				<time dateTime={post.createdAt.toISOString()} className="text-gray-500">
-					{post.createdAt.toLocaleDateString()}
+					{formatDate(post.createdAt)}
 				</time>
 			</div>
 			<div className="group relative">

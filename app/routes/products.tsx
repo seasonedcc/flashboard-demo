@@ -1,6 +1,7 @@
 import { Link, href } from 'react-router'
 import { fetchProducts } from '~/business/ecommerce'
 import type { Route } from './+types/products'
+import { formatMoney } from '~/helpers'
 
 export async function loader() {
 	return { products: await fetchProducts() }
@@ -34,10 +35,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							/>
 							<h3 className="mt-4 font-medium text-gray-900">{product.name}</h3>
 							<p className="mt-2 font-medium text-gray-900">
-								{new Intl.NumberFormat('en-US', {
-									style: 'currency',
-									currency: 'USD',
-								}).format(product.priceCents / 100)}
+								{formatMoney(product.priceCents)}
 							</p>
 						</Link>
 					))}

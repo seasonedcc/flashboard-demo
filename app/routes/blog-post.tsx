@@ -1,5 +1,6 @@
 import { Link, href } from 'react-router'
 import type { Route } from './+types/blog-post'
+import { formatDate } from '~/helpers'
 
 export async function loader() {
 	const post = {
@@ -62,8 +63,11 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						{post.title}
 					</h2>
 					<div className="mt-4 flex items-center gap-x-4 text-xs">
-						<time dateTime={post.datetime} className="text-gray-500">
-							{post.date}
+						<time
+							dateTime={post.createdAt.toLocaleTimeString()}
+							className="text-gray-500"
+						>
+							{formatDate(post.createdAt)}
 						</time>
 						{post.categories.split(',').map((category) => (
 							<span

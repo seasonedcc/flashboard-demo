@@ -3,6 +3,7 @@ import { ShieldCheckIcon } from '@heroicons/react/24/outline'
 import { Link, href } from 'react-router'
 import { fetchProduct } from '~/business/ecommerce'
 import type { Route } from './+types/product'
+import { formatMoney } from '~/helpers'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const product = await fetchProduct(params.id)
@@ -88,10 +89,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						</h2>
 
 						<p className="text-gray-900 text-lg sm:text-xl">
-							{new Intl.NumberFormat('en-US', {
-								style: 'currency',
-								currency: 'USD',
-							}).format(product.priceCents / 100)}
+							{formatMoney(product.priceCents)}
 						</p>
 
 						<div className="mt-4 space-y-6">

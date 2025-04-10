@@ -10,4 +10,19 @@ function makeTypedEnvironment<T>(schema: { parse: (u: unknown) => T }) {
 	}
 }
 
-export { makeTypedEnvironment }
+function formatDate(date: Date) {
+	return date.toLocaleDateString('en-US', {
+		year: 'numeric',
+		month: 'long',
+		day: 'numeric',
+	})
+}
+
+function formatMoney(cents: number) {
+	return new Intl.NumberFormat('en-US', {
+		style: 'currency',
+		currency: 'USD',
+	}).format(cents / 100)
+}
+
+export { formatDate, formatMoney, makeTypedEnvironment }

@@ -5,6 +5,7 @@ import { fetchTrendingProducts } from '~/business/ecommerce'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
 import { flashboardStorageDataSchema } from '~/s3-client.server'
+import { formatMoney } from '~/helpers'
 
 export async function loader() {
 	const siteContent = await fetchSiteContent([
@@ -145,10 +146,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 										{product.name}
 									</h3>
 									<p className="mt-2 font-medium text-gray-900">
-										{new Intl.NumberFormat('en-US', {
-											style: 'currency',
-											currency: 'USD',
-										}).format(product.priceCents / 100)}
+										{formatMoney(product.priceCents)}
 									</p>
 								</Link>
 							))}
