@@ -28,7 +28,7 @@ async function fetchProducts() {
 	}))
 }
 
-async function fetchProduct({ id }: { id: string }) {
+async function fetchProduct({ productId }: { productId: string }) {
 	const { images, ...product } = await db()
 		.selectFrom('products')
 		.select([
@@ -40,7 +40,7 @@ async function fetchProduct({ id }: { id: string }) {
 			'stock',
 			'longDescription',
 		])
-		.where('id', '=', id)
+		.where('id', '=', productId)
 		.executeTakeFirstOrThrow()
 
 	return { ...product, imagesSrc: parseImages(images) }

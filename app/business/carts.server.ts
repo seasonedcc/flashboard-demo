@@ -67,6 +67,25 @@ async function getCart({ cartId }: { cartId: string }) {
 	}
 }
 
+const addItemToCart = applySchema(
+	z.object({
+		productId: z.string(),
+	}),
+	z.string()
+)(async ({ productId }, cartId) => {
+	const lineItem = await db()
+		.insertInto('lineItems')
+		.values({ cartId, productId, quantity: 1 })
+		.onConflict((oc) =>
+			oc.columns(['cartId', 'productId']).doUpdateSet({
+				quantity: (eb) => eb('lineItems.quantity', '+', 1),
+			})
+		)
+		.returning('id')
+		.executeTakeFirstOrThrow()
+
+	return lineItem.id
+})
 
 const removeLineItem = applySchema(
 	z.object({ lineItemId: z.string() }),

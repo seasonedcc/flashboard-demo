@@ -1,16 +1,24 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { ShieldCheckIcon } from '@heroicons/react/24/outline'
 import { collect } from 'composable-functions'
-import { href } from 'react-router'
+import { Form, href } from 'react-router'
 import { fetchProduct } from '~/business/ecommerce.server'
 import { formatMoney } from '~/helpers'
 import type { Route } from './+types/product'
 import { Breadcrumb } from '~/ui/breadcrumb'
+import { addItemToCart, getCartId } from '~/business/carts.server'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const result = await collect({ product: fetchProduct })(params)
 	if (!result.success) throw new Response('Not Found', { status: 404 })
 
+	return result.data
+}
+
+export async function action({ request, params }: Route.ActionArgs) {
+	const result = await addItemToCart(params, await getCartId(request))
+	console.log(result)
+	if (!result.success) throw new Response('Server Error', { status: 500 })
 	return result.data
 }
 
@@ -73,12 +81,12 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							Product options
 						</h2>
 
-						<form>
+						<Form method="POST" navigate={false}>
 							<div className="mt-10">
 								<button
 									type="submit"
 									disabled={!product.stock}
-									className="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-base text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
+									className="flex w-full cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-base text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
 								>
 									{product.stock ? 'Add to bag' : 'Out of stock'}
 								</button>
@@ -94,7 +102,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 									</span>
 								</p>
 							</div>
-						</form>
+						</Form>
 					</section>
 				</div>
 			</div>
