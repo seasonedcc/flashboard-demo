@@ -54,8 +54,8 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 50,
 				trending: true,
-				images: JSON.stringify(
-					new Array(4).fill({
+				images: JSON.stringify([
+					{
 						flashboardStorage: 'v1',
 						serviceName: 's3',
 						bucketName: 'files',
@@ -63,8 +63,35 @@ async function seed(db: () => Kysely<DB>) {
 						filename: 'headphones.jpeg',
 						contentType: 'image/jpeg',
 						size: 6675,
-					})
-				),
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: '1ec1b7f8-7ce7-4554-95ff-0c04f7418701',
+						filename: 'product-feature-09-main-detail.jpg',
+						contentType: 'image/jpeg',
+						size: 25087,
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'f09e9a59-afa6-45cc-9f5c-df9f4817a2c1',
+						filename: 'product-feature-09-detail-01.jpg',
+						contentType: 'image/jpeg',
+						size: 5478,
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'be89ac3c-379a-431a-8aee-868bdeaeaae1',
+						filename: 'product-feature-09-detail-02.jpg',
+						contentType: 'image/jpeg',
+						size: 12557,
+					},
+				]),
 			},
 			{
 				name: 'Smart Fitness Watch',
@@ -78,8 +105,8 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 75,
 				trending: true,
-				images: JSON.stringify(
-					new Array(4).fill({
+				images: JSON.stringify([
+					{
 						flashboardStorage: 'v1',
 						serviceName: 's3',
 						bucketName: 'files',
@@ -87,8 +114,35 @@ async function seed(db: () => Kysely<DB>) {
 						filename: 'smart watch.jpg',
 						contentType: 'image/jpeg',
 						size: 65001,
-					})
-				),
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: '1ec1b7f8-7ce7-4554-95ff-0c04f7418701',
+						filename: 'product-feature-09-main-detail.jpg',
+						contentType: 'image/jpeg',
+						size: 25087,
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'f09e9a59-afa6-45cc-9f5c-df9f4817a2c1',
+						filename: 'product-feature-09-detail-01.jpg',
+						contentType: 'image/jpeg',
+						size: 5478,
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'be89ac3c-379a-431a-8aee-868bdeaeaae1',
+						filename: 'product-feature-09-detail-02.jpg',
+						contentType: 'image/jpeg',
+						size: 12557,
+					},
+				]),
 			},
 			{
 				name: 'Portable Power Bank',
@@ -101,8 +155,8 @@ async function seed(db: () => Kysely<DB>) {
 					description: '20000mAh high-capacity portable charger',
 				}),
 				stock: 100,
-				images: JSON.stringify(
-					new Array(4).fill({
+				images: JSON.stringify([
+					{
 						flashboardStorage: 'v1',
 						serviceName: 's3',
 						bucketName: 'files',
@@ -110,8 +164,35 @@ async function seed(db: () => Kysely<DB>) {
 						filename: 'Screenshot 2025-04-10 at 15.58.01.png',
 						contentType: 'image/png',
 						size: 1245480,
-					})
-				),
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: '1ec1b7f8-7ce7-4554-95ff-0c04f7418701',
+						filename: 'product-feature-09-main-detail.jpg',
+						contentType: 'image/jpeg',
+						size: 25087,
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'f09e9a59-afa6-45cc-9f5c-df9f4817a2c1',
+						filename: 'product-feature-09-detail-01.jpg',
+						contentType: 'image/jpeg',
+						size: 5478,
+					},
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'be89ac3c-379a-431a-8aee-868bdeaeaae1',
+						filename: 'product-feature-09-detail-02.jpg',
+						contentType: 'image/jpeg',
+						size: 12557,
+					},
+				]),
 			},
 		].map((product) =>
 			db()
@@ -172,10 +253,10 @@ async function seed(db: () => Kysely<DB>) {
 						flashboardStorage: 'v1',
 						serviceName: 's3',
 						bucketName: 'files',
-						key: 'e2fce81a-0098-4f0e-ac63-75103208ceec',
-						filename: 'photo-1547586696-ea22b4d4235d.avif',
+						key: 'f0c05650-71f1-4bc4-9ea4-5c6386dcd5ff',
+						filename: 'photo-1492724441997-5dc865305da7.avif',
 						contentType: 'image/avif',
-						size: 859977,
+						size: 141688,
 					},
 				]),
 			},

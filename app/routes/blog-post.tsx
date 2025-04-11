@@ -55,7 +55,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 								{ name: 'Blog', href: href('/blog') },
 							]}
 						/>
-						<h2 className="mt-2 font-semibold text-5xl text-white tracking-tight sm:text-7xl">
+						<h2 className="mt-2 text-pretty font-semibold text-5xl text-white tracking-tight sm:text-7xl">
 							{post.title}
 						</h2>
 					</div>
