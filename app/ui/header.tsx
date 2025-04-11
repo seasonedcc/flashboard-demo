@@ -293,7 +293,6 @@ function Header({
 											<button
 												type="submit"
 												disabled={!cart.count}
-												onClick={() => setOpen(false)}
 												className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
 											>
 												Place order
