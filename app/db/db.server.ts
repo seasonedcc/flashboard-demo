@@ -60,7 +60,7 @@ function db() {
 		dialect: new PostgresDialect({ pool }),
 		plugins,
 	})
-	global.Database = global.Database || {}
+	global.Database = global.Database ?? {}
 	global.Database.db = db
 	return db
 }

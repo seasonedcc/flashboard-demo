@@ -1,9 +1,4 @@
-import {
-	type RouteConfig,
-	index,
-	prefix,
-	route,
-} from '@react-router/dev/routes'
+import { type RouteConfig, index, route } from '@react-router/dev/routes'
 
 export default [
 	index('routes/home.tsx'),
@@ -17,7 +12,5 @@ export default [
 	route('image/:bucketName/:key', 'routes/image.ts'),
 
 	// API ROUTES
-	...prefix('cart', [route('remove/:lineItemId', 'routes/cart-remove.ts')]),
-
-	route('*', 'routes/not-found.ts'),
+	route('cart/remove/:lineItemId', 'routes/cart-remove.ts'),
 ] satisfies RouteConfig

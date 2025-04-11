@@ -86,5 +86,3 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 		</div>
 	)
 }
-
-export { ErrorBoundary } from '~/root'
