@@ -240,7 +240,7 @@ async function seed(db: () => Kysely<DB>) {
 				content:
 					"<p>As we move further into 2025, we're seeing exciting developments in consumer electronics. <strong>Artificial intelligence</strong> is becoming more integrated into our daily lives, from smart home devices to personalized recommendations. Expect to see more <em>innovative</em> gadgets that enhance convenience and efficiency.</p><p>Another major trend is the rise of <code>sustainable technology</code>. Companies are prioritizing eco-friendly materials and energy-efficient designs to reduce their environmental impact. Look out for products that not only perform well but also contribute to a greener future. <a href='#'>Learn more about sustainable tech.</a></p>",
 				slug: 'top-tech-trends-2025',
-				state: 'published' as BlogPostState,
+				state: 'draft' as BlogPostState,
 				coverImage: JSON.stringify([
 					{
 						flashboardStorage: 'v1',
@@ -276,7 +276,7 @@ async function seed(db: () => Kysely<DB>) {
 				content:
 					"<p>We're excited to announce our newest product line coming this summer! Get ready for a revolutionary device that will change the way you interact with technology. <code>Stay tuned for more details</code>, including sneak peeks and exclusive behind-the-scenes content.</p><p>Our team has been working tirelessly to create something truly special. We're confident that you'll love the innovative features and sleek design of our upcoming product. <mark>Sign up for our newsletter</mark> to be the first to know when it's available! Here's a sneak peek at our new API:</p><pre><code class='language-javascript'>\nasync function fetchData() {\n  const response = await fetch('/api/newProduct');\n  const data = await response.json();\n  console.log(data);\n}\n</code></pre><ol><li>Early bird discounts</li><li>Exclusive content</li><li>Giveaways</li></ol></p>",
 				slug: 'upcoming-product-launch',
-				state: 'draft' as BlogPostState,
+				state: 'published' as BlogPostState,
 				coverImage: JSON.stringify([
 					{
 						flashboardStorage: 'v1',
