@@ -148,10 +148,9 @@ function Header({
 									{/* Logo (lg-) */}
 									<Link to={href('/')} className="lg:hidden">
 										<span className="sr-only">Flashboard Demo Store</span>
-										<img
-											alt=""
-											src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=600"
-											className="h-8 w-auto"
+										<BoltIcon
+											className="size-8 text-yellow-400"
+											title="Flashboard Demo"
 										/>
 									</Link>
 

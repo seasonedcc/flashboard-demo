@@ -106,7 +106,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 			</div>
 			{/* Trending products */}
 			<section aria-labelledby="trending-heading" className="bg-white">
-				<div className="py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:py-32">
+				<div className="px-6 py-16 sm:py-24 lg:mx-auto lg:max-w-7xl lg:px-8 lg:py-32">
 					<div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">
 						<h2
 							id="trending-heading"
@@ -149,7 +149,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						</div>
 					</div>
 
-					<div className="mt-12 px-4 sm:hidden">
+					<div className="mt-12 sm:hidden">
 						<Link
 							to={href('/products')}
 							className="font-semibold text-indigo-600 text-sm hover:text-indigo-500"
