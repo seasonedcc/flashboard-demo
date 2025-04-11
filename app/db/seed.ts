@@ -255,8 +255,7 @@ async function seed(db: () => Kysely<DB>) {
 			},
 			{
 				title: 'How to Choose the Right Headphones',
-				content:
-					'<p>With so many options available, choosing the perfect headphones can be overwhelming. Consider what you\'ll primarily use them for: <strong>commuting</strong>, <em>working out</em>, or relaxing at home. Each scenario benefits from different features like noise cancellation, water resistance, or superior sound quality.</p><p>Don\'t underestimate the importance of comfort. Look for headphones with plush earcups and an adjustable headband to ensure a snug fit. <ul><li><strong>Over-ear headphones</strong> provide the best sound isolation.</li><li><strong>On-ear headphones</strong> are more compact and lightweight.</li><li><strong>In-ear headphones</strong> are great for portability.</li></ul> <a href="#">Read our full guide.</a></p>',
+				content: `<p>With so many options available, choosing the perfect headphones can be overwhelming. Consider what you'll primarily use them for: <strong>commuting</strong>, <em>working out</em>, or relaxing at home. Each scenario benefits from different features like noise cancellation, water resistance, or superior sound quality.</p><img src="https://xvoyrekmflgvgpcmsnwy.supabase.co/storage/v1/object/public/public-files/5a73cd20-2069-4483-8caf-b9e450ed5b97" title="headphone" alt="headphone"><p>Don't underestimate the importance of comfort. Look for headphones with plush earcups and an adjustable headband to ensure a snug fit.</p><ul><li><p><strong>Over-ear headphones</strong> provide the best sound isolation.</p></li><li><p><strong>On-ear headphones</strong> are more compact and lightweight.</p></li><li><p><strong>In-ear headphones</strong> are great for portability.</p></li></ul><p><a target="_blank" rel="noopener noreferrer nofollow" href="#">Read our full guide.</a></p>`,
 				slug: 'choose-right-headphones',
 				state: 'published' as BlogPostState,
 				coverImage: JSON.stringify([
