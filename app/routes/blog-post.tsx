@@ -2,8 +2,8 @@ import { collect } from 'composable-functions'
 import { href } from 'react-router'
 import { fetchPost } from '~/business/blog.server'
 import { formatDate } from '~/helpers'
-import type { Route } from './+types/blog-post'
 import { Breadcrumb } from '~/ui/breadcrumb'
+import type { Route } from './+types/blog-post'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const result = await collect({ post: fetchPost })(params)

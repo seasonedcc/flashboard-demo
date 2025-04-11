@@ -2,11 +2,11 @@ import { CheckIcon } from '@heroicons/react/20/solid'
 import { ShieldCheckIcon } from '@heroicons/react/24/outline'
 import { collect } from 'composable-functions'
 import { Form, href } from 'react-router'
+import { addItemToCart, getCartId } from '~/business/carts.server'
 import { fetchProduct } from '~/business/ecommerce.server'
 import { formatMoney } from '~/helpers'
-import type { Route } from './+types/product'
 import { Breadcrumb } from '~/ui/breadcrumb'
-import { addItemToCart, getCartId } from '~/business/carts.server'
+import type { Route } from './+types/product'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const result = await collect({ product: fetchProduct })(params)
@@ -17,7 +17,7 @@ export async function loader({ params }: Route.LoaderArgs) {
 
 export async function action({ request, params }: Route.ActionArgs) {
 	const result = await addItemToCart(params, await getCartId(request))
-	console.log(result)
+
 	if (!result.success) throw new Response('Server Error', { status: 500 })
 	return result.data
 }

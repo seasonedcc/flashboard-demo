@@ -13,8 +13,8 @@ import {
 import { BoltIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import { Link, href, useFetcher } from 'react-router'
-import type { Route } from '../+types/root'
 import { formatMoney } from '~/helpers'
+import type { Route } from '../+types/root'
 
 function Header({
 	cart,
