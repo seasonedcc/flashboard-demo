@@ -27,6 +27,7 @@ export type Timestamp = ColumnType<Date, Date | string, Date | string>;
 
 export interface BlogPosts {
   content: string | null;
+  coverImage: Json | null;
   createdAt: Generated<Timestamp>;
   id: Generated<string>;
   slug: string;

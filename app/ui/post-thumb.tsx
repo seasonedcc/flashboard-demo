@@ -7,7 +7,18 @@ function PostThumb({
 }: { post: Route.ComponentProps['loaderData']['posts'][number] }) {
 	return (
 		<article className="flex max-w-xl flex-col items-start justify-between">
-			<div className="flex items-center gap-x-4 text-xs">
+			<Link
+				to={href('/blog/:slug', { slug: post.slug })}
+				className="relative w-full"
+			>
+				<img
+					alt={post.title}
+					src={post.coverImageSrc[0]}
+					className="aspect-video w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]"
+				/>
+				<div className="absolute inset-0 rounded-2xl ring-1 ring-gray-900/10 ring-inset" />
+			</Link>
+			<div className="mt-8 flex items-center gap-x-4 text-xs">
 				<time dateTime={post.createdAt.toISOString()} className="text-gray-500">
 					{formatDate(post.createdAt)}
 				</time>

@@ -131,6 +131,17 @@ async function seed(db: () => Kysely<DB>) {
 					"<p>As we move further into 2025, we're seeing exciting developments in consumer electronics...</p>",
 				slug: 'top-tech-trends-2025',
 				state: 'published' as BlogPostState,
+				coverImage: JSON.stringify([
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'e2fce81a-0098-4f0e-ac63-75103208ceec',
+						filename: 'photo-1547586696-ea22b4d4235d.avif',
+						contentType: 'image/avif',
+						size: 859977,
+					},
+				]),
 			},
 			{
 				title: 'How to Choose the Right Headphones',
@@ -138,6 +149,17 @@ async function seed(db: () => Kysely<DB>) {
 					'<p>With so many options available, choosing the perfect headphones can be overwhelming...</p>',
 				slug: 'choose-right-headphones',
 				state: 'published' as BlogPostState,
+				coverImage: JSON.stringify([
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: '0e5ca6df-26db-458d-b8bd-bc04dccf0846',
+						filename: 'photo-1496128858413-b36217c2ce36.avif',
+						contentType: 'image/avif',
+						size: 360853,
+					},
+				]),
 			},
 			{
 				title: 'Upcoming Product Launch',
@@ -145,6 +167,17 @@ async function seed(db: () => Kysely<DB>) {
 					"<p>We're excited to announce our newest product line coming this summer...</p>",
 				slug: 'upcoming-product-launch',
 				state: 'draft' as BlogPostState,
+				coverImage: JSON.stringify([
+					{
+						flashboardStorage: 'v1',
+						serviceName: 's3',
+						bucketName: 'files',
+						key: 'e2fce81a-0098-4f0e-ac63-75103208ceec',
+						filename: 'photo-1547586696-ea22b4d4235d.avif',
+						contentType: 'image/avif',
+						size: 859977,
+					},
+				]),
 			},
 		].map((post) => db().insertInto('blogPosts').values(post).execute())
 	)
