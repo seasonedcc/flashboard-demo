@@ -6,11 +6,14 @@ import {
 	Scripts,
 	ScrollRestoration,
 	data,
+	href,
 	isRouteErrorResponse,
+	redirect,
 } from 'react-router'
 import type { Route } from './+types/root'
 import './styles/app.css'
 import { getCart, getCartId } from './business/carts.server'
+import { placeOrder } from './business/orders.server'
 import { sessionStorage } from './business/session.server'
 import { fetchSiteContent } from './business/site-content.server'
 import { Footer } from './ui/footer'
@@ -50,6 +53,13 @@ export async function loader({ request }: Route.LoaderArgs) {
 		'Set-Cookie': await sessionStorage.commitSession(session),
 	})
 	return data(result.data, { headers })
+}
+
+export async function action({ request }: Route.ActionArgs) {
+	const result = await placeOrder(null, await getCartId(request))
+	if (!result.success) throw new Response('Server Error', { status: 500 })
+
+	return redirect(href('/order/:orderId', { orderId: result.data.id }))
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {

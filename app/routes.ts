@@ -11,6 +11,7 @@ export default [
 	route('blog', 'routes/blog.tsx'),
 	route('products/:productId', 'routes/product.tsx'),
 	route('blog/:slug', 'routes/blog-post.tsx'),
+	route('order/:orderId', 'routes/order.tsx'),
 
 	// RESOURCE ROUTES
 	route('image/:bucketName/:key', 'routes/image.ts'),

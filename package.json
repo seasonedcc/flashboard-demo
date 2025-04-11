@@ -18,6 +18,7 @@
 	"dependencies": {
 		"@aws-sdk/client-s3": "^3.782.0",
 		"@aws-sdk/s3-request-presigner": "^3.782.0",
+		"@faker-js/faker": "^9.6.0",
 		"@headlessui/react": "^2.2.1",
 		"@heroicons/react": "^2.2.0",
 		"@react-router/node": "^7.5.0",
