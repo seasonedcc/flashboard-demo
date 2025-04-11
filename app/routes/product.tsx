@@ -81,7 +81,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							Product options
 						</h2>
 
-						<Form method="POST" navigate={false}>
+						<Form method="POST">
 							<div className="mt-10">
 								<button
 									type="submit"

@@ -11,8 +11,8 @@ import {
 	XMarkIcon,
 } from '@heroicons/react/24/outline'
 import { BoltIcon } from '@heroicons/react/24/solid'
-import { useState } from 'react'
-import { Link, href, useFetcher } from 'react-router'
+import { useEffect, useState } from 'react'
+import { Form, Link, href, useFetcher, useNavigation } from 'react-router'
 import { formatMoney } from '~/helpers'
 import type { Route } from '../+types/root'
 
@@ -23,12 +23,28 @@ function Header({
 	siteBanner: string
 }) {
 	const fetcher = useFetcher()
+	const navigation = useNavigation()
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [open, setOpen] = useState(false)
-	const navigation = [
+	const menu = [
 		{ name: 'Products', href: href('/products') },
 		{ name: 'Blog', href: href('/blog') },
 	]
+
+	useEffect(() => {
+		if (
+			navigation.formMethod === 'POST' &&
+			navigation.formAction?.includes('/products/')
+		) {
+			setTimeout(() => setOpen(true), 500)
+		}
+	}, [navigation.formMethod, navigation.formAction])
+
+	useEffect(() => {
+		if (cart.count === 0) {
+			setTimeout(() => setOpen(false), 500)
+		}
+	}, [cart.count])
 	return (
 		<>
 			<Dialog
@@ -58,7 +74,7 @@ function Header({
 						</div>
 
 						<div className="space-y-6 border-gray-200 border-t px-4 py-6">
-							{navigation.map((page) => (
+							{menu.map((page) => (
 								<div key={page.name} className="flow-root">
 									<Link
 										to={page.href}
@@ -104,7 +120,7 @@ function Header({
 										{/* Mega menus */}
 										<PopoverGroup className="ml-8">
 											<div className="flex h-full justify-center space-x-8">
-												{navigation.map((page) => (
+												{menu.map((page) => (
 													<Link
 														key={page.name}
 														to={page.href}
@@ -273,15 +289,16 @@ function Header({
 											<p>Subtotal</p>
 											<p>{formatMoney(cart.subtotal)}</p>
 										</div>
-										<div className="mt-6">
+										<Form method="post" action="/" className="mt-6">
 											<button
-												type="button"
+												type="submit"
 												disabled={!cart.count}
-												className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
+												onClick={() => setOpen(false)}
+												className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
 											>
 												Place order
 											</button>
-										</div>
+										</Form>
 									</div>
 								</div>
 							</DialogPanel>
