@@ -1,64 +1,50 @@
+import { collect } from 'composable-functions'
 import { Link, href } from 'react-router'
-import { fetchPosts } from '~/business/blog'
-import { fetchSiteContent } from '~/business/dynamicContent'
-import { fetchTrendingProducts } from '~/business/ecommerce'
+import { fetchPosts } from '~/business/blog.server'
+import { fetchTrendingProducts } from '~/business/ecommerce.server'
+import { fetchSiteContent } from '~/business/site-content.server'
 import { formatMoney } from '~/helpers'
-import { flashboardStorageDataSchema } from '~/s3-client.server'
 import { PostThumb } from '~/ui/post-thumb'
 import type { Route } from './+types/home'
 
 export async function loader() {
-	const siteContent = await fetchSiteContent([
-		'homeHero',
-		'homeHeroDescription',
-		'homeHeroCTA',
-		'homeHeroImage',
-		'offer1name',
-		'offer1description',
-		'offer2name',
-		'offer2description',
-		'offer3name',
-		'offer3description',
-	])
+	const result = await collect({
+		content: fetchSiteContent([
+			'homeHeroTitle',
+			'homeHeroDescription',
+			'homeHeroCTA',
+			'homeHeroImage',
+			'offer1name',
+			'offer1description',
+			'offer2name',
+			'offer2description',
+			'offer3name',
+			'offer3description',
+		]),
+		trendingProducts: fetchTrendingProducts,
+		posts: fetchPosts,
+	})()
+	if (!result.success) throw new Response('Server Error', { status: 500 })
 
-	const heroImage = flashboardStorageDataSchema.parse(
-		JSON.parse(siteContent.homeHeroImage)
-	)[0]
-	const hero = {
-		title: siteContent.homeHero,
-		description: siteContent.homeHeroDescription,
-		cta: siteContent.homeHeroCTA,
-		image: href('/image/:bucketName/:key', {
-			bucketName: heroImage.bucketName,
-			key: heroImage.key,
-		}),
-	}
+	return result.data
+}
 
-	const offers = [
-		{
-			name: siteContent.offer1name,
-			description: siteContent.offer1description,
-		},
-		{
-			name: siteContent.offer2name,
-			description: siteContent.offer2description,
-		},
-		{
-			name: siteContent.offer3name,
-			description: siteContent.offer3description,
-		},
-	]
-
-	return {
-		hero,
-		offers,
-		trendingProducts: await fetchTrendingProducts(),
-		posts: await fetchPosts(),
-	}
+function OfferItem({
+	name,
+	description,
+}: { name: string; description: string }) {
+	return (
+		<li className="flex flex-col">
+			<div className="relative flex flex-1 flex-col justify-center bg-white px-4 py-6 text-center focus:z-10">
+				<p className="text-gray-500 text-sm">{name}</p>
+				<p className="font-semibold text-gray-900">{description}</p>
+			</div>
+		</li>
+	)
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
-	const { hero, offers, trendingProducts, posts } = loaderData
+	const { content, trendingProducts, posts } = loaderData
 
 	return (
 		<>
@@ -66,16 +52,18 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 				<nav aria-label="Offers" className="order-last lg:order-first">
 					<div className="mx-auto max-w-7xl lg:px-8">
 						<ul className="grid grid-cols-1 divide-y divide-gray-200 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
-							{offers.map((offer) => (
-								<li key={offer.name} className="flex flex-col">
-									<div className="relative flex flex-1 flex-col justify-center bg-white px-4 py-6 text-center focus:z-10">
-										<p className="text-gray-500 text-sm">{offer.name}</p>
-										<p className="font-semibold text-gray-900">
-											{offer.description}
-										</p>
-									</div>
-								</li>
-							))}
+							<OfferItem
+								name={content.offer1name}
+								description={content.offer1description}
+							/>
+							<OfferItem
+								name={content.offer2name}
+								description={content.offer2description}
+							/>
+							<OfferItem
+								name={content.offer3name}
+								description={content.offer3description}
+							/>
 						</ul>
 					</div>
 				</nav>
@@ -90,17 +78,17 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							<div className="mx-auto max-w-2xl py-24 lg:max-w-none lg:py-64">
 								<div className="lg:pr-16">
 									<h1 className="font-bold text-4xl text-gray-900 tracking-tight sm:text-5xl xl:text-6xl">
-										{hero.title}
+										{content.homeHeroTitle}
 									</h1>
 									<p className="mt-4 text-gray-600 text-xl">
-										{hero.description}
+										{content.homeHeroDescription}
 									</p>
 									<div className="mt-6">
 										<Link
 											to={href('/products')}
 											className="inline-block rounded-md border border-transparent bg-indigo-600 px-8 py-3 font-medium text-white hover:bg-indigo-700"
 										>
-											{hero.cta}
+											{content.homeHeroCTA}
 										</Link>
 									</div>
 								</div>
@@ -108,7 +96,11 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						</div>
 					</div>
 					<div className="h-48 w-full sm:h-64 lg:absolute lg:top-0 lg:right-0 lg:h-full lg:w-1/2">
-						<img alt="" src={hero.image} className="size-full object-cover" />
+						<img
+							alt=""
+							src={content.homeHeroImage}
+							className="size-full object-cover"
+						/>
 					</div>
 				</div>
 			</div>

@@ -14,7 +14,7 @@ async function fetchPosts() {
 	}))
 }
 
-async function fetchPost(slug: string) {
+async function fetchPost({ slug }: { slug: string }) {
 	const post = await db()
 		.selectFrom('blogPosts')
 		.select(['id', 'title', 'slug', 'content', 'createdAt'])

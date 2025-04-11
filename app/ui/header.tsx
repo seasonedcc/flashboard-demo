@@ -18,7 +18,9 @@ import type { Route } from '../+types/root'
 function Header({
 	cartProducts,
 	siteBanner,
-}: Route.ComponentProps['loaderData']) {
+}: Pick<Route.ComponentProps['loaderData'], 'cartProducts'> & {
+	siteBanner: string
+}) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [open, setOpen] = useState(false)
 	const navigation = [

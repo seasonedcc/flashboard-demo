@@ -1,3 +1,4 @@
+import { collect } from 'composable-functions'
 import {
 	Links,
 	Meta,
@@ -6,10 +7,9 @@ import {
 	ScrollRestoration,
 	isRouteErrorResponse,
 } from 'react-router'
-
 import type { Route } from './+types/root'
 import './styles/app.css'
-import { fetchSiteContent } from './business/dynamicContent'
+import { fetchSiteContent } from './business/site-content.server'
 import { Footer } from './ui/footer'
 import { Header } from './ui/header'
 
@@ -33,7 +33,7 @@ export const links: Route.LinksFunction = () => [
 ]
 
 export async function loader() {
-	const { siteBanner } = await fetchSiteContent(['siteBanner'])
+	const result = await collect({ content: fetchSiteContent(['siteBanner']) })()
 	const cartProducts = [
 		{
 			id: 1,
@@ -58,7 +58,9 @@ export async function loader() {
 				'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
 		},
 	]
-	return { cartProducts, siteBanner }
+	if (!result.success) throw new Response('Server Error', { status: 500 })
+
+	return { ...result.data, cartProducts }
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -83,10 +85,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-	const { cartProducts, siteBanner } = loaderData
+	const { cartProducts, content } = loaderData
 	return (
 		<>
-			<Header siteBanner={siteBanner} cartProducts={cartProducts} />
+			<Header siteBanner={content.siteBanner} cartProducts={cartProducts} />
 			<main className="flex-1">
 				<Outlet />
 			</main>

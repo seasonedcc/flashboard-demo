@@ -1,18 +1,16 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { ShieldCheckIcon } from '@heroicons/react/24/outline'
+import { collect } from 'composable-functions'
 import { Link, href } from 'react-router'
-import { fetchProduct } from '~/business/ecommerce'
+import { fetchProduct } from '~/business/ecommerce.server'
 import { formatMoney } from '~/helpers'
 import type { Route } from './+types/product'
 
 export async function loader({ params }: Route.LoaderArgs) {
-	const product = await fetchProduct(params.id)
+	const result = await collect({ product: fetchProduct })(params)
+	if (!result.success) throw new Response('Not Found', { status: 404 })
 
-	if (!product) {
-		throw new Response('Not Found', { status: 404 })
-	}
-
-	return { product }
+	return result.data
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {

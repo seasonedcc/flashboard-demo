@@ -25,4 +25,14 @@ function formatMoney(cents: number) {
 	}).format(cents / 100)
 }
 
-export { formatDate, formatMoney, makeTypedEnvironment }
+function isJsonString(value: unknown): value is string {
+	if (typeof value !== 'string') return false
+	try {
+		JSON.parse(value)
+		return true
+	} catch {
+		return false
+	}
+}
+
+export { formatDate, formatMoney, makeTypedEnvironment, isJsonString }

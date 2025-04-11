@@ -1,11 +1,14 @@
+import { collect } from 'composable-functions'
 import { Link, href } from 'react-router'
-import { fetchPost } from '~/business/blog'
+import { fetchPost } from '~/business/blog.server'
 import { formatDate } from '~/helpers'
 import type { Route } from './+types/blog-post'
 
 export async function loader({ params }: Route.LoaderArgs) {
-	const post = await fetchPost(params.slug)
-	return { post }
+	const result = await collect({ post: fetchPost })(params)
+	if (!result.success) throw new Response('Not Found', { status: 404 })
+
+	return result.data
 }
 
 export default function Component({ loaderData }: Route.ComponentProps) {
