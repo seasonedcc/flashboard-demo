@@ -38,13 +38,25 @@ async function seed(db: () => Kysely<DB>) {
 	)
 
 	// Create products
-	const longDescription = `<h3>Machined Kettle</h3><h1>Elegant simplicity</h1><hr><h4>Sleek design</h4><p>The machined kettle has a smooth black finish and contemporary shape that stands apart from most plastic appliances.</p><h4>Comfort handle</h4><p>Shaped for steady pours and insulated to prevent burns.</p><h4>One-button control</h4><p>The one button control has a digital readout for setting temperature and turning the kettle on and off.</p><h4>Long spout</h4><p>Designed specifically for controlled pour-overs that don't slash or sputter.</p>`
 	const products = await Promise.all(
 		[
 			{
 				name: 'Premium Wireless Headphones',
 				description: 'High-quality wireless headphones with noise cancellation',
-				longDescription,
+				longDescription: `
+					<h2>Immersive Sound Quality</h2>
+					<p><em>Experience</em> crystal-clear audio with these <strong>premium wireless headphones</strong>. Designed for audiophiles, they deliver <strong>deep bass</strong> and <em>crisp highs</em>, ensuring an immersive listening experience.</p>
+					
+					<h3>Comfort and Convenience</h3>
+					<p>Enjoy all-day comfort with plush earcups and an adjustable headband. The built-in Bluetooth technology allows for seamless connectivity to your devices, while the long-lasting battery ensures hours of uninterrupted music.</p>
+					<hr />
+					<h4>Key Features:</h4>
+					<ul>
+						<li><strong>Noise Cancelling:</strong> Immerse yourself in your music without distractions.</li>
+						<li><strong>Wireless Bluetooth:</strong> Enjoy freedom of movement with seamless connectivity.</li>
+					</ul>
+					<p>These headphones are perfect for anyone who appreciates high-quality audio and comfort.</p>
+				`,
 				priceCents: 29900,
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
@@ -96,7 +108,20 @@ async function seed(db: () => Kysely<DB>) {
 			{
 				name: 'Smart Fitness Watch',
 				description: 'Track your health and fitness goals with precision',
-				longDescription,
+				longDescription: `
+					<h2>Your Personal Fitness Companion</h2>
+					<p>Achieve your fitness goals with the <strong>Smart Fitness Watch</strong>. This advanced wearable tracks your <em>heart rate</em>, <strong>steps</strong>, and <em>sleep patterns</em>, providing valuable insights into your overall health.</p>
+					
+					<h3>Stay Connected On the Go</h3>
+					<p>Receive notifications, control your music, and stay connected with the built-in smart features. The long-lasting battery ensures you can wear it all day and night without needing a recharge.</p>
+					<hr />
+					<h4>Key Features:</h4>
+					<ul>
+						<li><strong>Heart Rate Tracking:</strong> Monitor your heart rate in real-time.</li>
+						<li><strong>Sleep Analysis:</strong> Understand your sleep patterns and improve your sleep quality.</li>
+					</ul>
+					<p>The Smart Fitness Watch is your ultimate fitness companion.</p>
+				`,
 				priceCents: 19900,
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
@@ -147,7 +172,20 @@ async function seed(db: () => Kysely<DB>) {
 			{
 				name: 'Portable Power Bank',
 				description: '20000mAh high-capacity portable charger',
-				longDescription,
+				longDescription: `
+					<h2>Power On the Go</h2>
+					<p>Never run out of battery again with this <strong>20000mAh high-capacity portable power bank</strong>. Perfect for travelers, commuters, and anyone who needs a reliable power source on the go.</p>
+					
+					<h3>Charge All Your Devices</h3>
+					<p>With multiple USB ports, you can charge your smartphone, tablet, and other devices simultaneously. The compact and lightweight design makes it easy to carry in your bag or pocket.</p>
+					<hr />
+					<h4>Key Features:</h4>
+					<ul>
+						<li><strong>Fast Charging:</strong> Quickly charge your devices when you're on the move.</li>
+						<li><strong>Compact Design:</strong> Easily fits in your bag or pocket for convenient portability.</li>
+					</ul>
+					<p>Stay powered up wherever you go with this reliable power bank.</p>
+				`,
 				priceCents: 4900,
 				jsonLd: JSON.stringify({
 					'@type': 'Product',
@@ -209,7 +247,7 @@ async function seed(db: () => Kysely<DB>) {
 			{
 				title: 'Top Tech Trends for 2025',
 				content:
-					"<p>As we move further into 2025, we're seeing exciting developments in consumer electronics...</p>",
+					"<p>As we move further into 2025, we're seeing exciting developments in consumer electronics. <strong>Artificial intelligence</strong> is becoming more integrated into our daily lives, from smart home devices to personalized recommendations. Expect to see more <em>innovative</em> gadgets that enhance convenience and efficiency.</p><p>Another major trend is the rise of <code>sustainable technology</code>. Companies are prioritizing eco-friendly materials and energy-efficient designs to reduce their environmental impact. Look out for products that not only perform well but also contribute to a greener future. <a href='#'>Learn more about sustainable tech.</a></p>",
 				slug: 'top-tech-trends-2025',
 				state: 'published' as BlogPostState,
 				coverImage: JSON.stringify([
@@ -227,7 +265,7 @@ async function seed(db: () => Kysely<DB>) {
 			{
 				title: 'How to Choose the Right Headphones',
 				content:
-					'<p>With so many options available, choosing the perfect headphones can be overwhelming...</p>',
+					'<p>With so many options available, choosing the perfect headphones can be overwhelming. Consider what you\'ll primarily use them for: <strong>commuting</strong>, <em>working out</em>, or relaxing at home. Each scenario benefits from different features like noise cancellation, water resistance, or superior sound quality.</p><p>Don\'t underestimate the importance of comfort. Look for headphones with plush earcups and an adjustable headband to ensure a snug fit. <ul><li><strong>Over-ear headphones</strong> provide the best sound isolation.</li><li><strong>On-ear headphones</strong> are more compact and lightweight.</li><li><strong>In-ear headphones</strong> are great for portability.</li></ul> <a href="#">Read our full guide.</a></p>',
 				slug: 'choose-right-headphones',
 				state: 'published' as BlogPostState,
 				coverImage: JSON.stringify([
@@ -245,7 +283,7 @@ async function seed(db: () => Kysely<DB>) {
 			{
 				title: 'Upcoming Product Launch',
 				content:
-					"<p>We're excited to announce our newest product line coming this summer...</p>",
+					"<p>We're excited to announce our newest product line coming this summer! Get ready for a revolutionary device that will change the way you interact with technology. <code>Stay tuned for more details</code>, including sneak peeks and exclusive behind-the-scenes content.</p><p>Our team has been working tirelessly to create something truly special. We're confident that you'll love the innovative features and sleek design of our upcoming product. <mark>Sign up for our newsletter</mark> to be the first to know when it's available! Here's a sneak peek at our new API:</p><pre><code class='language-javascript'>\nasync function fetchData() {\n  const response = await fetch('/api/newProduct');\n  const data = await response.json();\n  console.log(data);\n}\n</code></pre><ol><li>Early bird discounts</li><li>Exclusive content</li><li>Giveaways</li></ol></p>",
 				slug: 'upcoming-product-launch',
 				state: 'draft' as BlogPostState,
 				coverImage: JSON.stringify([

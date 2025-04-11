@@ -34,9 +34,6 @@ function PostThumb({
 						{post.title}
 					</Link>
 				</h3>
-				<div className="prose">
-					<section dangerouslySetInnerHTML={{ __html: post.content }} />
-				</div>
 			</div>
 		</article>
 	)
