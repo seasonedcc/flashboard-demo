@@ -21,7 +21,10 @@ const placeOrder = applySchema(
 		.execute(async (trx) => {
 			const user = await trx
 				.insertInto('users')
-				.values({ email: faker.internet.email(), passwordHash: '123' })
+				.values({
+					email: faker.internet.email().toLowerCase(),
+					passwordHash: '123',
+				})
 				.returning('id')
 				.executeTakeFirstOrThrow()
 
