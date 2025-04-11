@@ -19,7 +19,11 @@ function PostThumb({
 				<div className="absolute inset-0 rounded-2xl ring-1 ring-gray-900/10 ring-inset" />
 			</Link>
 			<div className="mt-8 flex items-center gap-x-4 text-xs">
-				<time dateTime={post.createdAt.toISOString()} className="text-gray-500">
+				<time
+					suppressHydrationWarning
+					dateTime={post.createdAt.toISOString()}
+					className="text-gray-500"
+				>
 					{formatDate(post.createdAt)}
 				</time>
 			</div>

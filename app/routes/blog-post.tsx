@@ -67,6 +67,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						<time
 							dateTime={post.createdAt.toLocaleTimeString()}
 							className="text-gray-500"
+							suppressHydrationWarning
 						>
 							{formatDate(post.createdAt)}
 						</time>
