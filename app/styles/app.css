@@ -12,3 +12,9 @@ body {
 		color-scheme: dark;
 	}
 }
+
+@layer utility {
+	.prose iframe {
+		@apply h-auto w-full aspect-video;
+	}
+}
