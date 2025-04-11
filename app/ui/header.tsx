@@ -156,10 +156,7 @@ function Header({
 														className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
 													/>
 													<span className="ml-2 font-medium text-gray-700 text-sm group-hover:text-gray-800">
-														{cart.lineItems.reduce(
-															(sum, item) => sum + item.quantity,
-															0
-														)}
+														{cart.count}
 													</span>
 													<span className="sr-only">
 														items in cart, view bag
@@ -261,20 +258,13 @@ function Header({
 									<div className="border-gray-200 border-t px-4 py-6 sm:px-6">
 										<div className="flex justify-between font-medium text-base text-gray-900">
 											<p>Subtotal</p>
-											<p>
-												{formatMoney(
-													cart.lineItems.reduce(
-														(sum, item) =>
-															sum + item.quantity * item.product.priceCents,
-														0
-													)
-												)}
-											</p>
+											<p>{formatMoney(cart.subtotal)}</p>
 										</div>
 										<div className="mt-6">
 											<button
 												type="button"
-												className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700"
+												disabled={!cart.count}
+												className="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
 											>
 												Place order
 											</button>

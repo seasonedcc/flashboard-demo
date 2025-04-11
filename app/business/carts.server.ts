@@ -56,6 +56,11 @@ async function getCart({ cartId }: { cartId: string }) {
 
 	return {
 		id: cartId,
+		count: lineItems.reduce((sum, item) => sum + item.quantity, 0),
+		subtotal: lineItems.reduce(
+			(sum, item) => sum + item.quantity * item.product.priceCents,
+			0
+		),
 		lineItems,
 	}
 }
