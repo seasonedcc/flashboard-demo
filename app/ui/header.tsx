@@ -14,11 +14,12 @@ import { BoltIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
 import { Link, href } from 'react-router'
 import type { Route } from '../+types/root'
+import { formatMoney } from '~/helpers'
 
 function Header({
-	cartProducts,
+	cart,
 	siteBanner,
-}: Pick<Route.ComponentProps['loaderData'], 'cartProducts'> & {
+}: Pick<Route.ComponentProps['loaderData'], 'cart'> & {
 	siteBanner: string
 }) {
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -155,7 +156,10 @@ function Header({
 														className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
 													/>
 													<span className="ml-2 font-medium text-gray-700 text-sm group-hover:text-gray-800">
-														{cartProducts.length}
+														{cart.lineItems.reduce(
+															(sum, item) => sum + item.quantity,
+															0
+														)}
 													</span>
 													<span className="sr-only">
 														items in cart, view bag
@@ -205,12 +209,12 @@ function Header({
 										<div className="mt-8">
 											<div className="flow-root">
 												<ul className="-my-6 divide-y divide-gray-200">
-													{cartProducts.map((product) => (
-														<li key={product.id} className="flex py-6">
+													{cart.lineItems.map((item) => (
+														<li key={item.id} className="flex py-6">
 															<div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
 																<img
-																	alt={product.imageAlt}
-																	src={product.imageSrc}
+																	alt={item.product.name}
+																	src={item.product.image}
 																	className="size-full object-cover"
 																/>
 															</div>
@@ -221,21 +225,20 @@ function Header({
 																		<h3>
 																			<Link
 																				to={href('/products/:id', {
-																					id: String(product.id),
+																					id: String(item.product.id),
 																				})}
 																			>
-																				{product.name}
+																				{item.product.name}
 																			</Link>
 																		</h3>
-																		<p className="ml-4">{product.price}</p>
+																		<p className="ml-4">
+																			{formatMoney(item.product.priceCents)}
+																		</p>
 																	</div>
-																	<p className="mt-1 text-gray-500 text-sm">
-																		{product.color}
-																	</p>
 																</div>
 																<div className="flex flex-1 items-end justify-between text-sm">
 																	<p className="text-gray-500">
-																		Qty {product.quantity}
+																		Qty {item.quantity}
 																	</p>
 
 																	<div className="flex">
@@ -258,7 +261,15 @@ function Header({
 									<div className="border-gray-200 border-t px-4 py-6 sm:px-6">
 										<div className="flex justify-between font-medium text-base text-gray-900">
 											<p>Subtotal</p>
-											<p>$262.00</p>
+											<p>
+												{formatMoney(
+													cart.lineItems.reduce(
+														(sum, item) =>
+															sum + item.quantity * item.product.priceCents,
+														0
+													)
+												)}
+											</p>
 										</div>
 										<div className="mt-6">
 											<button

@@ -5,6 +5,7 @@ import {
 	Outlet,
 	Scripts,
 	ScrollRestoration,
+	data,
 	isRouteErrorResponse,
 } from 'react-router'
 import type { Route } from './+types/root'
@@ -12,6 +13,8 @@ import './styles/app.css'
 import { fetchSiteContent } from './business/site-content.server'
 import { Footer } from './ui/footer'
 import { Header } from './ui/header'
+import { sessionStorage } from './business/session.server'
+import { getCart, getCartId } from './business/carts.server'
 
 export const meta: Route.MetaFunction = () => [
 	{ title: 'Flashboard Demo Store' },
@@ -32,35 +35,21 @@ export const links: Route.LinksFunction = () => [
 	{ rel: 'icon', href: '/favicon.png', type: 'image/png' },
 ]
 
-export async function loader() {
-	const result = await collect({ content: fetchSiteContent(['siteBanner']) })()
-	const cartProducts = [
-		{
-			id: 1,
-			name: 'Throwback Hip Bag',
-			color: 'Salmon',
-			price: '$90.00',
-			quantity: 1,
-			imageSrc:
-				'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-01.jpg',
-			imageAlt:
-				'Salmon orange fabric pouch with match zipper, gray zipper pull, and adjustable hip belt.',
-		},
-		{
-			id: 2,
-			name: 'Medium Stuff Satchel',
-			color: 'Blue',
-			price: '$32.00',
-			quantity: 1,
-			imageSrc:
-				'https://tailwindcss.com/plus-assets/img/ecommerce-images/shopping-cart-page-04-product-02.jpg',
-			imageAlt:
-				'Front of satchel with blue canvas body, black straps and handle, drawstring top, and front zipper pouch.',
-		},
-	]
+export async function loader({ request }: Route.LoaderArgs) {
+	const cartId = await getCartId(request)
+	const result = await collect({
+		content: fetchSiteContent(['siteBanner']),
+		cart: getCart,
+	})({ cartId })
 	if (!result.success) throw new Response('Server Error', { status: 500 })
 
-	return { ...result.data, cartProducts }
+	const cookieHeader = request.headers.get('Cookie')
+	const session = await sessionStorage.getSession(cookieHeader)
+	session.set('currentCartId', cartId)
+	const headers = new Headers({
+		'Set-Cookie': await sessionStorage.commitSession(session),
+	})
+	return data(result.data, { headers })
 }
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -85,10 +74,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-	const { cartProducts, content } = loaderData
+	const { content, cart } = loaderData
 	return (
 		<>
-			<Header siteBanner={content.siteBanner} cartProducts={cartProducts} />
+			<Header siteBanner={content.siteBanner} cart={cart} />
 			<main className="flex-1">
 				<Outlet />
 			</main>
