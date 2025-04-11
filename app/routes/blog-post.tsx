@@ -1,8 +1,9 @@
 import { collect } from 'composable-functions'
-import { Link, href } from 'react-router'
+import { href } from 'react-router'
 import { fetchPost } from '~/business/blog.server'
 import { formatDate } from '~/helpers'
 import type { Route } from './+types/blog-post'
+import { Breadcrumb } from '~/ui/breadcrumb'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const result = await collect({ post: fetchPost })(params)
@@ -47,6 +48,13 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 				</div>
 				<div className="mx-auto max-w-7xl px-6 lg:px-8">
 					<div className="mx-auto max-w-2xl lg:mx-0">
+						<Breadcrumb
+							dark
+							links={[
+								{ name: 'Home', href: href('/') },
+								{ name: 'Blog', href: href('/blog') },
+							]}
+						/>
 						<h2 className="mt-2 font-semibold text-5xl text-white tracking-tight sm:text-7xl">
 							{post.title}
 						</h2>
@@ -55,38 +63,6 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 			</div>
 			<article className="mx-auto mt-8 max-w-7xl px-6 lg:px-8">
 				<div className="mx-auto max-w-2xl">
-					<nav aria-label="Breadcrumb" className="mx-0.5">
-						<ol className="flex items-center space-x-2">
-							<li>
-								<div className="flex items-center text-sm">
-									<Link
-										to={href('/')}
-										className="font-medium text-gray-500 hover:text-gray-900"
-									>
-										Home
-									</Link>
-									<svg
-										fill="currentColor"
-										viewBox="0 0 20 20"
-										aria-hidden="true"
-										className="ml-2 size-5 shrink-0 text-gray-300"
-									>
-										<path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
-									</svg>
-								</div>
-							</li>
-							<li>
-								<div className="flex items-center text-sm">
-									<Link
-										to={href('/blog')}
-										className="font-medium text-gray-500 hover:text-gray-900"
-									>
-										Blog
-									</Link>
-								</div>
-							</li>
-						</ol>
-					</nav>
 					<div className="mt-4 flex items-center gap-x-4 text-xs">
 						<time
 							dateTime={post.createdAt.toLocaleTimeString()}

@@ -1,6 +1,13 @@
 import { camelKeys } from 'string-ts'
 import type { CamelKeys } from 'string-ts'
 
+function cx(...args: unknown[]): string {
+	return args
+		.flat()
+		.filter((x) => typeof x === 'string')
+		.join(' ')
+}
+
 function makeTypedEnvironment<T>(schema: { parse: (u: unknown) => T }) {
 	let env: CamelKeys<T>
 	return (args: Record<string, unknown>) => {
@@ -35,4 +42,4 @@ function isJsonString(value: unknown): value is string {
 	}
 }
 
-export { formatDate, formatMoney, makeTypedEnvironment, isJsonString }
+export { cx, formatDate, formatMoney, makeTypedEnvironment, isJsonString }

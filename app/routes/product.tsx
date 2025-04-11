@@ -1,10 +1,11 @@
 import { CheckIcon } from '@heroicons/react/20/solid'
 import { ShieldCheckIcon } from '@heroicons/react/24/outline'
 import { collect } from 'composable-functions'
-import { Link, href } from 'react-router'
+import { href } from 'react-router'
 import { fetchProduct } from '~/business/ecommerce.server'
 import { formatMoney } from '~/helpers'
 import type { Route } from './+types/product'
+import { Breadcrumb } from '~/ui/breadcrumb'
 
 export async function loader({ params }: Route.LoaderArgs) {
 	const result = await collect({ product: fetchProduct })(params)
@@ -20,39 +21,12 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 			<div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
 				{/* Product details */}
 				<div className="lg:max-w-lg lg:self-end">
-					<nav aria-label="Breadcrumb">
-						<ol className="flex items-center space-x-2">
-							<li>
-								<div className="flex items-center text-sm">
-									<Link
-										to={href('/')}
-										className="font-medium text-gray-500 hover:text-gray-900"
-									>
-										Home
-									</Link>
-									<svg
-										fill="currentColor"
-										viewBox="0 0 20 20"
-										aria-hidden="true"
-										className="ml-2 size-5 shrink-0 text-gray-300"
-									>
-										<path d="M5.555 17.776l8-16 .894.448-8 16-.894-.448z" />
-									</svg>
-								</div>
-							</li>
-							<li>
-								<div className="flex items-center text-sm">
-									<Link
-										to={href('/products')}
-										className="font-medium text-gray-500 hover:text-gray-900"
-									>
-										Products
-									</Link>
-								</div>
-							</li>
-						</ol>
-					</nav>
-
+					<Breadcrumb
+						links={[
+							{ name: 'Home', href: href('/') },
+							{ name: 'Products', href: href('/products') },
+						]}
+					/>
 					<div className="mt-4">
 						<h1 className="font-bold text-3xl text-gray-900 tracking-tight sm:text-4xl">
 							{product.name}
