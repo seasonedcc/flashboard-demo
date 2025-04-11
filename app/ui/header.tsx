@@ -19,8 +19,9 @@ import type { Route } from '../+types/root'
 function Header({
 	cart,
 	siteBanner,
-}: Pick<Route.ComponentProps['loaderData'], 'cart'> & {
-	siteBanner: string
+}: {
+	cart?: Route.ComponentProps['loaderData']['cart']
+	siteBanner?: string
 }) {
 	const fetcher = useFetcher()
 	const navigation = useNavigation()
@@ -41,10 +42,10 @@ function Header({
 	}, [navigation.formMethod, navigation.formAction])
 
 	useEffect(() => {
-		if (cart.count === 0) {
+		if (cart?.count === 0) {
 			setTimeout(() => setOpen(false), 500)
 		}
-	}, [cart.count])
+	}, [cart?.count])
 	return (
 		<>
 			<Dialog
@@ -92,13 +93,15 @@ function Header({
 			<header className="relative z-10">
 				<nav aria-label="Top">
 					{/* Top navigation */}
-					<div className="bg-gray-900">
-						<div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4 text-center sm:px-6 lg:px-8">
-							<p className="flex-1 text-center font-medium text-sm text-white lg:flex-none">
-								{siteBanner}
-							</p>
+					{siteBanner && (
+						<div className="bg-gray-900">
+							<div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4 text-center sm:px-6 lg:px-8">
+								<p className="flex-1 text-center font-medium text-sm text-white lg:flex-none">
+									{siteBanner}
+								</p>
+							</div>
 						</div>
-					</div>
+					)}
 
 					{/* Secondary navigation */}
 					<div className="bg-white">
@@ -161,24 +164,26 @@ function Header({
 												className="mx-4 h-6 w-px bg-gray-200 lg:mx-6"
 											/>
 
-											<div className="flow-root">
-												<button
-													type="button"
-													onClick={() => setOpen(true)}
-													className="group -m-2 flex cursor-pointer items-center p-2"
-												>
-													<ShoppingCartIcon
-														aria-hidden="true"
-														className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
-													/>
-													<span className="ml-2 font-medium text-gray-700 text-sm group-hover:text-gray-800">
-														{cart.count}
-													</span>
-													<span className="sr-only">
-														items in cart, view bag
-													</span>
-												</button>
-											</div>
+											{cart && (
+												<div className="flow-root">
+													<button
+														type="button"
+														onClick={() => setOpen(true)}
+														className="group -m-2 flex cursor-pointer items-center p-2"
+													>
+														<ShoppingCartIcon
+															aria-hidden="true"
+															className="size-6 shrink-0 text-gray-400 group-hover:text-gray-500"
+														/>
+														<span className="ml-2 font-medium text-gray-700 text-sm group-hover:text-gray-800">
+															{cart.count}
+														</span>
+														<span className="sr-only">
+															items in cart, view bag
+														</span>
+													</button>
+												</div>
+											)}
 										</div>
 									</div>
 								</div>
@@ -187,123 +192,125 @@ function Header({
 					</div>
 				</nav>
 			</header>
-			<Dialog open={open} onClose={setOpen} className="relative z-10">
-				<DialogBackdrop
-					transition
-					className="fixed inset-0 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
-				/>
+			{cart && (
+				<Dialog open={open} onClose={setOpen} className="relative z-10">
+					<DialogBackdrop
+						transition
+						className="fixed inset-0 bg-gray-500/75 transition-opacity duration-500 ease-in-out data-[closed]:opacity-0"
+					/>
 
-				<div className="fixed inset-0 overflow-hidden">
-					<div className="absolute inset-0 overflow-hidden">
-						<div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
-							<DialogPanel
-								transition
-								className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
-							>
-								<div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
-									<div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
-										<div className="flex items-start justify-between">
-											<DialogTitle className="font-medium text-gray-900 text-lg">
-												Shopping cart
-											</DialogTitle>
-											<div className="ml-3 flex h-7 items-center">
-												<button
-													type="button"
-													onClick={() => setOpen(false)}
-													className="-m-2 relative p-2 text-gray-400 hover:text-gray-500"
-												>
-													<span className="-inset-0.5 absolute" />
-													<span className="sr-only">Close panel</span>
-													<XMarkIcon aria-hidden="true" className="size-6" />
-												</button>
+					<div className="fixed inset-0 overflow-hidden">
+						<div className="absolute inset-0 overflow-hidden">
+							<div className="pointer-events-none fixed inset-y-0 right-0 flex max-w-full pl-10">
+								<DialogPanel
+									transition
+									className="pointer-events-auto w-screen max-w-md transform transition duration-500 ease-in-out data-[closed]:translate-x-full sm:duration-700"
+								>
+									<div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
+										<div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
+											<div className="flex items-start justify-between">
+												<DialogTitle className="font-medium text-gray-900 text-lg">
+													Shopping cart
+												</DialogTitle>
+												<div className="ml-3 flex h-7 items-center">
+													<button
+														type="button"
+														onClick={() => setOpen(false)}
+														className="-m-2 relative p-2 text-gray-400 hover:text-gray-500"
+													>
+														<span className="-inset-0.5 absolute" />
+														<span className="sr-only">Close panel</span>
+														<XMarkIcon aria-hidden="true" className="size-6" />
+													</button>
+												</div>
 											</div>
-										</div>
 
-										<div className="mt-8">
-											<div className="flow-root">
-												<ul className="-my-6 divide-y divide-gray-200">
-													{cart.lineItems.map((item) => (
-														<li key={item.id} className="flex py-6">
-															<div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
-																<img
-																	alt={item.product.name}
-																	src={item.product.image}
-																	className="size-full object-cover"
-																/>
-															</div>
+											<div className="mt-8">
+												<div className="flow-root">
+													<ul className="-my-6 divide-y divide-gray-200">
+														{cart.lineItems.map((item) => (
+															<li key={item.id} className="flex py-6">
+																<div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
+																	<img
+																		alt={item.product.name}
+																		src={item.product.image}
+																		className="size-full object-cover"
+																	/>
+																</div>
 
-															<div className="ml-4 flex flex-1 flex-col">
-																<div>
-																	<div className="flex justify-between font-medium text-base text-gray-900">
-																		<h3>
-																			<Link
-																				to={href('/products/:productId', {
-																					productId: String(item.product.id),
-																				})}
-																			>
-																				{item.product.name}
-																			</Link>
-																		</h3>
-																		<p className="ml-4">
-																			{formatMoney(item.product.priceCents)}
+																<div className="ml-4 flex flex-1 flex-col">
+																	<div>
+																		<div className="flex justify-between font-medium text-base text-gray-900">
+																			<h3>
+																				<Link
+																					to={href('/products/:productId', {
+																						productId: String(item.product.id),
+																					})}
+																				>
+																					{item.product.name}
+																				</Link>
+																			</h3>
+																			<p className="ml-4">
+																				{formatMoney(item.product.priceCents)}
+																			</p>
+																		</div>
+																	</div>
+																	<div className="flex flex-1 items-end justify-between text-sm">
+																		<p className="text-gray-500">
+																			Qty {item.quantity}
 																		</p>
-																	</div>
-																</div>
-																<div className="flex flex-1 items-end justify-between text-sm">
-																	<p className="text-gray-500">
-																		Qty {item.quantity}
-																	</p>
 
-																	<div className="flex">
-																		<button
-																			type="button"
-																			className="cursor-pointer font-medium text-indigo-600 hover:text-indigo-500"
-																			onClick={() => {
-																				fetcher.submit(
-																					{},
-																					{
-																						method: 'POST',
-																						action: href(
-																							'/cart/remove/:lineItemId',
-																							{ lineItemId: String(item.id) }
-																						),
-																					}
-																				)
-																			}}
-																		>
-																			Remove
-																		</button>
+																		<div className="flex">
+																			<button
+																				type="button"
+																				className="cursor-pointer font-medium text-indigo-600 hover:text-indigo-500"
+																				onClick={() => {
+																					fetcher.submit(
+																						{},
+																						{
+																							method: 'POST',
+																							action: href(
+																								'/cart/remove/:lineItemId',
+																								{ lineItemId: String(item.id) }
+																							),
+																						}
+																					)
+																				}}
+																			>
+																				Remove
+																			</button>
+																		</div>
 																	</div>
 																</div>
-															</div>
-														</li>
-													))}
-												</ul>
+															</li>
+														))}
+													</ul>
+												</div>
 											</div>
 										</div>
-									</div>
 
-									<div className="border-gray-200 border-t px-4 py-6 sm:px-6">
-										<div className="flex justify-between font-medium text-base text-gray-900">
-											<p>Subtotal</p>
-											<p>{formatMoney(cart.subtotal)}</p>
+										<div className="border-gray-200 border-t px-4 py-6 sm:px-6">
+											<div className="flex justify-between font-medium text-base text-gray-900">
+												<p>Subtotal</p>
+												<p>{formatMoney(cart.subtotal)}</p>
+											</div>
+											<Form method="post" action="/" className="mt-6">
+												<button
+													type="submit"
+													disabled={!cart.count}
+													className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
+												>
+													Place order
+												</button>
+											</Form>
 										</div>
-										<Form method="post" action="/" className="mt-6">
-											<button
-												type="submit"
-												disabled={!cart.count}
-												className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
-											>
-												Place order
-											</button>
-										</Form>
 									</div>
-								</div>
-							</DialogPanel>
+								</DialogPanel>
+							</div>
 						</div>
 					</div>
-				</div>
-			</Dialog>
+				</Dialog>
+			)}
 		</>
 	)
 }
