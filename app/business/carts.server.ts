@@ -1,6 +1,8 @@
 import { db } from '~/db/db.server'
 import { sessionStorage } from './session.server'
 import { parseImages } from './images.server'
+import { applySchema } from 'composable-functions'
+import { z } from 'zod'
 
 async function getCartId(request: Request) {
 	const cookieHeader = request.headers.get('Cookie')
@@ -65,4 +67,19 @@ async function getCart({ cartId }: { cartId: string }) {
 	}
 }
 
-export { getCartId, getCart }
+
+const removeLineItem = applySchema(
+	z.object({ lineItemId: z.string() }),
+	z.string()
+)(async ({ lineItemId }, cartId) => {
+	const cart = await db()
+		.deleteFrom('lineItems')
+		.where('cartId', '=', cartId)
+		.where('id', '=', lineItemId)
+		.returning('cartId')
+		.executeTakeFirstOrThrow()
+
+	return cart.cartId
+})
+
+export { getCartId, getCart, addItemToCart, removeLineItem }

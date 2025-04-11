@@ -12,7 +12,7 @@ import {
 } from '@heroicons/react/24/outline'
 import { BoltIcon } from '@heroicons/react/24/solid'
 import { useState } from 'react'
-import { Link, href } from 'react-router'
+import { Link, href, useFetcher } from 'react-router'
 import type { Route } from '../+types/root'
 import { formatMoney } from '~/helpers'
 
@@ -22,6 +22,7 @@ function Header({
 }: Pick<Route.ComponentProps['loaderData'], 'cart'> & {
 	siteBanner: string
 }) {
+	const fetcher = useFetcher()
 	const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 	const [open, setOpen] = useState(false)
 	const navigation = [
@@ -241,7 +242,19 @@ function Header({
 																	<div className="flex">
 																		<button
 																			type="button"
-																			className="font-medium text-indigo-600 hover:text-indigo-500"
+																			className="cursor-pointer font-medium text-indigo-600 hover:text-indigo-500"
+																			onClick={() => {
+																				fetcher.submit(
+																					{},
+																					{
+																						method: 'POST',
+																						action: href(
+																							'/cart/remove/:lineItemId',
+																							{ lineItemId: String(item.id) }
+																						),
+																					}
+																				)
+																			}}
 																		>
 																			Remove
 																		</button>
