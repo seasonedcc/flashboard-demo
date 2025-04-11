@@ -222,8 +222,8 @@ function Header({
 																	<div className="flex justify-between font-medium text-base text-gray-900">
 																		<h3>
 																			<Link
-																				to={href('/products/:id', {
-																					id: String(item.product.id),
+																				to={href('/products/:productId', {
+																					productId: String(item.product.id),
 																				})}
 																			>
 																				{item.product.name}

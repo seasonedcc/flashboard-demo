@@ -32,7 +32,9 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 					{products.map((product) => (
 						<Link
 							key={product.id}
-							to={href('/products/:id', { id: String(product.id) })}
+							to={href('/products/:productId', {
+								productId: String(product.id),
+							})}
 							className="group text-sm"
 						>
 							<img
