@@ -54,3 +54,5 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 		</>
 	)
 }
+
+export { ErrorBoundary } from '~/root'

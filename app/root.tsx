@@ -1,5 +1,6 @@
 import { collect } from 'composable-functions'
 import {
+	Link,
 	Links,
 	Meta,
 	Outlet,
@@ -113,7 +114,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 	}
 
 	return (
-		<div className="container mx-auto p-4 pt-16">
+		<div className="container mx-auto p-4 pt-16 text-neutral-600">
 			<h1>{message}</h1>
 			<p>{details}</p>
 			{stack && (
@@ -121,6 +122,9 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 					<code>{stack}</code>
 				</pre>
 			)}
+			<Link to="/" className="underline">
+				Back to home
+			</Link>
 		</div>
 	)
 }

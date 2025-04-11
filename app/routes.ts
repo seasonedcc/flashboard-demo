@@ -18,4 +18,6 @@ export default [
 
 	// API ROUTES
 	...prefix('cart', [route('remove/:lineItemId', 'routes/cart-remove.ts')]),
+
+	route('*', 'routes/not-found.ts'),
 ] satisfies RouteConfig
