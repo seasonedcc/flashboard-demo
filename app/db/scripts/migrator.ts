@@ -73,13 +73,13 @@ function createMigrator(db: () => Kysely<any>, migrationFolder: string) {
 async function logMigrationResults(resultSet: Promise<MigrationResultSet>) {
 	const { error, results } = await resultSet
 
-	results?.forEach((it) => {
+	for (const it of results ?? []) {
 		if (it.status === 'Success') {
 			console.log(`Migration "${it.migrationName}" was executed successfully`)
 		} else if (it.status === 'Error') {
 			console.error(`Failed to execute migration "${it.migrationName}"`)
 		}
-	})
+	}
 
 	if (error) {
 		console.error('Failed to migrate')

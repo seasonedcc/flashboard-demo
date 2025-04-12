@@ -1,10 +1,5 @@
 {
 	"$schema": "https://biomejs.dev/schemas/1.9.4/schema.json",
-	"vcs": {
-		"enabled": false,
-		"clientKind": "git",
-		"useIgnoreFile": false
-	},
 	"files": {
 		"ignoreUnknown": false,
 		"ignore": [".react-router", "types.d.ts", "tsc", "build"]
@@ -20,32 +15,6 @@
 		"enabled": true,
 		"rules": {
 			"recommended": true,
-			"a11y": {
-				"useAriaPropsForRole": "off",
-				"useButtonType": "off",
-				"useKeyWithClickEvents": "off",
-				"noSvgWithoutTitle": "off",
-				"noLabelWithoutControl": "off",
-				"noInteractiveElementToNoninteractiveRole": "off"
-			},
-			"complexity": {
-				"noForEach": "off",
-				"useLiteralKeys": {
-					"level": "error",
-					"fix": "safe"
-				}
-			},
-			"correctness": {
-				"useExhaustiveDependencies": "off",
-				"noUnusedImports": {
-					"level": "warn",
-					"fix": "safe"
-				},
-				"noUnusedVariables": {
-					"level": "warn",
-					"fix": "none"
-				}
-			},
 			"nursery": {
 				"useSortedClasses": {
 					"options": {
@@ -56,31 +25,23 @@
 					"fix": "safe"
 				}
 			},
-			"performance": {
-				"noAccumulatingSpread": "off"
-			},
-			"suspicious": {
-				"noExplicitAny": "off"
-			},
 			"security": {
 				"noDangerouslySetInnerHtml": "off"
-			},
-			"style": {
-				"noUnusedTemplateLiteral": {
-					"level": "error",
-					"fix": "safe"
-				},
-				"useTemplate": {
-					"level": "error",
-					"fix": "safe"
-				},
-				"useSelfClosingElements": {
-					"level": "error",
-					"fix": "safe"
-				}
 			}
 		}
 	},
+	"overrides": [
+		{
+			"include": ["app/db/**"],
+			"linter": {
+				"rules": {
+					"suspicious": {
+						"noExplicitAny": "off"
+					}
+				}
+			}
+		}
+	],
 	"javascript": {
 		"formatter": {
 			"quoteStyle": "single",
