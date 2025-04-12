@@ -24,7 +24,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						{content.blogTitle}
 					</h2>
 					<p className="mt-2 text-gray-600 text-lg/8">{content.blogSubtitle}</p>
-					<div className="mt-10 space-y-16 border-gray-200 border-t pt-10 sm:mt-16 sm:pt-16">
+					<div className="mt-10 space-y-16 border-gray-200 border-t pt-10 sm:pt-16">
 						{posts.map((post) => (
 							<PostThumb post={post} key={post.id} />
 						))}
