@@ -1,6 +1,6 @@
 # Flashboard Demo Store
 
-This open-source project demonstrates how to integrate [Flashboard](https://www.getflashboard.com) into a modern React stack. It showcases a naive e-commerce experience using Flashboard as both a CMS and an admin panel. You can go to Flashboard and create a DEMO panel which is used in the [live version](https://demo.getflashboard.com) of this demo.
+This open-source project demonstrates integrating [Flashboard](https://www.getflashboard.com) into a modern React stack. It showcases a naive e-commerce experience using Flashboard as a CMS and an admin panel. You can go to Flashboard and create a DEMO panel, which is used in this demo's [live version](https://demo.getflashboard.com).
 
 ---
 
@@ -59,7 +59,7 @@ The application will be accessible at `http://localhost:5173`.
 
 ## 🧠 Exploring the Codebase
 
-The primary goal of this repository is to illustrate how Flashboard can be integrated into your own stack.
+The primary goal of this repository is to illustrate how Flashboard can be integrated into your stack.
 
 ### Key Directories
 
