@@ -11,9 +11,10 @@ function fetchSiteContent<const T extends string[]>(keys: T) {
 			.execute()
 
 		return Object.fromEntries(
-			siteContent.map(({ key, value }) =>
-				IMAGE_KEYS.includes(key) ? [key, parseImages(value)] : [key, value]
-			)
+			siteContent.map(({ key, value }) => [
+				key,
+				IMAGE_KEYS.includes(key) ? parseImages(value) : value,
+			])
 		) as Record<T[number], string>
 	}
 }

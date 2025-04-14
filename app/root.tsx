@@ -13,11 +13,12 @@ import {
 } from 'react-router'
 import type { Route } from './+types/root'
 import './styles/app.css'
-import { getCart, getCartId } from './business/carts.server'
+import { getCurrentCart, getCartId } from './business/carts.server'
 import { placeOrder } from './business/orders.server'
 import { sessionStorage } from './business/session.server'
 import { Footer } from './ui/footer'
 import { Header } from './ui/header'
+import { Cart } from './ui/cart'
 
 export const meta: Route.MetaFunction = () => [
 	{ title: 'Flashboard Demo Store' },
@@ -40,7 +41,7 @@ export const links: Route.LinksFunction = () => [
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const cartId = await getCartId(request)
-	const result = await collect({ cart: getCart })({ cartId })
+	const result = await collect({ cart: getCurrentCart })(cartId)
 
 	if (!result.success) throw new Response('Server Error', { status: 500 })
 

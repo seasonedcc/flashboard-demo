@@ -1,7 +1,9 @@
 import { faker } from '@faker-js/faker'
-import { applySchema } from 'composable-functions'
+import { applySchema, withContext } from 'composable-functions'
 import { z } from 'zod'
 import { db } from '~/db/db.server'
+import { createDummyUser } from './users.server'
+import { getCartInfo } from './carts.server'
 
 async function fetchOrder({ orderId }: { orderId: string }) {
 	return db()
@@ -12,58 +14,45 @@ async function fetchOrder({ orderId }: { orderId: string }) {
 		.executeTakeFirstOrThrow()
 }
 
-const placeOrder = applySchema(
-	z.any(),
-	z.string()
-)(async (_, cartId) =>
-	db()
-		.transaction()
-		.execute(async (trx) => {
-			const user = await trx
-				.insertInto('users')
-				.values({
-					email: faker.internet.email().toLowerCase(),
-					passwordHash: '123',
+const placeOrder = withContext.pipe(
+	createDummyUser,
+	applySchema(
+		z.object({ id: z.string() }),
+		z.string()
+	)(async ({ id: userId }, cartId) => {
+		const { subtotal } = await getCartInfo(cartId)
+		return (
+			db()
+				.transaction()
+				.execute(async (trx) => {
+					const order = await trx
+						.insertInto('orders')
+						.values({
+							totalCents: subtotal,
+							userId,
+							stripeResponse: JSON.stringify({
+								id: `ch_cartId_${cartId}`,
+								status: 'succeeded',
+								amount: subtotal,
+							}),
+						})
+						.returning('id')
+						.executeTakeFirstOrThrow()
+
+					await trx
+						.deleteFrom('carts')
+						.where('id', '=', cartId)
+						.returning('id')
+						.executeTakeFirstOrThrow()
+
+					await trx
+						.deleteFrom('lineItems')
+						.where('cartId', '=', cartId)
+						.execute()
+					return order
 				})
-				.returning('id')
-				.executeTakeFirstOrThrow()
-
-			const lineItems = await trx
-				.selectFrom('lineItems')
-				.innerJoin('products', 'products.id', 'lineItems.productId')
-				.select(['lineItems.quantity', 'products.priceCents'])
-				.where('lineItems.cartId', '=', cartId)
-				.execute()
-
-			if (lineItems.length === 0) throw new Error('Cart is empty')
-
-			const totalCents = lineItems.reduce(
-				(sum, item) => sum + item.quantity * item.priceCents,
-				0
-			)
-			const order = await trx
-				.insertInto('orders')
-				.values({
-					totalCents,
-					userId: user.id,
-					stripeResponse: JSON.stringify({
-						id: `ch_cartId_${cartId}`,
-						status: 'succeeded',
-						amount: totalCents,
-					}),
-				})
-				.returning('id')
-				.executeTakeFirstOrThrow()
-
-			await trx
-				.deleteFrom('carts')
-				.where('id', '=', cartId)
-				.returning('id')
-				.executeTakeFirstOrThrow()
-
-			await trx.deleteFrom('lineItems').where('cartId', '=', cartId).execute()
-			return order
-		})
+		)
+	})
 )
 
 export { fetchOrder, placeOrder }
