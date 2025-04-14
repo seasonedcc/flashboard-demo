@@ -1,13 +1,16 @@
 import { z } from 'zod'
 import { makeTypedEnvironment } from './helpers'
 
+// This function will parse the environment variables and return a strongly
+// typed object with camelCased keys
 const getEnvironment = makeTypedEnvironment(
 	z.object({
 		// No need to set, it will be automatically set
 		NODE_ENV: z
 			.enum(['development', 'production', 'test'])
 			.default('development'),
-		// Locally, you can use ?sslmode=disable in the URL to disable SSL (e.g. postgresql://youruser@localhost:5432/database?sslmode=disable)
+		// Locally, you can use ?sslmode=disable in the URL to disable SSL
+		// (e.g. postgresql://youruser@localhost:5432/database?sslmode=disable)
 		DATABASE_POOL_MAX: z.preprocess(
 			(val) => (val ? Number(val) : 6),
 			z.number()

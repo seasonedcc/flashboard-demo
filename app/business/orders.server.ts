@@ -5,6 +5,9 @@ import { db } from '~/db/db.server'
 import { createDummyUser } from './users.server'
 import { getCartInfo } from './carts.server'
 
+/**
+ * Fetches an order from the database by orderId.
+ */
 async function fetchOrder({ orderId }: { orderId: string }) {
 	return db()
 		.selectFrom('orders')
@@ -14,6 +17,10 @@ async function fetchOrder({ orderId }: { orderId: string }) {
 		.executeTakeFirstOrThrow()
 }
 
+/**
+ * Places an order by creating a dummy user and an order in the database.
+ * It also deletes the cart and line items from the database.
+ */
 const placeOrder = withContext.pipe(
 	createDummyUser,
 	applySchema(
@@ -23,8 +30,10 @@ const placeOrder = withContext.pipe(
 		const { subtotal } = await getCartInfo(cartId)
 		return (
 			db()
+				// Uses a DB transaction to ensure that all operations succeed or none do
 				.transaction()
 				.execute(async (trx) => {
+					// Creates the order for the dummy user
 					const order = await trx
 						.insertInto('orders')
 						.values({
@@ -39,6 +48,7 @@ const placeOrder = withContext.pipe(
 						.returning('id')
 						.executeTakeFirstOrThrow()
 
+					// Deletes the cart and line items from the database
 					await trx
 						.deleteFrom('carts')
 						.where('id', '=', cartId)
