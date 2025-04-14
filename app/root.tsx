@@ -85,7 +85,8 @@ export default function App({ loaderData }: Route.ComponentProps) {
 	const { cart } = loaderData
 	return (
 		<>
-			<Header cart={cart} />
+			<Header cartCount={cart.count} />
+			<Cart cart={cart} />
 			<main className="flex-1">
 				<Outlet />
 			</main>
@@ -109,7 +110,8 @@ export function ErrorBoundary({ error, loaderData }: Route.ErrorBoundaryProps) {
 
 	return (
 		<>
-			<Header cart={loaderData?.cart} />
+			<Header cartCount={loaderData?.cart.count} />
+			<Cart cart={loaderData?.cart} />
 			<main className="grid min-h-full flex-1 place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
 				<div className="text-center">
 					<p className="font-semibold text-base text-indigo-600">{message}</p>
