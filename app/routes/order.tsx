@@ -25,7 +25,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 				</p>
 				<div className="mt-10 flex items-center justify-center gap-x-6">
 					<a
-						href="https://getflashboard.com"
+						href="https://www.getflashboard.com"
 						target="_blank"
 						className="rounded-md bg-indigo-600 px-3.5 py-2.5 font-semibold text-sm text-white shadow-sm hover:bg-indigo-500 focus-visible:outline-indigo-600 focus-visible:outline-offset-2"
 						rel="noreferrer"
