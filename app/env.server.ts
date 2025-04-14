@@ -8,6 +8,14 @@ const getEnvironment = makeTypedEnvironment(
 			.enum(['development', 'production', 'test'])
 			.default('development'),
 		// Locally, you can use ?sslmode=disable in the URL to disable SSL (e.g. postgresql://youruser@localhost:5432/database?sslmode=disable)
+		DATABASE_POOL_MAX: z.preprocess(
+			(val) => (val ? Number(val) : 6),
+			z.number()
+		),
+		DATABASE_REJECT_UNAUTHORIZED: z.preprocess(
+			(val) => (val ? Boolean(val) : false),
+			z.boolean()
+		),
 		DATABASE_URL: z.string().optional(),
 		DATABASE_HOST: z.string().optional(),
 		DATABASE_PORT: z.preprocess(
@@ -17,6 +25,7 @@ const getEnvironment = makeTypedEnvironment(
 		DATABASE_NAME: z.string().optional(),
 		DATABASE_USER: z.string().optional(),
 		DATABASE_PASSWORD: z.string().optional(),
+		DATABASE_CERT: z.string().optional(),
 		SESSION_SECRET: z.string().min(1),
 		S3_ENDPOINT: z.string().min(1),
 		S3_REGION: z.string().min(1),
