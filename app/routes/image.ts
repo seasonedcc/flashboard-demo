@@ -1,4 +1,4 @@
-import { fetchFlashboardImageUrl } from '~/s3-client.server'
+import { fetchFlashboardImageUrl } from '~/services/flashboard.server'
 import type { Route } from './+types/image'
 
 export async function loader({ params }: Route.LoaderArgs) {

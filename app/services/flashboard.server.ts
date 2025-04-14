@@ -15,10 +15,7 @@ async function fetchFlashboardImageUrl({
 	bucketName,
 	key,
 }: { bucketName: string; key: string }) {
-	const command = new GetObjectCommand({
-		Bucket: bucketName,
-		Key: key,
-	})
+	const command = new GetObjectCommand({ Bucket: bucketName, Key: key })
 
 	command.input.ResponseContentDisposition = 'inline'
 	const url = await getSignedUrl(s3Client, command, { expiresIn: 60 * 60 * 24 }) // 1 day
