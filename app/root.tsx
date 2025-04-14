@@ -41,10 +41,8 @@ export const links: Route.LinksFunction = () => [
 
 export async function loader({ request }: Route.LoaderArgs) {
 	const cartId = await getCartId(request)
-	const result = await collect({
-		content: fetchSiteContent(['siteBanner']),
-		cart: getCart,
-	})({ cartId })
+	const result = await collect({ cart: getCart })({ cartId })
+
 	if (!result.success) throw new Response('Server Error', { status: 500 })
 
 	const cookieHeader = request.headers.get('Cookie')
@@ -85,10 +83,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App({ loaderData }: Route.ComponentProps) {
-	const { content, cart } = loaderData
+	const { cart } = loaderData
 	return (
 		<>
-			<Header siteBanner={content.siteBanner} cart={cart} />
+			<Header cart={cart} />
 			<main className="flex-1">
 				<Outlet />
 			</main>
@@ -112,10 +110,7 @@ export function ErrorBoundary({ error, loaderData }: Route.ErrorBoundaryProps) {
 
 	return (
 		<>
-			<Header
-				siteBanner={loaderData?.content.siteBanner}
-				cart={loaderData?.cart}
-			/>
+			<Header cart={loaderData?.cart} />
 			<main className="grid min-h-full flex-1 place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
 				<div className="text-center">
 					<p className="font-semibold text-base text-indigo-600">{message}</p>

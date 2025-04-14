@@ -18,10 +18,8 @@ import type { Route } from '../+types/root'
 
 function Header({
 	cart,
-	siteBanner,
 }: {
 	cart?: Route.ComponentProps['loaderData']['cart']
-	siteBanner?: string
 }) {
 	const fetcher = useFetcher()
 	const navigation = useNavigation()
@@ -93,15 +91,22 @@ function Header({
 			<header className="relative z-10">
 				<nav aria-label="Top">
 					{/* Top navigation */}
-					{siteBanner && (
-						<div className="bg-gray-900">
-							<div className="mx-auto flex h-10 max-w-7xl items-center justify-center px-4 text-center sm:px-6 lg:px-8">
-								<p className="flex-1 text-center font-medium text-sm text-white lg:flex-none">
-									{siteBanner}
-								</p>
-							</div>
+					<div className="bg-gray-900">
+						<div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-2 text-center sm:px-6 lg:px-8">
+							<p className="flex-1 text-center font-medium text-sm text-white lg:flex-none">
+								This is a demo store for Flashboard.{' '}
+								<a
+									href="https://www.getflashboard.com"
+									target="_blank"
+									rel="noreferrer"
+									className="underline"
+								>
+									Create a demo panel
+								</a>{' '}
+								to edit this site in real time.
+							</p>
 						</div>
-					)}
+					</div>
 
 					{/* Secondary navigation */}
 					<div className="bg-white">
@@ -294,13 +299,16 @@ function Header({
 												<p>Subtotal</p>
 												<p>{formatMoney(cart.subtotal)}</p>
 											</div>
+											<p className="mt-6 text-gray-500">
+												This is a technical demo, not a real purchase.
+											</p>
 											<Form method="post" action="/" className="mt-6">
 												<button
 													type="submit"
 													disabled={!cart.count}
 													className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
 												>
-													Place order
+													Place fake order
 												</button>
 											</Form>
 										</div>

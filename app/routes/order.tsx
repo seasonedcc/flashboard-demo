@@ -16,7 +16,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 		<div className="grid min-h-full place-items-center bg-white px-6 py-24 sm:py-32 lg:px-8">
 			<div className="text-center">
 				<h1 className="mt-4 text-balance font-semibold text-5xl text-gray-900 tracking-tight sm:text-7xl">
-					Order placed!
+					Fake order placed!
 				</h1>
 				<p className="mt-6 text-pretty font-medium text-gray-500 text-lg sm:text-xl/8">
 					We created a fake user with with this email: {order.email}

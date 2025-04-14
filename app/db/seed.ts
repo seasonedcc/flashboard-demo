@@ -372,7 +372,6 @@ async function seed(db: () => Kysely<DB>) {
 					},
 				]),
 			},
-			{ key: 'siteBanner', value: 'Get free delivery on orders over $100' },
 			{ key: 'productsTitle', value: 'All Products' },
 			{
 				key: 'productsSubtitle',
