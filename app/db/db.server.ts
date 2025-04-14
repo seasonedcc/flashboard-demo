@@ -47,10 +47,18 @@ function getConnectionOptions() {
 function db() {
 	if (global.Database?.db) return global.Database.db
 
+	const certOptions = env().databaseCert ? { ca: env().databaseCert } : {}
+
 	const pool = new pg.Pool({
 		...getConnectionOptions(),
 		application_name: 'Flashboard Demo Store',
+		ssl: {
+			rejectUnauthorized: env().databaseRejectUnauthorized,
+			...certOptions,
+		},
+		max: env().databasePoolMax,
 	})
+
 	pool.on('connect', (client) => {
 		process.env.TZ = 'UTC'
 		client.query(`SET timezone TO 'UTC'`)
