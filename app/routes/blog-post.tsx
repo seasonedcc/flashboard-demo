@@ -49,7 +49,7 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 				<div className="mx-auto max-w-7xl px-6 lg:px-8">
 					<div className="mx-auto max-w-2xl lg:mx-0">
 						<Breadcrumb
-							dark
+							className="text-white"
 							links={[
 								{ name: 'Home', href: href('/') },
 								{ name: 'Blog', href: href('/blog') },

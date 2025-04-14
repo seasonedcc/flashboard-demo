@@ -1,10 +1,15 @@
 import { Link, href } from 'react-router'
 import { formatDate } from '~/helpers'
-import type { Route } from '../routes/+types/blog'
 
-function PostThumb({
-	post,
-}: { post: Route.ComponentProps['loaderData']['posts'][number] }) {
+type Props = {
+	post: {
+		slug: string
+		coverImageSrc: string[]
+		title: string
+		createdAt: Date
+	}
+}
+function PostThumb({ post }: Props) {
 	return (
 		<article className="flex max-w-xl flex-col items-start justify-between">
 			<Link

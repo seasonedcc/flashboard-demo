@@ -104,7 +104,6 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 					</div>
 				</div>
 			</div>
-			{/* Trending products */}
 			<section aria-labelledby="trending-heading" className="bg-white">
 				<div className="px-6 py-16 lg:mx-auto lg:max-w-7xl lg:px-8">
 					<div className="flex items-center justify-between px-4 sm:px-6 lg:px-0">

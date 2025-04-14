@@ -24,12 +24,13 @@ export async function action({ request, params }: Route.ActionArgs) {
 
 export default function Component({ loaderData }: Route.ComponentProps) {
 	const { product } = loaderData
+	const [firstImg, secondImg, thirdImg, fourthImg] = product.imagesSrc
 	return (
 		<div className="bg-white">
 			<div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8">
-				{/* Product details */}
 				<div className="lg:max-w-lg lg:self-end">
 					<Breadcrumb
+						className="font-semibold text-gray-500 [&_a]:hover:text-gray-900 [&_svg]:text-gray-300"
 						links={[
 							{ name: 'Home', href: href('/') },
 							{ name: 'Products', href: href('/products') },
@@ -40,7 +41,6 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							{product.name}
 						</h1>
 					</div>
-
 					<section aria-labelledby="information-heading" className="mt-4">
 						<h2 id="information-heading" className="sr-only">
 							Product information
@@ -64,23 +64,19 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 						)}
 					</section>
 				</div>
-
-				{/* Product image */}
 				<div className="mt-10 lg:col-start-2 lg:row-span-2 lg:mt-0 lg:self-center">
 					<img
 						alt={product.name}
 						title={product.description ?? product.name}
-						src={product.imagesSrc[0]}
+						src={firstImg}
 						className="aspect-square w-full rounded-lg bg-gray-100 object-cover group-hover:opacity-75"
 					/>
 				</div>
-
 				<div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
 					<section aria-labelledby="options-heading">
 						<h2 id="options-heading" className="sr-only">
 							Product options
 						</h2>
-
 						<Form method="POST">
 							<div className="mt-10">
 								<button
@@ -116,27 +112,26 @@ export default function Component({ loaderData }: Route.ComponentProps) {
 							/>
 						)}
 					</div>
-
 					<div>
-						{product.imagesSrc[1] && (
+						{secondImg && (
 							<img
 								alt={product.name}
-								src={product.imagesSrc[1]}
+								src={secondImg}
 								className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
 							/>
 						)}
 						<div className="mt-4 grid grid-cols-2 gap-4 sm:mt-6 sm:gap-6 lg:mt-8 lg:gap-8">
-							{product.imagesSrc[2] && (
+							{thirdImg && (
 								<img
 									alt={product.name}
-									src={product.imagesSrc[2]}
+									src={thirdImg}
 									className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
 								/>
 							)}
-							{product.imagesSrc[3] && (
+							{fourthImg && (
 								<img
 									alt={product.name}
-									src={product.imagesSrc[3]}
+									src={fourthImg}
 									className="aspect-square w-full rounded-lg bg-gray-100 object-cover"
 								/>
 							)}
