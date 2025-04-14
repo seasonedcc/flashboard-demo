@@ -16,7 +16,6 @@ import './styles/app.css'
 import { getCart, getCartId } from './business/carts.server'
 import { placeOrder } from './business/orders.server'
 import { sessionStorage } from './business/session.server'
-import { fetchSiteContent } from './business/site-content.server'
 import { Footer } from './ui/footer'
 import { Header } from './ui/header'
 
