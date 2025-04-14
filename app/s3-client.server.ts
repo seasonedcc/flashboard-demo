@@ -23,7 +23,9 @@ async function fetchFlashboardImageUrl({
 	})
 
 	command.input.ResponseContentDisposition = 'inline'
-	return getSignedUrl(s3Client, command, { expiresIn: 60 * 60 * 24 }) // 1 day
+	const url = await getSignedUrl(s3Client, command, { expiresIn: 60 * 60 * 24 }) // 1 day
+
+	return url.replace('digitaloceanspaces.com', 'cdn.digitaloceanspaces.com')
 }
 
 export { fetchFlashboardImageUrl }
