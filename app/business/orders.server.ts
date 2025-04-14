@@ -2,8 +2,8 @@ import { faker } from '@faker-js/faker'
 import { applySchema, withContext } from 'composable-functions'
 import { z } from 'zod'
 import { db } from '~/db/db.server'
-import { createDummyUser } from './users.server'
 import { getCartInfo } from './carts.server'
+import { createDummyUser } from './users.server'
 
 /**
  * Fetches an order from the database by orderId.

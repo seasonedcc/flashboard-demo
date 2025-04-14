@@ -13,12 +13,12 @@ import {
 } from 'react-router'
 import type { Route } from './+types/root'
 import './styles/app.css'
-import { getCurrentCart, getCartId } from './business/carts.server'
+import { getCartId, getCurrentCart } from './business/carts.server'
 import { placeOrder } from './business/orders.server'
 import { sessionStorage } from './business/session.server'
+import { Cart } from './ui/cart'
 import { Footer } from './ui/footer'
 import { Header } from './ui/header'
-import { Cart } from './ui/cart'
 
 export const meta: Route.MetaFunction = () => [
 	{ title: 'Flashboard Demo Store' },
