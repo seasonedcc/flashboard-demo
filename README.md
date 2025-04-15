@@ -33,7 +33,7 @@ Edit the `.env` file to include your credentials:
   - `S3_ACCESS_KEY`
   - `S3_SECRET_KEY`
 
-  These credentials can be obtained from providers like [Supabase](https://supabase.com/), [Amazon S3](https://aws.amazon.com/s3/), or [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces).
+  These credentials can be obtained from providers like [Supabase Storage](https://supabase.com/docs/guides/storage), [Amazon S3](https://aws.amazon.com/s3/), or [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces).
 
 - **PostgreSQL Configuration**:
   - `DATABASE_URL=postgres://user:password@localhost:5432/flashboard_demo`
