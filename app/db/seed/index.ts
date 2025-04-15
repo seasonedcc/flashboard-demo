@@ -1,9 +1,16 @@
 import 'dotenv/config'
 import { hash } from 'bcryptjs'
 import type { Kysely } from 'kysely'
-import type { BlogPostState, DB } from './types'
+import type { BlogPostState, DB } from '../types'
+import { uploadSeedImages } from './upload-images'
 
 async function seed(db: () => Kysely<DB>) {
+	console.log(
+		'Uploading images to storage service. This may take a few minutes...'
+	)
+	const uploadedImages = await uploadSeedImages()
+	console.log('Uploaded images:', Object.keys(uploadedImages).join(', '))
+
 	// Delete from tables before creating the items
 	await db().deleteFrom('lineItems').execute()
 	await db().deleteFrom('carts').execute()
@@ -66,44 +73,9 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 50,
 				trending: true,
-				images: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '1017076f-5332-4cad-9d04-2f85f5b58cfe',
-						filename: 'headphones-1.png',
-						contentType: 'image/png',
-						size: 335590,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '53f6f890-96c2-4f46-8365-9102a386ba52',
-						filename: 'headphones-2.png',
-						contentType: 'image/png',
-						size: 227747,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: 'cf279a68-ea0d-42bf-bb1c-4ff716247749',
-						filename: 'headphones-3.png',
-						contentType: 'image/png',
-						size: 252985,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '161eb8fe-928e-4219-b50c-909a63826a8f',
-						filename: 'headphones-4.png',
-						contentType: 'image/png',
-						size: 498226,
-					},
-				]),
+				images: JSON.stringify(
+					[1, 2, 3, 4].map((i) => uploadedImages[`headphone-${i}.png`])
+				),
 			},
 			{
 				name: 'Smart Fitness Watch',
@@ -130,35 +102,9 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 75,
 				trending: true,
-				images: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '218ee044-0a28-4e89-ab90-2316a8f05938',
-						filename: 'watch-1.png',
-						contentType: 'image/png',
-						size: 260576,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '3efe53ed-f8f9-40d5-93b5-11afcc00eb12',
-						filename: 'watch-2.png',
-						contentType: 'image/png',
-						size: 350211,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: 'a1bbc17c-a298-43a3-9b76-69271d24fb3b',
-						filename: 'watch-3.png',
-						contentType: 'image/png',
-						size: 276080,
-					},
-				]),
+				images: JSON.stringify(
+					[1, 2, 3].map((i) => uploadedImages[`fitness-watch-${i}.png`])
+				),
 			},
 			{
 				name: 'Portable Power Bank',
@@ -184,44 +130,9 @@ async function seed(db: () => Kysely<DB>) {
 					description: '20000mAh high-capacity portable charger',
 				}),
 				stock: 100,
-				images: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '91f499df-173a-49dc-a936-ba89d71d9681',
-						filename: 'powerbank-1.png',
-						contentType: 'image/png',
-						size: 519342,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '7b19cdd2-baac-4eb5-8b4e-f1fa437f91a6',
-						filename: 'powerbank-2.png',
-						contentType: 'image/png',
-						size: 389903,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '00a98cf3-10cd-417d-9b48-08268fcdacaa',
-						filename: 'powerbank-3.png',
-						contentType: 'image/png',
-						size: 326957,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '25207a41-9006-4fb6-8112-2cb8f2d0d7b5',
-						filename: 'powerbank-4.png',
-						contentType: 'image/png',
-						size: 428567,
-					},
-				]),
+				images: JSON.stringify(
+					[1, 2, 3, 4].map((i) => uploadedImages[`power-bank-${i}.png`])
+				),
 			},
 		].map((product) =>
 			db()
@@ -241,15 +152,7 @@ async function seed(db: () => Kysely<DB>) {
 				slug: 'top-tech-trends-2025',
 				state: 'published' as BlogPostState,
 				coverImage: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '7cda3e74-9d48-497c-9f27-fc73e9ea5977',
-						filename: 'image3.png',
-						contentType: 'image/png',
-						size: 1599570,
-					},
+					uploadedImages['top-tech-trends-2025.png'],
 				]),
 			},
 			{
@@ -258,15 +161,7 @@ async function seed(db: () => Kysely<DB>) {
 				slug: 'choose-right-headphones',
 				state: 'published' as BlogPostState,
 				coverImage: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '63c00009-21f0-4f2d-8564-5260d3a2f7c1',
-						filename: 'image2.png',
-						contentType: 'image/png',
-						size: 1290330,
-					},
+					uploadedImages['choose-right-headphones.png'],
 				]),
 			},
 			{
@@ -276,15 +171,7 @@ async function seed(db: () => Kysely<DB>) {
 				slug: 'upcoming-product-launch',
 				state: 'draft' as BlogPostState,
 				coverImage: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: 'eecdb334-d93d-492a-900f-709885dd6099',
-						filename: 'image.png',
-						contentType: 'image/png',
-						size: 1279734,
-					},
+					uploadedImages['upcoming-product-launch.png'],
 				]),
 			},
 		].map((post) => db().insertInto('blogPosts').values(post).execute())
@@ -360,17 +247,7 @@ async function seed(db: () => Kysely<DB>) {
 			{ key: 'homeHeroCTA', value: 'Shop Now' },
 			{
 				key: 'homeHeroImage',
-				value: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '660f85d8-01a5-4b4c-8692-d06f66299938',
-						filename: 'home-page-02-hero-half-width.jpg',
-						contentType: 'image/jpeg',
-						size: 209352,
-					},
-				]),
+				value: JSON.stringify([uploadedImages['home-hero-image.jpeg']]),
 			},
 			{ key: 'productsTitle', value: 'All Products' },
 			{
