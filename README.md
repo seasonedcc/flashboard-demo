@@ -32,8 +32,13 @@ Edit the `.env` file to include your credentials:
   - `S3_REGION`
   - `S3_ACCESS_KEY`
   - `S3_SECRET_KEY`
+  - `S3_BUCKET_NAME`
 
   These credentials can be obtained from providers like [Supabase](https://supabase.com/), [Amazon S3](https://aws.amazon.com/s3/), or [DigitalOcean Spaces](https://www.digitalocean.com/products/spaces).
+
+- **Bucket Configuration**:
+  Please make sure you create the `flashboard-demo-secure` bucket or change the name of the bucket of your choice in the `.env` file.
+This bucket will be used to upload the seed images.
 
 - **PostgreSQL Configuration**:
   - `DATABASE_URL=postgres://user:password@localhost:5432/flashboard_demo`
@@ -46,6 +51,7 @@ Edit the `.env` file to include your credentials:
 pnpm run db:migrate
 pnpm run db:seed
 ```
+The seed will take a while to run, as it will upload images to the S3 bucket you configured in the previous step.
 
 ### 5. Start the Development Server
 
@@ -63,10 +69,10 @@ The primary goal of this repository is to illustrate how Flashboard can be integ
 
 ### Key Directories
 
+- **`app/business/`**: This folder likely houses all the business logic, so you want to investigate it.
 - **`app/routes/`**: Contains route loaders and actions, showcasing data fetching and mutations using React Router v7.
-- **`app/business/`**: Houses all the business logic, this is likely the folder you want to investigate.
 - **`app/services/flashboard.server.ts`**: Illustrates how to fetch and display the images uploaded through Flashboard to your storage provider.
-- **`app/db/`**: Contains database infrastructure, including Kysely setup, migration scripts, and connection configurations. You might want to investigate the migrations to see how we shaped the database to better work with Flashboard. The blog_posts table highlights some interesting features.
+- **`app/db/`**: Contains database infrastructure, including Kysely setup, migration scripts, and connection configurations. You might want to investigate the migrations to see how we shaped the database to better work with Flashboard. The blog_posts table highlights some interesting features. You can overlook the scripts in this folder, they are rather complex and are out of scope for this demo.
 
 ### References to libraries used in this repo
 
