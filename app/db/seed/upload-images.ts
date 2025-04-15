@@ -1,15 +1,10 @@
 import { randomUUID } from 'node:crypto'
 import { readFile, readdir, stat } from 'node:fs/promises'
 import * as path from 'node:path'
-import { fileURLToPath } from 'node:url'
 import { S3Client } from '@aws-sdk/client-s3'
 import mime from 'mime'
 import { env } from '~/env.server'
 import { S3FileStorage } from './s3-storage'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const imagesPath = path.join(__dirname, 'images')
 
 const s3Client = new S3Client({
 	endpoint: env().s3Endpoint,
@@ -36,7 +31,9 @@ type UploadedImageInfo = {
 	size: number
 }
 
-async function uploadSeedImages(): Promise<Record<string, UploadedImageInfo>> {
+async function uploadSeedImages(
+	imagesPath: string
+): Promise<Record<string, UploadedImageInfo>> {
 	const files = await readdir(imagesPath)
 	const uploaded: Record<string, UploadedImageInfo> = {}
 

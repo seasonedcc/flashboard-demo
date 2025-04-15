@@ -1,16 +1,15 @@
 import 'dotenv/config'
+import * as path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { hash } from 'bcryptjs'
 import type { Kysely } from 'kysely'
 import type { BlogPostState, DB } from '../types'
 import { uploadSeedImages } from './upload-images'
 
-async function seed(db: () => Kysely<DB>) {
-	console.log(
-		'Uploading images to storage service. This may take a few minutes...'
-	)
-	const uploadedImages = await uploadSeedImages()
-	console.log('Uploaded images:', Object.keys(uploadedImages).join(', '))
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
+async function seed(db: () => Kysely<DB>) {
 	// Delete from tables before creating the items
 	await db().deleteFrom('lineItems').execute()
 	await db().deleteFrom('carts').execute()
@@ -44,6 +43,14 @@ async function seed(db: () => Kysely<DB>) {
 		)
 	)
 
+	console.log(
+		'Uploading product images to storage service. This may take a few minutes...'
+	)
+	const productImages = await uploadSeedImages(
+		path.join(__dirname, 'images', 'products')
+	)
+	console.log('Uploaded images:', Object.keys(productImages).join(', '))
+
 	// Create products
 	const products = await Promise.all(
 		[
@@ -74,7 +81,7 @@ async function seed(db: () => Kysely<DB>) {
 				stock: 50,
 				trending: true,
 				images: JSON.stringify(
-					[1, 2, 3, 4].map((i) => uploadedImages[`headphone-${i}.png`])
+					[1, 2, 3, 4].map((i) => productImages[`headphone-${i}.png`])
 				),
 			},
 			{
@@ -103,7 +110,7 @@ async function seed(db: () => Kysely<DB>) {
 				stock: 75,
 				trending: true,
 				images: JSON.stringify(
-					[1, 2, 3].map((i) => uploadedImages[`fitness-watch-${i}.png`])
+					[1, 2, 3].map((i) => productImages[`fitness-watch-${i}.png`])
 				),
 			},
 			{
@@ -131,7 +138,7 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 100,
 				images: JSON.stringify(
-					[1, 2, 3, 4].map((i) => uploadedImages[`power-bank-${i}.png`])
+					[1, 2, 3, 4].map((i) => productImages[`power-bank-${i}.png`])
 				),
 			},
 		].map((product) =>
@@ -143,6 +150,13 @@ async function seed(db: () => Kysely<DB>) {
 		)
 	)
 
+	console.log(
+		'Uploading post images to storage service. This may take a few minutes...'
+	)
+	const postImages = await uploadSeedImages(
+		path.join(__dirname, 'images', 'posts')
+	)
+	console.log('Uploaded images:', Object.keys(postImages).join(', '))
 	// Create blog posts
 	await Promise.all(
 		[
@@ -151,18 +165,14 @@ async function seed(db: () => Kysely<DB>) {
 				content: `<p>As we move further into 2025, we're seeing exciting developments in consumer electronics. <strong>Artificial intelligence</strong> is becoming more integrated into our daily lives, from smart home devices to personalized recommendations. Expect to see more <em>innovative</em> gadgets that enhance convenience and efficiency.</p><div data-youtube-video=""><iframe width="640" height="480" allowfullscreen="true" autoplay="false" disablekbcontrols="false" enableiframeapi="false" endtime="0" ivloadpolicy="0" loop="false" modestbranding="false" origin="" playlist="" src="https://www.youtube-nocookie.com/embed/CM2TgIEcvpc?controls=0" start="0"></iframe></div><p>Another major trend is the rise of <code>sustainable technology</code>. Companies are prioritizing eco-friendly materials and energy-efficient designs to reduce their environmental impact. Look out for products that not only perform well but also contribute to a greener future. <a target="_blank" rel="noopener noreferrer nofollow" href="#">Learn more about sustainable tech.</a></p>`,
 				slug: 'top-tech-trends-2025',
 				state: 'published' as BlogPostState,
-				coverImage: JSON.stringify([
-					uploadedImages['top-tech-trends-2025.png'],
-				]),
+				coverImage: JSON.stringify([postImages['top-tech-trends-2025.png']]),
 			},
 			{
 				title: 'How to Choose the Right Headphones',
 				content: `<p>With so many options available, choosing the perfect headphones can be overwhelming. Consider what you'll primarily use them for: <strong>commuting</strong>, <em>working out</em>, or relaxing at home. Each scenario benefits from different features like noise cancellation, water resistance, or superior sound quality.</p><img src="https://flashboard-demo-public.nyc3.cdn.digitaloceanspaces.com/5a73cd20-2069-4483-8caf-b9e450ed5b97.png" title="headphone" alt="headphone"><p>Don't underestimate the importance of comfort. Look for headphones with plush earcups and an adjustable headband to ensure a snug fit.</p><ul><li><p><strong>Over-ear headphones</strong> provide the best sound isolation.</p></li><li><p><strong>On-ear headphones</strong> are more compact and lightweight.</p></li><li><p><strong>In-ear headphones</strong> are great for portability.</p></li></ul><p><a target="_blank" rel="noopener noreferrer nofollow" href="#">Read our full guide.</a></p>`,
 				slug: 'choose-right-headphones',
 				state: 'published' as BlogPostState,
-				coverImage: JSON.stringify([
-					uploadedImages['choose-right-headphones.png'],
-				]),
+				coverImage: JSON.stringify([postImages['choose-right-headphones.png']]),
 			},
 			{
 				title: 'Upcoming Product Launch',
@@ -170,9 +180,7 @@ async function seed(db: () => Kysely<DB>) {
 					"<p>We're excited to announce our newest product line coming this summer! Get ready for a revolutionary device that will change the way you interact with technology. <code>Stay tuned for more details</code>, including sneak peeks and exclusive behind-the-scenes content.</p><p>Our team has been working tirelessly to create something truly special. We're confident that you'll love the innovative features and sleek design of our upcoming product. <mark>Sign up for our newsletter</mark> to be the first to know when it's available! Here's a sneak peek at our new API:</p><pre><code class='language-javascript'>async function fetchData() {\n  const response = await fetch('/api/newProduct');\n  const data = await response.json();\n  console.log(data);\n}\n</code></pre><ol><li>Early bird discounts</li><li>Exclusive content</li><li>Giveaways</li></ol></p>",
 				slug: 'upcoming-product-launch',
 				state: 'draft' as BlogPostState,
-				coverImage: JSON.stringify([
-					uploadedImages['upcoming-product-launch.png'],
-				]),
+				coverImage: JSON.stringify([postImages['upcoming-product-launch.png']]),
 			},
 		].map((post) => db().insertInto('blogPosts').values(post).execute())
 	)
@@ -223,6 +231,13 @@ async function seed(db: () => Kysely<DB>) {
 		})
 	)
 
+	console.log(
+		'Uploading post images to storage service. This may take a few minutes...'
+	)
+	const contentImages = await uploadSeedImages(
+		path.join(__dirname, 'images', 'content')
+	)
+	console.log('Uploaded images:', Object.keys(contentImages).join(', '))
 	// Create site content
 	await db()
 		.insertInto('siteContent')
@@ -247,7 +262,7 @@ async function seed(db: () => Kysely<DB>) {
 			{ key: 'homeHeroCTA', value: 'Shop Now' },
 			{
 				key: 'homeHeroImage',
-				value: JSON.stringify([uploadedImages['home-hero-image.jpeg']]),
+				value: JSON.stringify([contentImages['home-hero-image.jpeg']]),
 			},
 			{ key: 'productsTitle', value: 'All Products' },
 			{
