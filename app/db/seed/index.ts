@@ -1,7 +1,13 @@
 import 'dotenv/config'
+import * as path from 'node:path'
+import { fileURLToPath } from 'node:url'
 import { hash } from 'bcryptjs'
 import type { Kysely } from 'kysely'
-import type { BlogPostState, DB } from './types'
+import type { BlogPostState, DB } from '../types'
+import { uploadSeedImages } from './upload-images'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 async function seed(db: () => Kysely<DB>) {
 	// Delete from tables before creating the items
@@ -37,6 +43,14 @@ async function seed(db: () => Kysely<DB>) {
 		)
 	)
 
+	console.log(
+		'Uploading product images to storage service. This may take a few minutes...'
+	)
+	const productImages = await uploadSeedImages(
+		path.join(__dirname, 'images', 'products')
+	)
+	console.log('Uploaded images:', Object.keys(productImages).join(', '))
+
 	// Create products
 	const products = await Promise.all(
 		[
@@ -66,44 +80,9 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 50,
 				trending: true,
-				images: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '1017076f-5332-4cad-9d04-2f85f5b58cfe',
-						filename: 'headphones-1.png',
-						contentType: 'image/png',
-						size: 335590,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '53f6f890-96c2-4f46-8365-9102a386ba52',
-						filename: 'headphones-2.png',
-						contentType: 'image/png',
-						size: 227747,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: 'cf279a68-ea0d-42bf-bb1c-4ff716247749',
-						filename: 'headphones-3.png',
-						contentType: 'image/png',
-						size: 252985,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '161eb8fe-928e-4219-b50c-909a63826a8f',
-						filename: 'headphones-4.png',
-						contentType: 'image/png',
-						size: 498226,
-					},
-				]),
+				images: JSON.stringify(
+					[1, 2, 3, 4].map((i) => productImages[`headphone-${i}.png`])
+				),
 			},
 			{
 				name: 'Smart Fitness Watch',
@@ -130,35 +109,9 @@ async function seed(db: () => Kysely<DB>) {
 				}),
 				stock: 75,
 				trending: true,
-				images: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '218ee044-0a28-4e89-ab90-2316a8f05938',
-						filename: 'watch-1.png',
-						contentType: 'image/png',
-						size: 260576,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '3efe53ed-f8f9-40d5-93b5-11afcc00eb12',
-						filename: 'watch-2.png',
-						contentType: 'image/png',
-						size: 350211,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: 'a1bbc17c-a298-43a3-9b76-69271d24fb3b',
-						filename: 'watch-3.png',
-						contentType: 'image/png',
-						size: 276080,
-					},
-				]),
+				images: JSON.stringify(
+					[1, 2, 3].map((i) => productImages[`fitness-watch-${i}.png`])
+				),
 			},
 			{
 				name: 'Portable Power Bank',
@@ -184,44 +137,9 @@ async function seed(db: () => Kysely<DB>) {
 					description: '20000mAh high-capacity portable charger',
 				}),
 				stock: 100,
-				images: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '91f499df-173a-49dc-a936-ba89d71d9681',
-						filename: 'powerbank-1.png',
-						contentType: 'image/png',
-						size: 519342,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '7b19cdd2-baac-4eb5-8b4e-f1fa437f91a6',
-						filename: 'powerbank-2.png',
-						contentType: 'image/png',
-						size: 389903,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '00a98cf3-10cd-417d-9b48-08268fcdacaa',
-						filename: 'powerbank-3.png',
-						contentType: 'image/png',
-						size: 326957,
-					},
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '25207a41-9006-4fb6-8112-2cb8f2d0d7b5',
-						filename: 'powerbank-4.png',
-						contentType: 'image/png',
-						size: 428567,
-					},
-				]),
+				images: JSON.stringify(
+					[1, 2, 3, 4].map((i) => productImages[`power-bank-${i}.png`])
+				),
 			},
 		].map((product) =>
 			db()
@@ -232,6 +150,13 @@ async function seed(db: () => Kysely<DB>) {
 		)
 	)
 
+	console.log(
+		'Uploading post images to storage service. This may take a few minutes...'
+	)
+	const postImages = await uploadSeedImages(
+		path.join(__dirname, 'images', 'posts')
+	)
+	console.log('Uploaded images:', Object.keys(postImages).join(', '))
 	// Create blog posts
 	await Promise.all(
 		[
@@ -240,34 +165,14 @@ async function seed(db: () => Kysely<DB>) {
 				content: `<p>As we move further into 2025, we're seeing exciting developments in consumer electronics. <strong>Artificial intelligence</strong> is becoming more integrated into our daily lives, from smart home devices to personalized recommendations. Expect to see more <em>innovative</em> gadgets that enhance convenience and efficiency.</p><div data-youtube-video=""><iframe width="640" height="480" allowfullscreen="true" autoplay="false" disablekbcontrols="false" enableiframeapi="false" endtime="0" ivloadpolicy="0" loop="false" modestbranding="false" origin="" playlist="" src="https://www.youtube-nocookie.com/embed/CM2TgIEcvpc?controls=0" start="0"></iframe></div><p>Another major trend is the rise of <code>sustainable technology</code>. Companies are prioritizing eco-friendly materials and energy-efficient designs to reduce their environmental impact. Look out for products that not only perform well but also contribute to a greener future. <a target="_blank" rel="noopener noreferrer nofollow" href="#">Learn more about sustainable tech.</a></p>`,
 				slug: 'top-tech-trends-2025',
 				state: 'published' as BlogPostState,
-				coverImage: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '7cda3e74-9d48-497c-9f27-fc73e9ea5977',
-						filename: 'image3.png',
-						contentType: 'image/png',
-						size: 1599570,
-					},
-				]),
+				coverImage: JSON.stringify([postImages['top-tech-trends-2025.png']]),
 			},
 			{
 				title: 'How to Choose the Right Headphones',
 				content: `<p>With so many options available, choosing the perfect headphones can be overwhelming. Consider what you'll primarily use them for: <strong>commuting</strong>, <em>working out</em>, or relaxing at home. Each scenario benefits from different features like noise cancellation, water resistance, or superior sound quality.</p><img src="https://flashboard-demo-public.nyc3.cdn.digitaloceanspaces.com/5a73cd20-2069-4483-8caf-b9e450ed5b97.png" title="headphone" alt="headphone"><p>Don't underestimate the importance of comfort. Look for headphones with plush earcups and an adjustable headband to ensure a snug fit.</p><ul><li><p><strong>Over-ear headphones</strong> provide the best sound isolation.</p></li><li><p><strong>On-ear headphones</strong> are more compact and lightweight.</p></li><li><p><strong>In-ear headphones</strong> are great for portability.</p></li></ul><p><a target="_blank" rel="noopener noreferrer nofollow" href="#">Read our full guide.</a></p>`,
 				slug: 'choose-right-headphones',
 				state: 'published' as BlogPostState,
-				coverImage: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '63c00009-21f0-4f2d-8564-5260d3a2f7c1',
-						filename: 'image2.png',
-						contentType: 'image/png',
-						size: 1290330,
-					},
-				]),
+				coverImage: JSON.stringify([postImages['choose-right-headphones.png']]),
 			},
 			{
 				title: 'Upcoming Product Launch',
@@ -275,17 +180,7 @@ async function seed(db: () => Kysely<DB>) {
 					"<p>We're excited to announce our newest product line coming this summer! Get ready for a revolutionary device that will change the way you interact with technology. <code>Stay tuned for more details</code>, including sneak peeks and exclusive behind-the-scenes content.</p><p>Our team has been working tirelessly to create something truly special. We're confident that you'll love the innovative features and sleek design of our upcoming product. <mark>Sign up for our newsletter</mark> to be the first to know when it's available! Here's a sneak peek at our new API:</p><pre><code class='language-javascript'>async function fetchData() {\n  const response = await fetch('/api/newProduct');\n  const data = await response.json();\n  console.log(data);\n}\n</code></pre><ol><li>Early bird discounts</li><li>Exclusive content</li><li>Giveaways</li></ol></p>",
 				slug: 'upcoming-product-launch',
 				state: 'draft' as BlogPostState,
-				coverImage: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: 'eecdb334-d93d-492a-900f-709885dd6099',
-						filename: 'image.png',
-						contentType: 'image/png',
-						size: 1279734,
-					},
-				]),
+				coverImage: JSON.stringify([postImages['upcoming-product-launch.png']]),
 			},
 		].map((post) => db().insertInto('blogPosts').values(post).execute())
 	)
@@ -336,6 +231,13 @@ async function seed(db: () => Kysely<DB>) {
 		})
 	)
 
+	console.log(
+		'Uploading post images to storage service. This may take a few minutes...'
+	)
+	const contentImages = await uploadSeedImages(
+		path.join(__dirname, 'images', 'content')
+	)
+	console.log('Uploaded images:', Object.keys(contentImages).join(', '))
 	// Create site content
 	await db()
 		.insertInto('siteContent')
@@ -360,17 +262,7 @@ async function seed(db: () => Kysely<DB>) {
 			{ key: 'homeHeroCTA', value: 'Shop Now' },
 			{
 				key: 'homeHeroImage',
-				value: JSON.stringify([
-					{
-						flashboardStorage: 'v1',
-						serviceName: 's3',
-						bucketName: 'flashboard-demo-secure',
-						key: '660f85d8-01a5-4b4c-8692-d06f66299938',
-						filename: 'home-page-02-hero-half-width.jpg',
-						contentType: 'image/jpeg',
-						size: 209352,
-					},
-				]),
+				value: JSON.stringify([contentImages['home-hero-image.jpeg']]),
 			},
 			{ key: 'productsTitle', value: 'All Products' },
 			{
