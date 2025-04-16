@@ -1,3 +1,5 @@
+import { GithubIcon } from './icons'
+
 function Footer() {
 	return (
 		<footer aria-labelledby="footer-heading" className="bg-white">
@@ -17,7 +19,18 @@ function Footer() {
 					</a>{' '}
 					to edit this site in real time.
 				</p>
-				<p>&copy; {new Date().getFullYear()} &bull; Flashboard Demo Store</p>
+				<p>
+					&copy; {new Date().getFullYear()} &bull; Flashboard Demo Store &bull;
+					<a
+						href="https://github.com/seasonedcc/flashboard-demo"
+						target="_blank"
+						rel="noreferrer"
+						className="group"
+					>
+						<GithubIcon className="-translate-y-px ml-1 inline-flex" />{' '}
+						<span className="group-hover:underline">Check the code</span>
+					</a>
+				</p>
 			</div>
 		</footer>
 	)
