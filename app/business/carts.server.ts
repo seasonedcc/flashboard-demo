@@ -118,6 +118,12 @@ const addItemToCart = applySchema(
 		.returning('id')
 		.executeTakeFirstOrThrow()
 
+	await db()
+		.updateTable('products')
+		.set((eb) => ({ stock: eb('stock', '-', 1) }))
+		.where('id', '=', productId)
+		.execute()
+
 	return lineItem.id
 })
 
@@ -128,14 +134,20 @@ const removeLineItem = applySchema(
 	z.object({ lineItemId: z.string() }),
 	z.string()
 )(async ({ lineItemId }, cartId) => {
-	const cart = await db()
+	const lineItem = await db()
 		.deleteFrom('lineItems')
 		.where('cartId', '=', cartId)
 		.where('id', '=', lineItemId)
-		.returning('cartId')
+		.returning(['cartId', 'quantity', 'productId'])
 		.executeTakeFirstOrThrow()
 
-	return cart.cartId
+	await db()
+		.updateTable('products')
+		.set((eb) => ({ stock: eb('stock', '+', lineItem.quantity) }))
+		.where('id', '=', lineItem.productId)
+		.execute()
+
+	return lineItem.cartId
 })
 
 export { getCartId, getCartInfo, getCurrentCart, addItemToCart, removeLineItem }

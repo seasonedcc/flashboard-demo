@@ -78,7 +78,7 @@ async function seed(db: () => Kysely<DB>) {
 					description:
 						'High-quality wireless headphones with noise cancellation',
 				}),
-				stock: 50,
+				stock: 3,
 				trending: true,
 				images: JSON.stringify(
 					[1, 2, 3, 4].map((i) => productImages[`headphone-${i}.png`])
@@ -107,7 +107,7 @@ async function seed(db: () => Kysely<DB>) {
 					name: 'Smart Fitness Watch',
 					description: 'Advanced fitness tracking watch',
 				}),
-				stock: 75,
+				stock: 5,
 				trending: true,
 				images: JSON.stringify(
 					[1, 2, 3].map((i) => productImages[`fitness-watch-${i}.png`])
@@ -136,7 +136,7 @@ async function seed(db: () => Kysely<DB>) {
 					name: 'Portable Power Bank',
 					description: '20000mAh high-capacity portable charger',
 				}),
-				stock: 100,
+				stock: 10,
 				images: JSON.stringify(
 					[1, 2, 3, 4].map((i) => productImages[`power-bank-${i}.png`])
 				),
