@@ -7,56 +7,55 @@ import {
 import { XMarkIcon } from '@heroicons/react/24/outline'
 import type { UnpackData } from 'composable-functions'
 import { useCallback, useEffect, useRef } from 'react'
-import {
-	Form,
-	Link,
-	href,
-	useFetcher,
-	useNavigation,
-	useSearchParams,
-} from 'react-router'
+import { Form, Link, href, useNavigation, useSearchParams } from 'react-router'
 import type { getCurrentCart } from '~/business/carts.server'
 import { formatMoney } from '~/helpers'
 
 type Props = { cart?: UnpackData<typeof getCurrentCart> }
 function Cart({ cart }: Props) {
-	const fetcher = useFetcher()
 	const navigation = useNavigation()
 	const [params, setParams] = useSearchParams()
 
-	const previousCount = useRef(cart?.count)
-
 	// The cart state is controlled by the URL params
-	const closeCart = useCallback(() => setParams(), [setParams])
-	const openCart = useCallback(() => setParams({ cart: 'open' }), [setParams])
+	const closeCart = useCallback(
+		() => setParams({}, { preventScrollReset: true }),
+		[setParams]
+	)
+	const openCart = useCallback(
+		() => setParams({ cart: 'open' }, { preventScrollReset: true }),
+		[setParams]
+	)
 
-	// Open the cart when the user adds an item to it
+	const isCartEmpty = !cart || cart.count < 1
+	const previousEmpty = useRef(isCartEmpty)
+
+	// A POST to / is a fake order being placed
+	const isPlacingOrder =
+		navigation.formMethod === 'POST' && navigation.formAction === '/'
+
+	// A POST to /products is a product being added
+	const isAddingItem =
+		navigation.formMethod === 'POST' &&
+		navigation.formAction?.includes('/products/')
+
 	useEffect(() => {
-		if (
-			// A POST to /products is a product being added
-			navigation.formMethod === 'POST' &&
-			navigation.formAction?.includes('/products/')
-		) {
+		// Open the cart when the user adds an item to it
+		if (isAddingItem) {
 			setTimeout(openCart, 500)
 		}
-	}, [navigation.formMethod, navigation.formAction, openCart])
+	}, [isAddingItem, openCart])
 
 	// Closes the cart when all the items are removed
 	useEffect(() => {
 		// If the cart is empty and the previous count was not, close the cart
-		if (cart?.count === 0 && previousCount.current !== 0) {
+		if (isCartEmpty && previousEmpty.current === false) {
 			setTimeout(closeCart, 500)
 		}
-		// Update the previous count
-		previousCount.current = cart?.count
-	}, [cart?.count, closeCart])
+		// Update the previous value
+		previousEmpty.current = isCartEmpty
+	}, [isCartEmpty, closeCart])
 
 	if (!cart) return null
-
-	function handleRemoveItem(lineItemId: string) {
-		const action = href('/cart/remove/:lineItemId', { lineItemId })
-		fetcher.submit(null, { method: 'POST', action })
-	}
 
 	return (
 		<Dialog
@@ -97,11 +96,7 @@ function Cart({ cart }: Props) {
 										<div className="flow-root">
 											<ul className="-my-6 divide-y divide-gray-200">
 												{cart.lineItems.map((item) => (
-													<LineItem
-														key={item.id}
-														item={item}
-														onRemoveItem={handleRemoveItem}
-													/>
+													<LineItem key={item.id} {...item} />
 												))}
 											</ul>
 										</div>
@@ -118,10 +113,14 @@ function Cart({ cart }: Props) {
 									<Form method="post" action="/" className="mt-6">
 										<button
 											type="submit"
-											disabled={!cart.count}
+											disabled={isCartEmpty || isPlacingOrder}
 											className="flex cursor-pointer items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 font-medium text-base text-white shadow-sm hover:bg-indigo-700 disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-500"
 										>
-											Place fake order
+											{isCartEmpty
+												? 'Add items to cart'
+												: isPlacingOrder
+													? 'Processing...'
+													: 'Place fake order'}
 										</button>
 									</Form>
 								</div>
@@ -135,18 +134,18 @@ function Cart({ cart }: Props) {
 }
 
 function LineItem({
-	item,
-	onRemoveItem,
-}: {
-	item: NonNullable<Props['cart']>['lineItems'][number]
-	onRemoveItem: (id: string) => void
-}) {
+	product,
+	quantity,
+	id,
+}: NonNullable<Props['cart']>['lineItems'][number]) {
+	if (!quantity) return null
+
 	return (
 		<li className="flex py-6">
 			<div className="size-24 shrink-0 overflow-hidden rounded-md border border-gray-200">
 				<img
-					alt={item.product.name}
-					src={item.product.image}
+					alt={product.name}
+					src={product.image}
 					className="size-full object-cover"
 				/>
 			</div>
@@ -156,27 +155,31 @@ function LineItem({
 						<h3>
 							<Link
 								to={href('/products/:productId', {
-									productId: String(item.product.id),
+									productId: String(product.id),
 								})}
 							>
-								{item.product.name}
+								{product.name}
 							</Link>
 						</h3>
-						<p className="ml-4">{formatMoney(item.product.priceCents)}</p>
+						<p className="ml-4">{formatMoney(product.priceCents)}</p>
 					</div>
 				</div>
-				<div className="flex flex-1 items-end justify-between text-sm">
-					<p className="text-gray-500">Qty {item.quantity}</p>
+				<Form
+					method="post"
+					action={href('/cart/remove/:lineItemId', { lineItemId: String(id) })}
+					navigate={false}
+					className="flex flex-1 items-end justify-between text-sm"
+				>
+					<p className="text-gray-500">Qty {quantity}</p>
 					<div className="flex">
 						<button
-							type="button"
+							type="submit"
 							className="cursor-pointer font-medium text-indigo-600 hover:text-indigo-500"
-							onClick={() => onRemoveItem(String(item.id))}
 						>
 							Remove
 						</button>
 					</div>
-				</div>
+				</Form>
 			</div>
 		</li>
 	)
