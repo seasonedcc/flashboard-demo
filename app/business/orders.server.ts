@@ -41,8 +41,9 @@ const placeOrder = withContext.pipe(
 							userId,
 							stripeResponse: JSON.stringify({
 								id: `ch_cartId_${cartId}`,
-								status: 'succeeded',
+								status: 'pending',
 								amount: subtotal,
+								date: new Date().toISOString().split('T')[0],
 							}),
 						})
 						.returning('id')

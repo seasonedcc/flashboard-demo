@@ -5,6 +5,8 @@ import { hash } from 'bcryptjs'
 import type { Kysely } from 'kysely'
 import type { BlogPostState, DB } from '../types'
 import { uploadSeedImages } from './upload-images'
+import { randomUUID } from 'node:crypto'
+import { faker } from '@faker-js/faker/locale/pl'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -216,15 +218,24 @@ async function seed(db: () => Kysely<DB>) {
 	// Create sample orders
 	await Promise.all(
 		users.map(async (user) => {
+			const totalCents = Number.parseInt(
+				faker.finance.amount({ min: 1000, max: 50000 }),
+				10
+			)
 			return await db()
 				.insertInto('orders')
 				.values({
 					userId: user.id,
-					totalCents: 49900,
+					totalCents,
 					stripeResponse: JSON.stringify({
-						id: 'ch_mock_12345',
-						status: 'succeeded',
-						amount: 49900,
+						id: `ch_mockCartId_${randomUUID()}`,
+						status: faker.helpers.shuffle([
+							'succeeded',
+							'pending',
+							'failed',
+						])[0],
+						amount: totalCents,
+						date: faker.date.past().toISOString().split('T')[0],
 					}),
 				})
 				.execute()
